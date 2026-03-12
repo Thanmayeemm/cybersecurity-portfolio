@@ -1,0 +1,36 @@
+SOC Alerts Summary (Sample Dataset)
+=================================
+Dataset: security_logs.csv
+Time range (UTC): 2026-03-11 07:14Z to 2026-03-12 01:22Z
+Total events: 112
+
+Event counts:
+- FAILED_LOGIN: 37
+- SUCCESS_LOGIN: 32
+- DATA_TRANSFER: 22
+- SUSPICIOUS_IP: 12
+- MALWARE_DETECTED: 9
+
+High-priority alerts:
+1) Potential brute force sources (FAILED_LOGIN > 5):
+   - 10.10.9.11: 9 failed logins
+   - 185.225.73.19: 8 failed logins
+2) Suspicious IP events (top sources):
+   - 102.165.34.19: 5 SUSPICIOUS_IP events
+   - 185.225.73.19: 4 SUSPICIOUS_IP events
+   - 91.214.124.77: 2 SUSPICIOUS_IP events
+   - 194.58.117.25: 1 SUSPICIOUS_IP events
+3) Malware detections:
+   - total: 9
+   - 2026-03-11T08:44:35Z user=apatel src_ip=185.225.73.19 status=DETECTED
+   - 2026-03-11T08:54:22Z user=jsmith src_ip=45.83.64.10 status=DETECTED
+   - 2026-03-11T14:54:25Z user=klee src_ip=45.83.64.10 status=DETECTED
+4) Data transfer blocks:
+   - none
+
+Top targeted users (FAILED_LOGIN):
+- jsmith: 12 failed logins
+- tturner: 6 failed logins
+- apatel: 4 failed logins
+- awilson: 4 failed logins
+- klee: 4 failed logins
