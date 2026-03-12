@@ -1,0 +1,32 @@
+Case 5 Analysis - Data Exfiltration
+
+Detection source
+- Proxy anomaly detection flagged unusually high outbound uploads to a cloud storage category.
+- DLP generated a high-severity event for attempted upload of sensitive data (SSNs / finance).
+- CASB recorded login and multiple upload activities to an unsanctioned cloud application (Dropbox personal) from a new device context.
+
+Initial triage indicators
+- Atypical user behavior: `ACME\\a.nguyen` baseline outbound data transfer was <10 MB/10 min; observed was >150 MB in ~10 minutes.
+- Data staging: endpoint telemetry shows `7z.exe` creating an archive (`Q1_Finance.zip`) shortly before uploads.
+- Sensitive file access: Windows object access events indicate reads of payroll and SSN-containing files prior to the upload attempt.
+
+Investigation steps
+1) Validate alert correlation
+   - Pivot on user (`a.nguyen`) and endpoint (`FIN-LT-033`) across proxy, DLP, CASB, and EDR logs.
+2) Confirm exfil pathway
+   - Proxy and firewall logs show large outbound transfers to Dropbox infrastructure.
+   - CASB shows Dropbox login + upload activities.
+3) Confirm data sensitivity
+   - DLP policy indicates PII (SSN) pattern match and blocked at least one upload attempt.
+4) Determine intent and root cause
+   - Checked for compromise indicators (impossible travel, suspicious IPs, malware execution).
+   - In this dataset, activity aligns with intentional data movement from a valid user session, not malware.
+5) Scope impact
+   - Searched for other endpoints/users with similar uploads to unsanctioned cloud storage.
+   - Identified list of files accessed/staged and whether uploads were blocked or allowed.
+
+Root cause (most likely)
+- Insider-driven attempt to move finance/PII data to a personal cloud storage account using a valid corporate session.
+
+Conclusion
+This incident is consistent with a data exfiltration attempt via unsanctioned cloud storage, preceded by local data staging (archive creation). DLP blocked at least one sensitive upload, but network telemetry indicates significant outbound transfer requiring confirmation of what successfully left the environment.

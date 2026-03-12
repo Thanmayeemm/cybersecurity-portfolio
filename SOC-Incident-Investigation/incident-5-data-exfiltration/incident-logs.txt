@@ -1,0 +1,74 @@
+SOC Incident Logs - Case 5: Data Exfiltration (Cloud Storage + Unusual Transfer)
+Environment: ACME-CORP
+Time zone: UTC
+Log sources: Proxy, Firewall, DLP, Windows Security, EDR, CASB (cloud app)
+------------------------------------------------------------------------------------------------------------------------
+
+[DLP] Alert Events (Endpoint + Cloud)
+Timestamp (UTC)           Severity  User              Host        Policy                              Action   Details
+------------------------  --------  ----------------  ----------  ----------------------------------  -------  --------------------------------------------------------------
+2026-03-11T18:06:11.400Z  High      ACME\\a.nguyen    FIN-LT-033   PII/Finance Data Exfiltration      Block    Attempted upload of file with SSNs to unsanctioned cloud app
+2026-03-11T18:07:02.215Z  Medium    ACME\\a.nguyen    FIN-LT-033   Sensitive File Mass Upload         Alert    Multiple uploads within 10 minutes (anomalous for user baseline)
+
+------------------------------------------------------------------------------------------------------------------------
+[CASB] Cloud App Events (Unsanctioned: "DropBox Personal")
+Timestamp (UTC)           User              App               Activity     Client IP      Device        Object
+------------------------  ----------------  ----------------  -----------  -------------  ------------  ---------------------------------------------
+2026-03-11T18:05:44.612Z  a.nguyen@acme-corp.com  Dropbox       Login        198.51.100.88  FIN-LT-033    Successful login (new device)
+2026-03-11T18:06:09.990Z  a.nguyen@acme-corp.com  Dropbox       Upload       198.51.100.88  FIN-LT-033    Payroll_Q1_2026.xlsx (attempt)
+2026-03-11T18:06:10.221Z  a.nguyen@acme-corp.com  Dropbox       Upload       198.51.100.88  FIN-LT-033    Customer_SSN_List.csv (attempt)
+2026-03-11T18:06:35.772Z  a.nguyen@acme-corp.com  Dropbox       Upload       198.51.100.88  FIN-LT-033    Vendor_Bank_Details.xlsx (attempt)
+
+------------------------------------------------------------------------------------------------------------------------
+[Proxy] proxy-01 - Web Upload Telemetry
+Timestamp (UTC)           Client IP     User              Method  Hostname                  URI                                  Bytes Out   Action  Category
+------------------------  ------------  ----------------  ------  ------------------------  -----------------------------------  ----------  ------  ---------------------
+2026-03-11T18:05:41.018Z  10.20.33.33   ACME\\a.nguyen    CONNECT www.dropbox.com           /home                                 34512       ALLOW   Cloud Storage
+2026-03-11T18:06:09.801Z  10.20.33.33   ACME\\a.nguyen    POST    content.dropboxapi.com    /2/files/upload                       52428800    ALLOW   Cloud Storage
+2026-03-11T18:06:10.090Z  10.20.33.33   ACME\\a.nguyen    POST    content.dropboxapi.com    /2/files/upload                       10485760    ALLOW   Cloud Storage
+2026-03-11T18:06:35.540Z  10.20.33.33   ACME\\a.nguyen    POST    content.dropboxapi.com    /2/files/upload                       15728640    ALLOW   Cloud Storage
+2026-03-11T18:07:01.900Z  10.20.33.33   ACME\\a.nguyen    POST    content.dropboxapi.com    /2/files/upload                       73400320    ALLOW   Cloud Storage
+
+Upload anomaly detector
+Timestamp (UTC)           User              Host        Indicator                         Value
+------------------------  ----------------  ----------  --------------------------------  ---------------------------
+2026-03-11T18:07:03.004Z  ACME\\a.nguyen    FIN-LT-033   BytesOut10Min                     150+ MB (baseline: <10 MB)
+
+------------------------------------------------------------------------------------------------------------------------
+[Firewall] edge-fw-01 - Egress sessions
+Timestamp (UTC)           SrcIP        DstIP           DstPort  App        Action  BytesSent  BytesRcvd  Notes
+------------------------  ----------  --------------  -------  ---------  ------  ---------  ---------  --------------------------------------------
+2026-03-11T18:06:12.113Z  10.20.33.33  162.125.18.133  443      Dropbox    ALLOW   52,431,112 1,102,441  Large outbound transfer
+2026-03-11T18:07:05.908Z  10.20.33.33  162.125.18.133  443      Dropbox    ALLOW   73,421,102 1,901,332  Continued large outbound transfer
+
+------------------------------------------------------------------------------------------------------------------------
+[EDR] Endpoint: FIN-LT-033 (10.20.33.33)  User: ACME\\a.nguyen
+Process Execution
+Timestamp (UTC)           Host        User            Process                        Command Line
+------------------------  ----------  --------------  -----------------------------  ---------------------------------------------------------------
+2026-03-11T17:58:10.555Z  FIN-LT-033   ACME\\a.nguyen  explorer.exe                   (user logon session)
+2026-03-11T18:04:22.101Z  FIN-LT-033   ACME\\a.nguyen  chrome.exe                     "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+2026-03-11T18:05:58.244Z  FIN-LT-033   ACME\\a.nguyen  7z.exe                         "C:\\Program Files\\7-Zip\\7z.exe" a -tzip "C:\\Users\\a.nguyen\\Desktop\\Q1_Finance.zip" "C:\\Users\\a.nguyen\\Documents\\Finance\\Q1\\*"
+2026-03-11T18:06:01.020Z  FIN-LT-033   ACME\\a.nguyen  powershell.exe                 powershell.exe -NoP -Command "Get-ChildItem $env:USERPROFILE\\Documents\\Finance\\Q1 -Recurse | Measure-Object -Property Length -Sum"
+
+Endpoint Alert
+Timestamp (UTC)           Host        Severity  Alert Name                     Details
+------------------------  ----------  --------  -----------------------------  --------------------------------------------------------------
+2026-03-11T18:07:10.221Z  FIN-LT-033   High      Unusual data staging detected   Large archive created + immediate cloud uploads (possible exfil)
+
+------------------------------------------------------------------------------------------------------------------------
+[Windows Security] FIN-LT-033
+EventID  Timestamp (UTC)           Computer   User              Details
+------   ------------------------  ---------  ----------------  --------------------------------------------------------------------------------------------
+4624     2026-03-11T17:58:08.402Z  FIN-LT-033  ACME\\a.nguyen   LogonType=2 (interactive) Workstation logon
+4663     2026-03-11T18:05:49.900Z  FIN-LT-033  ACME\\a.nguyen   Object Access: Read  C:\\Users\\a.nguyen\\Documents\\Finance\\Q1\\Payroll_Q1_2026.xlsx
+4663     2026-03-11T18:05:50.201Z  FIN-LT-033  ACME\\a.nguyen   Object Access: Read  C:\\Users\\a.nguyen\\Documents\\Finance\\Q1\\Customer_SSN_List.csv
+
+------------------------------------------------------------------------------------------------------------------------
+Analyst notes (auto-generated correlation fields)
+AlertName="Possible Data Exfiltration via Unsanctioned Cloud Storage"
+User="ACME\\a.nguyen"
+Host="FIN-LT-033"
+CloudApp="Dropbox (personal)"
+BytesOut10Min="150+ MB"
+SensitiveFiles="Customer_SSN_List.csv, Payroll_Q1_2026.xlsx, Vendor_Bank_Details.xlsx"
