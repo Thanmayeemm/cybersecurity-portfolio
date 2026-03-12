@@ -136,7 +136,7 @@ def format_detection(d: Dict[str, object]) -> str:
     users = ", ".join([f"{u}({c})" for u, c in d["targeted_users"]]) or "n/a"
     return (
         f"- BRUTEFORCE suspected from {d['source_ip']} | "
-        f"FAILED={d['failed_count']} in window {ws} → {we} | targeted_users={users}"
+        f"FAILED={d['failed_count']} in window {ws} -> {we} | targeted_users={users}"
     )
 
 
