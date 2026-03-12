@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 st.title("SOC Security Monitoring Dashboard")
 
 # Load security logs
-df = pd.read_csv("security_logs.csv")
+df = pd.read_csv("SOC-Security-Dashboard/security_logs.csv")
 
 # Event counts
 event_counts = df['event_type'].value_counts()
