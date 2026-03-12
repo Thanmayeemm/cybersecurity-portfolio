@@ -1,0 +1,36 @@
+Case 4 Analysis - Ransomware
+
+Detection source
+- EDR generated a Critical alert for ransomware-like behavior on `HR-LT-021` due to:
+  - Abnormally high file modification/rename rate
+  - Creation of a ransom note (`README_RESTORE_FILES.txt`)
+  - Observed attempts to delete Volume Shadow Copies (`vssadmin delete shadows`)
+
+What made this suspicious
+- Process chain indicates a common initial execution pattern:
+  - `WINWORD.EXE` opened a macro-enabled document (`.docm`)
+  - `WINWORD.EXE` spawned `powershell.exe` with hidden window + policy bypass + download cradle
+  - A payload executed from a user-writable path (`AppData\\Roaming\\svchost.exe`)
+- Defensive impairment attempts:
+  - Shadow copy deletion (inhibits recovery)
+  - Recovery disabled via `bcdedit`
+  - Event log clearing (`wevtutil cl Security`)
+- Lateral impact observed:
+  - File server audit logs show mass renames to `.locked` on `\\\\FS-01\\HR$`
+
+Investigation steps (high-level)
+1) Validated EDR alert and reviewed process tree for `HR-LT-021` around 03:14–03:19 UTC.
+2) Pivoted on IOCs:
+   - Ransom note name and `.locked` extension
+   - Suspicious binaries in `AppData\\Roaming\\`
+   - External IPs: `203.0.113.77` (script hosting), `198.51.100.44` (possible C2)
+3) Correlated file server telemetry to confirm scope:
+   - Rapid file modifications/renames originating from `HR-LT-021`
+4) Scoped enterprise exposure:
+   - Queried SIEM for other endpoints contacting the same IPs or dropping the same ransom note filename
+
+Root cause (most likely)
+- User executed a macro-enabled document leading to PowerShell-based payload download and execution.
+
+Conclusion
+The evidence is consistent with an active ransomware encryption event impacting local user files and the `HR$` file share, with attempts to prevent recovery and reduce visibility (log clearing).

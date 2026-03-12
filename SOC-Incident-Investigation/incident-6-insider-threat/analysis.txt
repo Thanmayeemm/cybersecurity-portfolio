@@ -1,0 +1,30 @@
+Case 6 Analysis - Insider Threat / Privileged Misuse
+
+Detection source
+- UEBA flagged unusual privileged access behavior for `ACME\\t.brown`:
+  - After-hours access
+  - Cross-system activity (AD group changes + database queries + data staging)
+- DLP blocked an attempted transfer of sensitive data to removable media and alerted on attempted external email exfiltration.
+
+Key investigation findings
+- Privileged change: AD event 4728 shows `t.brown` added `ACME\\svc-backup` to **Domain Admins** from `IT-LT-007`.
+- Sensitive access: database audit logs show queries against payroll/employee tables and an export to `C:\\Temp\\payroll_export.csv`.
+- Data staging: `7z.exe` compressed the export into `export.zip`.
+- Exfil attempt: DLP blocked copying the ZIP to USB and flagged an attempted external email attachment.
+- Context: VPN logs show access from a residential ISP at an unusual time (after-hours), increasing risk.
+
+Investigation steps (SOC workflow)
+1) Triage UEBA + DLP alerts and confirm correlation by user/host/time.
+2) Validate privileged changes in AD and confirm change justification/approval.
+3) Review database audit logs to quantify data accessed and exported.
+4) Confirm data staging artifacts and attempted exfil vectors (USB/email).
+5) Scope for additional affected systems:
+   - Other group membership changes by the same user
+   - Additional DB exports or cloud uploads
+6) Preserve evidence and coordinate with HR/legal for insider threat handling.
+
+Root cause (most likely)
+- Insider misuse of privileged access (or policy violation) to access and attempt to move sensitive payroll/PII data using legitimate tools.
+
+Conclusion
+This incident represents a high-risk insider threat scenario combining privileged changes and attempted data exfiltration. Even if transfers were blocked, the access itself is a security and compliance event requiring formal response and access review.

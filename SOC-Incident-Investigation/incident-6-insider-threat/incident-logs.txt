@@ -1,0 +1,71 @@
+SOC Incident Logs - Case 6: Insider Threat (Privileged Misuse + Unauthorized Access)
+Environment: ACME-CORP
+Time zone: UTC
+Log sources: Windows Security, AD, VPN, Database Audit, DLP, EDR
+------------------------------------------------------------------------------------------------------------------------
+
+[SIEM] UEBA Alert
+Timestamp (UTC)           Severity  Alert Name                                   Entity            Notes
+------------------------  --------  -------------------------------------------  ----------------  --------------------------------------------------------------
+2026-03-12T01:12:10.880Z  High      Unusual privileged access to sensitive data   ACME\\t.brown     Access outside job role + after-hours + multiple systems
+
+------------------------------------------------------------------------------------------------------------------------
+[Windows Security] Endpoint: IT-LT-007 (10.20.12.7)  User: ACME\\t.brown
+EventID  Timestamp (UTC)           Computer  User            Details
+------   ------------------------  --------  --------------  ---------------------------------------------------------------------------------------------------
+4624     2026-03-12T00:58:02.114Z  IT-LT-007 ACME\\t.brown   LogonType=2 (interactive)  Workstation logon
+4688     2026-03-12T01:01:14.200Z  IT-LT-007 ACME\\t.brown   New Process: powershell.exe  CmdLine: powershell -NoP -Command "net group \"Domain Admins\""
+4688     2026-03-12T01:02:33.910Z  IT-LT-007 ACME\\t.brown   New Process: mmc.exe        CmdLine: mmc.exe compmgmt.msc
+4688     2026-03-12T01:05:19.544Z  IT-LT-007 ACME\\t.brown   New Process: sqlcmd.exe     CmdLine: sqlcmd -S FIN-DB-01 -E -Q "SELECT TOP 500 * FROM dbo.Payroll"
+4688     2026-03-12T01:06:41.021Z  IT-LT-007 ACME\\t.brown   New Process: 7z.exe         CmdLine: 7z.exe a -tzip C:\\Users\\t.brown\\Desktop\\export.zip C:\\Temp\\payroll_export.csv
+
+------------------------------------------------------------------------------------------------------------------------
+[Active Directory] DC-01 - Group membership change
+EventID  Timestamp (UTC)           Subject User     Target User      Group             Action
+------   ------------------------  ---------------  --------------   ----------------  -----------------------------
+4728     2026-03-12T01:03:10.701Z  ACME\\t.brown    ACME\\svc-backup  Domain Admins     Added member to security-enabled global group
+
+Change context (selected fields)
+2026-03-12T01:03:10.701Z  DC=DC-01  Subject=ACME\\t.brown  Target=ACME\\svc-backup
+  Workstation=IT-LT-007  SourceIP=10.20.12.7  Reason="Temporary access for backup job"
+
+------------------------------------------------------------------------------------------------------------------------
+[Database Audit] FIN-DB-01 (SQL Server) - Sensitive table access
+Timestamp (UTC)           User              ClientHost   Database      Object               Statement / Rows
+------------------------  ----------------  -----------  ------------  -------------------  ---------------------------------------------------------
+2026-03-12T01:05:20.102Z  ACME\\t.brown     IT-LT-007    FinanceDB      dbo.Payroll          SELECT TOP 500 * FROM dbo.Payroll  (Rows: 500)
+2026-03-12T01:05:58.771Z  ACME\\t.brown     IT-LT-007    FinanceDB      dbo.Employees        SELECT Name, SSN, Salary FROM dbo.Employees  (Rows: 200)
+2026-03-12T01:06:10.442Z  ACME\\t.brown     IT-LT-007    FinanceDB      dbo.Payroll          BULK EXPORT to C:\\Temp\\payroll_export.csv
+
+------------------------------------------------------------------------------------------------------------------------
+[DLP] Endpoint/Email Events
+Timestamp (UTC)           Severity  User              Host        Policy                         Action  Details
+------------------------  --------  ----------------  ----------  -----------------------------  ------  ---------------------------------------------------------------
+2026-03-12T01:07:22.331Z  High      ACME\\t.brown     IT-LT-007    PII/Financial Data Handling    Block   Attempted copy of export.zip to removable media (USB)
+2026-03-12T01:08:10.004Z  Medium    ACME\\t.brown     IT-LT-007    Sensitive Email Exfiltration   Alert   Attempted email attachment to external recipient (blocked by DLP)
+
+------------------------------------------------------------------------------------------------------------------------
+[EDR] Endpoint: IT-LT-007
+Alert
+Timestamp (UTC)           Host      Severity  Alert Name                           Details
+------------------------  --------  --------  -----------------------------------  ---------------------------------------------------------------------------
+2026-03-12T01:07:25.991Z  IT-LT-007  High      Suspicious data staging activity     sqlcmd export + archive creation + attempted USB write
+
+Process/File context
+Timestamp (UTC)           Host      Process       File Path
+------------------------  --------  ------------  --------------------------------------------------------------
+2026-03-12T01:06:10.452Z  IT-LT-007  sqlcmd.exe    C:\\Temp\\payroll_export.csv
+2026-03-12T01:06:41.040Z  IT-LT-007  7z.exe        C:\\Users\\t.brown\\Desktop\\export.zip
+
+------------------------------------------------------------------------------------------------------------------------
+[VPN] vpn-gw-01 - After-hours access context
+Timestamp (UTC)           Username         Source IP       Result   Notes
+------------------------  --------------   -------------   -------  -------------------------------------------------
+2026-03-12T00:56:40.012Z  t.brown          203.0.113.55    Allow    VPN logon from home ISP (unusual time window)
+
+------------------------------------------------------------------------------------------------------------------------
+Analyst notes (auto-generated correlation fields)
+AlertName="Unusual privileged access to sensitive data"
+User="ACME\\t.brown"
+Host="IT-LT-007"
+HighRiskActions="Domain Admins group change; payroll table queries; export/archive; attempted USB/email exfil"
