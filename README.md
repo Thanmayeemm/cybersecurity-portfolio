@@ -1,33 +1,61 @@
-# Cybersecurity SOC Investigation Portfolio
+# Cybersecurity Portfolio
 
-This repository contains simulated security incidents investigated using real Security Operations Center (SOC) methodologies.
+Hands-on cybersecurity projects demonstrating practical skills in **Security Operations Center (SOC) analysis, threat detection, incident response, and security monitoring**.
 
-## Incident Investigations
+These projects simulate real-world security investigations and detection workflows used by SOC analysts.
 
-1. Phishing Credential Theft
-2. Brute Force Login Attack
-3. Malware Infection Investigation
-4. Ransomware Attack Analysis
-5. Data Exfiltration Investigation
-6. Insider Threat Investigation
+---
 
-Each investigation includes:
+# Projects
 
-- Security logs
-- Incident analysis
-- SOC investigation report
-- Detection rule
+## SOC Incident Investigation Lab
+Simulated investigations of real-world cyber attacks including phishing, brute force attacks, malware infections, ransomware incidents, data exfiltration, and insider threats.
+
+Includes:
+- security logs
+- investigation reports
+- detection rules
 - MITRE ATT&CK mapping
-- Attack timeline
+- attack timelines
 
-## Skills Demonstrated
+Project:  
+[SOC-Incident-Investigation](./SOC-Incident-Investigation)
+
+---
+
+## SOC Threat Detection Engine
+Python-based log analysis tool that detects common security threats from authentication logs.
+
+Detects:
+- brute force login attempts
+- suspicious IP activity
+- malware process execution
+
+Project:  
+[SOC-Threat-Detection-Engine](./SOC-Threat-Detection-Engine)
+
+---
+
+## SOC Security Dashboard
+Security analytics dashboard visualizing security events such as login failures, suspicious IP activity, malware alerts, and attack trends.
+
+Project:  
+[SOC-Security-Dashboard](./SOC-Security-Dashboard)
+
+---
+
+# Skills Demonstrated
 
 - Security Incident Response
+- SOC Investigation Workflow
 - Log Analysis
-- Threat Detection
-- MITRE ATT&CK Mapping
-- SIEM Detection Rule Creation
-- SOC Investigation Documentation
+- Threat Detection Engineering
+- Python Security Automation
+- Security Monitoring
+- MITRE ATT&CK Framework
 
-## Repository Structure
+---
 
+# Technologies
+
+Python • Security Logs • GitHub • Incident Response • Security Monitoring
