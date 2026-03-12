@@ -1,0 +1,79 @@
+SOC Incident Logs - Case 2: Brute Force Login Attack
+Environment: ACME-CORP (hybrid AD + Azure AD)
+Time zone: UTC
+Log sources: AzureADSignInLogs, Windows Security (DC), VPN Gateway, Firewall
+------------------------------------------------------------------------------------------------------------------------
+
+[AzureADSignInLogs] (Microsoft Entra ID) - Interactive sign-ins
+Timestamp (UTC)           User                     App              Result      IP Address       Location               Client/App
+------------------------  -----------------------  ---------------  ----------  ---------------  ---------------------  -------------------------
+2026-03-09T02:11:08.312Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:11:19.044Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:11:29.901Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:11:41.106Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:11:52.557Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:12:03.403Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:12:15.228Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:12:26.998Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:12:39.017Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:12:51.688Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:13:04.214Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:13:16.900Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:13:29.211Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:13:41.833Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:13:55.102Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:14:07.612Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:14:20.419Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:14:33.090Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:14:46.227Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:14:58.779Z  j.doe@acme-corp.com       OfficeHome       Failure     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:15:11.300Z  j.doe@acme-corp.com       OfficeHome       Success     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+
+Sign-in details (selected fields)
+2026-03-09T02:15:11.300Z  User=j.doe@acme-corp.com  Result=Success  Status=0  ErrorCode=0
+  AuthenticationRequirement=singleFactorAuthentication
+  MFARequired=false  ConditionalAccess=NotApplied
+  DeviceId=unknown  Browser=unknown  RiskLevelDuringSignIn=high
+  UserAgent="IMAP/4rev1"  AppId=OfficeHome  ClientAppUsed=Legacy authentication client
+
+2026-03-09T02:16:03.912Z  j.doe@acme-corp.com       Exchange Online  Success     185.225.73.19    RU / Moscow            LegacyAuth/IMAP4
+2026-03-09T02:16:44.501Z  j.doe@acme-corp.com       Microsoft Graph  Failure     185.225.73.19    RU / Moscow            Unknown/Token replay
+
+------------------------------------------------------------------------------------------------------------------------
+[Windows Security] (Domain Controller: DC-01.acme-corp.local) - Account logon events
+EventID  Timestamp (UTC)           Computer                    Account Name     Source IP       Status/SubStatus
+------   ------------------------  --------------------------  --------------   -------------  -------------------------
+4625     2026-03-09T02:11:10.090Z  DC-01.acme-corp.local       jdoe             185.225.73.19   0xC000006A / 0x0  (bad password)
+4625     2026-03-09T02:11:20.873Z  DC-01.acme-corp.local       jdoe             185.225.73.19   0xC000006A / 0x0
+4625     2026-03-09T02:11:31.741Z  DC-01.acme-corp.local       jdoe             185.225.73.19   0xC000006A / 0x0
+4625     2026-03-09T02:12:05.280Z  DC-01.acme-corp.local       jdoe             185.225.73.19   0xC000006A / 0x0
+4625     2026-03-09T02:13:19.022Z  DC-01.acme-corp.local       jdoe             185.225.73.19   0xC000006A / 0x0
+4624     2026-03-09T02:15:12.020Z  DC-01.acme-corp.local       jdoe             185.225.73.19   LogonType=3  AuthenticationPackage=MICROSOFT_AUTHENTICATION_PACKAGE_V1_0
+
+------------------------------------------------------------------------------------------------------------------------
+[VPN Gateway] (vpn-gw-01) - Remote access attempts
+Timestamp (UTC)           Username         Source IP       Result      Reason
+------------------------  --------------   -------------   ---------   -----------------------------
+2026-03-09T02:11:14.202Z  jdoe             185.225.73.19   Deny        Invalid credentials
+2026-03-09T02:12:09.515Z  jdoe             185.225.73.19   Deny        Invalid credentials
+2026-03-09T02:14:54.330Z  jdoe             185.225.73.19   Deny        Invalid credentials
+2026-03-09T02:15:20.884Z  jdoe             185.225.73.19   Allow       Authentication succeeded (no MFA)
+
+Session established
+2026-03-09T02:15:21.006Z  SessionId=8c0a5d9a  User=jdoe  AssignedIP=10.70.14.23  Tunnel=SSL  Device=unknown
+
+------------------------------------------------------------------------------------------------------------------------
+[Firewall] (edge-fw-01) - Inbound auth traffic to cloud endpoints
+Timestamp (UTC)           Action  SrcIP           DstFQDN                          DstPort  Notes
+------------------------  ------  --------------  --------------------------------  ------   -----------------------------------------------
+2026-03-09T02:11:07.980Z  Allow   185.225.73.19   outlook.office365.com             993      IMAPS legacy auth traffic volume spike
+2026-03-09T02:15:10.772Z  Allow   185.225.73.19   outlook.office365.com             993      Successful session observed immediately after failures
+
+------------------------------------------------------------------------------------------------------------------------
+Analyst notes (auto-generated alert fields)
+AlertName="Multiple Failed Logons Followed by Success"
+User="j.doe@acme-corp.com"
+SourceIP="185.225.73.19"
+Window="5 minutes"
+Failures="20+"
+Success="Yes"

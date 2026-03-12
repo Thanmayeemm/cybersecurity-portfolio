@@ -1,0 +1,27 @@
+Case 2 Analysis - Brute Force Login Attack
+
+How this was detected
+- The SIEM generated an alert for "Multiple Failed Logons Followed by Success" based on Azure AD sign-in logs and correlated Windows Security (4625/4624) and VPN gateway authentication events.
+- A single external source IP (185.225.73.19) produced a high volume of consecutive authentication failures for the same user within a short time window (≈20 failed attempts in ~4 minutes).
+- The pattern transitioned from repeated failures to a successful authentication from the same IP address shortly after, which is a classic indicator of password guessing / credential stuffing.
+
+Why it was suspicious (triage factors)
+- External IP geolocation (RU / Moscow) did not match the user’s normal login region (expected: US).
+- ClientAppUsed/Protocol indicates legacy authentication (IMAP4 / IMAPS), which frequently bypasses modern controls like MFA and Conditional Access if not explicitly blocked.
+- Azure AD sign-in risk was marked high, and the sign-in record indicates single-factor authentication with MFA not required / not applied.
+- VPN access succeeded from the same IP shortly after the successful cloud authentication, suggesting the attacker attempted to pivot into the corporate network after obtaining valid credentials.
+
+Investigation approach (what the analyst did)
+1) Validated the alert by pivoting on:
+   - Username (j.doe@acme-corp.com / jdoe)
+   - Source IP (185.225.73.19)
+   - Time window (02:11–02:16 UTC)
+2) Confirmed repeated failures (AzureAD SignIn Failure + DC 4625 + VPN Deny) followed by:
+   - AzureAD Success (interactive sign-in via legacy auth)
+   - VPN Allow (session established)
+3) Checked for post-authentication activity:
+   - Subsequent mailbox access attempts (Exchange Online IMAP activity)
+   - Any anomalous token activity (Graph failure potentially indicating token replay attempts)
+
+Conclusion
+This incident is consistent with a brute force / password spraying style attack against a single user account using legacy authentication, culminating in a successful login and follow-on VPN access from a suspicious external IP.
