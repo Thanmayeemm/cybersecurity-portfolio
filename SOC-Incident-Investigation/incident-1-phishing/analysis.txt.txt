@@ -1,0 +1,124 @@
+SECURITY INCIDENT INVESTIGATION REPORT
+
+Incident Type: Phishing → Credential Theft → Suspicious Foreign Login
+Severity: High Affected System: Microsoft 365 / Corporate Email Target
+User: j.smith@acme-corp.com Detection Source: SIEM alert (Impossible
+Travel / Suspicious Login)
+
+1.  EXECUTIVE SUMMARY A phishing email impersonating Microsoft 365
+    Security was delivered to a finance department employee. The email
+    contained a malicious link that redirected the user to a fake
+    Microsoft login page designed to steal credentials.
+
+After the victim entered credentials on the phishing page, the attacker
+used the stolen credentials to authenticate from a foreign IP address
+located in Russia. The attacker successfully accessed the victim’s
+mailbox and created a malicious email forwarding rule to exfiltrate
+sensitive communications.
+
+The activity triggered a SIEM alert for suspicious login behavior,
+indicating a potential account compromise.
+
+2.  SUSPICIOUS ACTIVITY IDENTIFIED
+
+Phishing Email Indicators Sender Domain: microsoft-secure365.com SPF
+Authentication: Failed DKIM: None DMARC: Failed
+
+Suspicious URL https://microsoft365-login-security.com/verify-session
+
+The domain impersonates Microsoft login services and was used for
+credential harvesting.
+
+3.  ATTACKER BEHAVIOR ANALYSIS
+
+Step 1 — Phishing Email Delivery The attacker sent a phishing email
+pretending to be a Microsoft security alert.
+
+Step 2 — Credential Harvesting The victim clicked the phishing link and
+entered credentials on the fake login page.
+
+Step 3 — Attacker Login Using Stolen Credentials User:
+j.smith@acme-corp.com Source IP: 102.165.34.19 Location: Moscow, Russia
+Authentication Method: Password MFA: Not satisfied Risk Level: High
+
+Step 4 — Mailbox Access The attacker successfully accessed the user’s
+Microsoft Exchange mailbox.
+
+Step 5 — Persistence / Data Exfiltration The attacker created an inbox
+rule forwarding emails to: finance.audit@protonmail.com
+
+This rule allows continuous monitoring of incoming emails.
+
+4.  INDICATORS OF COMPROMISE (IOCs)
+
+Malicious Domains microsoft365-login-security.com
+login-microsoft365-security.net office365-verification-alert.com
+
+Malicious IP Addresses 185.193.127.44 Location: Russia Purpose: Hosting
+phishing infrastructure
+
+102.165.34.19 Location: Russia Purpose: Attacker login activity Threat
+Reputation: Credential stuffing campaigns
+
+5.  COMPROMISED ACCOUNT
+
+Account: j.smith@acme-corp.com Department: Finance System: Microsoft 365
+
+Evidence • Foreign login activity • Mailbox access from suspicious IP •
+Creation of malicious forwarding rule
+
+6.  ATTACKER INFRASTRUCTURE
+
+Indicator: 185.193.127.44 Description: Hosting phishing website
+
+Indicator: 102.165.34.19 Description: Attacker login IP
+
+Indicator: microsoft365-login-security.com Description: Credential
+harvesting site
+
+Indicator: finance.audit@protonmail.com Description: Email exfiltration
+destination
+
+7.  TIMELINE OF ATTACK
+
+09:13 Phishing email delivered to user 09:14 User clicked phishing link
+09:14 User entered credentials on phishing site 09:20 Attacker logged in
+from Russia 09:21 Attacker accessed mailbox 09:21 Attacker created email
+forwarding rule 09:25 SIEM generated alert for suspicious login
+
+8.  MITRE ATT&CK TECHNIQUES
+
+T1566 – Phishing T1056 – Credential Harvesting T1078 – Valid Accounts
+T1114 – Email Collection T1020 – Data Exfiltration via Email
+
+9.  ROOT CAUSE
+
+The compromise occurred because the victim entered credentials into a
+phishing website that impersonated Microsoft 365 authentication
+services. The attacker used the stolen credentials to access the account
+from a foreign IP address. Multi-factor authentication was not enforced
+or was bypassed.
+
+10. RECOMMENDED RESPONSE ACTIONS
+
+Immediate Containment • Reset the compromised user password • Revoke all
+active authentication sessions • Remove malicious mailbox forwarding
+rules • Block malicious IP addresses • Block phishing domains at the
+email gateway and DNS layer
+
+Detection Improvements • Implement SIEM alerts for impossible travel
+logins • Monitor mailbox rule creation events • Detect logins from
+high-risk geographic locations • Monitor SPF/DKIM/DMARC authentication
+failures
+
+Security Hardening • Enforce MFA across all accounts • Implement
+phishing-resistant authentication methods • Deploy email security
+filtering and sandboxing • Conduct employee phishing awareness training
+
+11. FINAL ASSESSMENT
+
+This incident represents a successful phishing-based account takeover.
+The attacker leveraged stolen credentials to access the victim’s mailbox
+and attempted persistence using email forwarding rules for data
+exfiltration. Rapid detection by the SIEM allowed the security team to
+investigate and contain the incident.

@@ -1,0 +1,174 @@
+
+SOC INCIDENT DATASET – PHISHING CREDENTIAL THEFT
+
+============================
+Incident Summary
+============================
+Incident Type: Phishing → Credential Theft → Suspicious Login
+Target User: j.smith@acme-corp.com
+Department: Finance
+Initial Vector: Phishing email impersonating Microsoft 365
+Impact: Credentials harvested leading to suspicious login from foreign IP
+
+
+============================
+1. Email Headers
+============================
+Return-Path: <security-alert@microsoft-secure365.com>
+Received: from mail.microsoft-secure365.com (185.193.127.44)
+    by mx.acme-corp.com with ESMTP id A12F34
+    for <j.smith@acme-corp.com>; Tue, 05 Mar 2026 09:13:22 -0800
+Received-SPF: Fail (acme-corp.com: domain of microsoft-secure365.com does not designate 185.193.127.44 as permitted sender)
+Authentication-Results: mx.acme-corp.com;
+    spf=fail smtp.mailfrom=microsoft-secure365.com;
+    dkim=none;
+    dmarc=fail
+
+From: Microsoft Security Team <security-alert@microsoft-secure365.com>
+To: j.smith@acme-corp.com
+Subject: URGENT: Unusual Sign-in Attempt Detected
+Date: Tue, 05 Mar 2026 09:13:18 -0800
+Message-ID: <9842398423@microsoft-secure365.com>
+Reply-To: security@microsoft-secure365.com
+X-Mailer: Microsoft Outlook Express
+
+
+============================
+2. Email Body (Phishing Content)
+============================
+Dear User,
+
+We detected an unusual login attempt to your Microsoft 365 account from an unknown location.
+
+For security reasons, your account will be temporarily suspended unless you verify your identity immediately.
+
+Please verify your account by clicking the link below:
+
+https://microsoft365-login-security.com/verify-session
+
+Failure to verify within 30 minutes will result in account suspension.
+
+Thank you,
+Microsoft Security Team
+
+
+============================
+3. Authentication Logs
+============================
+Timestamp=2026-03-05T09:20:41Z
+User=j.smith@acme-corp.com
+EventType=LoginSuccess
+SourceIP=102.165.34.19
+Location=Moscow,RU
+Device=Unknown
+Browser=Chrome
+AuthenticationMethod=Password
+MFA=NotSatisfied
+RiskLevel=High
+
+Timestamp=2026-03-05T09:21:02Z
+User=j.smith@acme-corp.com
+EventType=MailboxAccess
+SourceIP=102.165.34.19
+Application=Microsoft Exchange Online
+Result=Success
+
+Timestamp=2026-03-05T09:21:18Z
+User=j.smith@acme-corp.com
+EventType=InboxRuleCreated
+RuleName=ForwardToExternal
+ForwardTo=finance.audit@protonmail.com
+
+
+============================
+4. Firewall Logs
+============================
+2026-03-05T09:14:03Z
+src_ip=10.21.45.33
+dst_ip=185.193.127.44
+src_port=50432
+dst_port=443
+protocol=TCP
+action=ALLOW
+application=ssl
+url=microsoft365-login-security.com
+bytes_sent=3482
+bytes_received=9241
+
+2026-03-05T09:14:07Z
+src_ip=10.21.45.33
+dst_ip=185.193.127.44
+action=ALLOW
+threat_category=phishing
+signature=Known Phishing Domain
+
+
+============================
+5. Endpoint Logs
+============================
+Timestamp=2026-03-05T09:14:01Z
+Hostname=FINANCE-LT-224
+User=j.smith
+ProcessName=chrome.exe
+CommandLine="C:\Program Files\Google\Chrome\Application\chrome.exe"
+URL=https://microsoft365-login-security.com/verify-session
+EventType=WebAccess
+
+Timestamp=2026-03-05T09:14:15Z
+Hostname=FINANCE-LT-224
+User=j.smith
+EventType=CredentialSubmission
+TargetURL=https://microsoft365-login-security.com
+Browser=Chrome
+RiskScore=High
+
+Timestamp=2026-03-05T09:15:10Z
+Hostname=FINANCE-LT-224
+EventType=SuspiciousDomainContact
+Domain=microsoft365-login-security.com
+Category=Phishing
+
+
+============================
+6. Suspicious IP Addresses
+============================
+185.193.127.44
+Hosting Provider: Bulletproof Hosting Ltd
+Country: Russia
+Reputation: Malicious
+Associated Activity: Phishing Infrastructure
+
+102.165.34.19
+Country: Russia
+ASN: 20485
+Known For: Credential stuffing campaigns
+Threat Score: High
+
+
+============================
+7. Malicious Domains
+============================
+microsoft365-login-security.com
+login-microsoft365-security.net
+office365-verification-alert.com
+
+
+============================
+8. Timeline of Events
+============================
+09:13  - Phishing email delivered to employee inbox
+09:14  - User clicked phishing link
+09:14  - User entered credentials on fake login page
+09:20  - Attacker logged in from foreign IP (Russia)
+09:21  - Attacker accessed mailbox
+09:21  - Attacker created malicious inbox forwarding rule
+09:25  - SIEM alert triggered for impossible travel
+
+
+============================
+9. Example SIEM Detection Query (Splunk)
+============================
+index=auth_logs
+user=j.smith@acme-corp.com
+| stats count by src_ip location
+| where location!="United States"
