@@ -1,7 +1,7 @@
 SOC Alerts Summary (Sample Dataset)
 =================================
 Dataset: security_logs.csv
-Time range (UTC): 2026-03-11 07:42Z to 2026-03-12 01:50Z
+Time range (UTC): 2026-03-12 03:52Z to 2026-03-12 22:00Z
 Total events: 112
 
 Event counts:
@@ -22,9 +22,9 @@ High-priority alerts:
    - 194.58.117.25: 1 SUSPICIOUS_IP events
 3) Malware detections:
    - total: 9
-   - 2026-03-11T09:12:29Z user=apatel src_ip=185.225.73.19 status=DETECTED
-   - 2026-03-11T09:22:16Z user=jsmith src_ip=45.83.64.10 status=DETECTED
-   - 2026-03-11T15:22:19Z user=klee src_ip=45.83.64.10 status=DETECTED
+   - 2026-03-12T05:22:09Z user=apatel src_ip=185.225.73.19 status=DETECTED
+   - 2026-03-12T05:31:56Z user=jsmith src_ip=45.83.64.10 status=DETECTED
+   - 2026-03-12T11:31:59Z user=klee src_ip=45.83.64.10 status=DETECTED
 4) Data transfer blocks:
    - none
 
