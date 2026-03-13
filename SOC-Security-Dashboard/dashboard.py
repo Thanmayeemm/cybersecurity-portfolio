@@ -1,26 +1,20 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import time
 
-st.title("SOC Security Monitoring Dashboard")
+st.title("SOC Real-Time Security Monitoring Dashboard")
 
-# Load security logs
 df = pd.read_csv("SOC-Security-Dashboard/security_logs.csv")
 
-# Event counts
-event_counts = df['event_type'].value_counts()
+event_counts = df["event_type"].value_counts()
 
 st.subheader("Security Event Distribution")
+st.bar_chart(event_counts)
 
-fig, ax = plt.subplots()
-event_counts.plot(kind='bar', ax=ax)
-plt.xlabel("Event Type")
-plt.ylabel("Count")
+st.subheader("Recent Security Events")
+st.dataframe(df.tail(20))
 
-st.pyplot(fig)
+st.write("Dashboard refreshes every 5 seconds")
 
-# Show raw logs
-st.subheader("Security Logs")
-
-st.dataframe(df)
-
+time.sleep(5)
+st.experimental_rerun()
