@@ -5,8 +5,8 @@ st.set_page_config(page_title="SOC Security Monitoring Dashboard", layout="wide"
 
 st.title("SOC Security Monitoring Dashboard")
 
-# Correct path
-df = pd.read_csv("security_logs.csv")
+# Correct path for Streamlit Cloud
+df = pd.read_csv("SOC-Security-Dashboard/security_logs.csv")
 
 st.subheader("Security Event Distribution")
 st.bar_chart(df["event_type"].value_counts())
