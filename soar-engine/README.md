@@ -18,7 +18,7 @@
 
 ## 🔐 What it is
 
-This project is a **modular SOAR-style engine**: it accepts **IPs, domains, and file hashes**, queries **external threat intelligence**, applies a **configurable decision model**, and runs **playbooks**—simulated IP blocking, **Slack** notifications, and **persistent incident logging**—behind a clean **Flask REST API** and a **browser dashboard**.
+This project is a **modular SOAR-style engine**: it accepts **IPs, domains, and file hashes**, queries **external threat intelligence**, applies a **configurable decision model**, and runs **playbooks** simulated IP blocking, **Slack** notifications, and **persistent incident logging** behind a clean **Flask REST API** and a **browser dashboard**.
 
 ---
 
