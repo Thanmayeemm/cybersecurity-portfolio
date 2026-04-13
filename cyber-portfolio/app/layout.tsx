@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { siteConfig } from "@/lib/site-config";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,9 +14,16 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Cybersecurity Portfolio",
-  description:
-    "Cybersecurity Engineer / Security Analyst — portfolio, projects, and contact.",
+  title: {
+    default: `${siteConfig.name} — Portfolio`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: `${siteConfig.title}. ${siteConfig.intro}`,
+  openGraph: {
+    title: `${siteConfig.name} — Portfolio`,
+    description: siteConfig.intro,
+    type: "website",
+  },
 };
 
 export default function RootLayout({

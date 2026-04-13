@@ -26,10 +26,10 @@ class DecisionResult:
     confidence_percent: float
 
     def to_dict(self) -> dict[str, Any]:
+        # Single field for confidence (0–100) to avoid duplicate keys confusing API clients
         return {
             "verdict": self.verdict,
             "severity": self.severity,
-            "confidence": round(self.confidence_percent, 1),
             "confidence_percent": round(self.confidence_percent, 1),
         }
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { sectionFadeUp } from "@/lib/motion-presets";
 
 const skillGroups = [
   {
@@ -10,12 +11,12 @@ const skillGroups = [
   },
   {
     title: "Development",
-    items: ["Python", "Flask"],
+    items: ["Python", "Flask", "SQLite"],
     icon: "⚙️",
   },
   {
     title: "Integration & automation",
-    items: ["REST APIs", "Automation"],
+    items: ["REST APIs", "Webhooks", "Automation"],
     icon: "🔗",
   },
   {
@@ -26,34 +27,44 @@ const skillGroups = [
 ];
 
 export function Skills() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section id="skills" className="scroll-mt-24 px-4 py-24 sm:px-6">
+    <motion.section
+      id="skills"
+      className="scroll-mt-28 px-4 py-28 sm:px-6 sm:py-32"
+      {...sectionFadeUp}
+    >
       <div className="mx-auto max-w-6xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="font-display text-3xl font-bold text-white md:text-4xl"
-        >
-          Skills
-        </motion.h2>
-        <div className="mt-3 h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
+        <div className="space-y-3">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-4xl">
+            Skills
+          </h2>
+          <div className="h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
+        </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {skillGroups.map((group, i) => (
+          {skillGroups.map((group) => (
             <motion.div
               key={group.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="rounded-2xl border border-cyber-border bg-cyber-surface/50 p-6 transition hover:-translate-y-1 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5"
+              whileHover={
+                reduceMotion
+                  ? undefined
+                  : {
+                      y: -4,
+                      boxShadow: "0 20px 40px -12px rgba(34, 211, 238, 0.14)",
+                    }
+              }
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-2xl border border-cyber-border bg-cyber-surface/50 p-6 shadow-md shadow-black/15 transition-colors hover:border-cyan-500/35"
             >
-              <div className="text-2xl">{group.icon}</div>
+              <div className="text-2xl" aria-hidden>
+                {group.icon}
+              </div>
               <h3 className="font-display mt-3 text-lg font-semibold text-white">
                 {group.title}
               </h3>
-              <ul className="mt-4 space-y-2 text-sm text-slate-400">
+              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-slate-400">
                 {group.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -62,6 +73,6 @@ export function Skills() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

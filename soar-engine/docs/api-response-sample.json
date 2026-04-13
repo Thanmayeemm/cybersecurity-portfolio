@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "indicator": "89.248.165.74",
+  "indicator_type": "ipv4",
+  "enrichment": {
+    "indicator": "89.248.165.74",
+    "indicator_type": "ipv4",
+    "vt_score": 3.19,
+    "abuse_score": 0.0,
+    "combined_score": 1.91,
+    "weights_applied": { "virus_total": 0.6, "abuseipdb": 0.4 }
+  },
+  "scores": {
+    "vt_score": 3.19,
+    "abuse_score": 0.0,
+    "combined_score": 1.91
+  },
+  "decision": {
+    "verdict": "suspicious",
+    "severity": "medium",
+    "confidence_percent": 59.1
+  },
+  "actions": {
+    "playbook": "suspicious",
+    "summary": "slack_alert;db_log",
+    "steps": [],
+    "action_list": [
+      { "action": "slack_alert", "status": "sent", "http_status": 200 },
+      { "action": "log_incident", "status": "stored", "incident_id": 10 }
+    ]
+  },
+  "action_list": [
+    { "action": "slack_alert", "status": "sent", "http_status": 200 },
+    { "action": "log_incident", "status": "stored", "incident_id": 10 }
+  ]
+}

@@ -1,8 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
+import { sectionFadeUp } from "@/lib/motion-presets";
+
+const MotionLink = motion(Link);
 
 const contacts = [
   {
@@ -47,48 +50,54 @@ const contacts = [
 ];
 
 export function Contact() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section id="contact" className="scroll-mt-24 px-4 py-24 sm:px-6">
+    <motion.section
+      id="contact"
+      className="scroll-mt-28 px-4 py-28 sm:px-6 sm:py-32"
+      {...sectionFadeUp}
+    >
       <div className="mx-auto max-w-6xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="font-display text-3xl font-bold text-white md:text-4xl"
-        >
-          Contact
-        </motion.h2>
-        <div className="mt-3 h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
-        <p className="mt-6 max-w-xl text-slate-400">
+        <div className="space-y-3">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-4xl">
+            Contact
+          </h2>
+          <div className="h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
+        </div>
+        <p className="mt-8 max-w-xl text-base leading-relaxed text-slate-400">
           Open to roles in security engineering, SOC automation, and detection. Reach
           out via email or connect on LinkedIn.
         </p>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {contacts.map((c, i) => (
-            <motion.div
+        <div className="mt-12 grid gap-5 sm:grid-cols-3 sm:gap-6">
+          {contacts.map((c) => (
+            <MotionLink
               key={c.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              href={c.href}
+              target={c.href.startsWith("http") ? "_blank" : undefined}
+              rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              whileHover={
+                reduceMotion
+                  ? undefined
+                  : {
+                      scale: 1.02,
+                      boxShadow: "0 16px 36px -10px rgba(34, 211, 238, 0.12)",
+                    }
+              }
+              whileTap={reduceMotion ? undefined : { scale: 0.99 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col rounded-2xl border border-cyber-border bg-cyber-surface/60 p-6 shadow-md shadow-black/10 transition-colors hover:border-cyan-500/40 hover:bg-cyber-surface/90"
             >
-              <Link
-                href={c.href}
-                target={c.href.startsWith("http") ? "_blank" : undefined}
-                rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="flex flex-col rounded-2xl border border-cyber-border bg-cyber-surface/60 p-6 transition hover:border-cyan-500/40 hover:bg-cyber-surface"
-              >
-                <span className="text-cyan-500">{c.icon}</span>
-                <span className="mt-3 text-sm font-medium text-slate-500">
-                  {c.label}
-                </span>
-                <span className="mt-1 font-semibold text-white">{c.value}</span>
-              </Link>
-            </motion.div>
+              <span className="text-cyan-500">{c.icon}</span>
+              <span className="mt-3 text-sm font-medium text-slate-500">
+                {c.label}
+              </span>
+              <span className="mt-1 font-semibold text-white">{c.value}</span>
+            </MotionLink>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

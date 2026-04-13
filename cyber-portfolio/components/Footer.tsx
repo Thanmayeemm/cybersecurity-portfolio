@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 
 export function Footer() {
@@ -10,12 +9,22 @@ export function Footer() {
           Tailwind CSS.
         </p>
         <div className="flex gap-6 text-sm text-slate-500">
-          <Link href={siteConfig.github} className="hover:text-cyan-400">
+          <a
+            href={siteConfig.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-cyan-400"
+          >
             GitHub
-          </Link>
-          <Link href={siteConfig.linkedIn} className="hover:text-cyan-400">
+          </a>
+          <a
+            href={siteConfig.linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-cyan-400"
+          >
             LinkedIn
-          </Link>
+          </a>
         </div>
       </div>
     </footer>

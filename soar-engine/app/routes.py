@@ -13,6 +13,7 @@ from app.models import incident as incident_model
 from app.services.decision_engine import ThreatDecisionEngine
 from app.services import enrichment as enrichment_service
 from app.services import response_engine
+from app.utils.json_response import sanitize_for_json
 from app.utils.logger import setup_logging
 
 bp = Blueprint("soar", __name__)
@@ -78,15 +79,22 @@ def analyze():
             abuse_score=enr.get("abuse_score"),
         )
 
-        return jsonify(
-            {
-                "indicator": indicator,
-                "enrichment": enr,
-                "decision": decision.to_dict(),
-                "actions": playbook,
-                "action_list": playbook.get("action_list", []),
-            }
-        )
+        body: dict[str, Any] = {
+            "success": True,
+            "indicator": indicator,
+            "indicator_type": enr.get("indicator_type"),
+            "enrichment": enr,
+            "scores": {
+                "vt_score": enr.get("vt_score"),
+                "abuse_score": enr.get("abuse_score"),
+                "combined_score": enr.get("combined_score"),
+            },
+            "decision": decision.to_dict(),
+            # Full playbook object (verdict key, steps, action_list) — stable shape for clients
+            "actions": playbook,
+            "action_list": playbook.get("action_list", []),
+        }
+        return jsonify(sanitize_for_json(body))
     except Exception as e:
         log.exception("analyze_failed: %s", e)
         return jsonify({"error": "internal error during analysis", "detail": str(e)}), 500
@@ -245,7 +253,7 @@ _UI_PAGE = r"""
         '<dt>Indicator</dt><dd>' + escapeHtml(data.indicator || '') + '</dd>' +
         '<dt>Type</dt><dd>' + escapeHtml(e.indicator_type || '-') + '</dd>' +
         '<dt>Severity</dt><dd>' + sevBadge(d.severity) + '</dd>' +
-        '<dt>Confidence</dt><dd>' + (d.confidence != null ? d.confidence + '%' : '-') + '</dd>' +
+        '<dt>Confidence</dt><dd>' + (d.confidence_percent != null ? d.confidence_percent + '%' : (d.confidence != null ? d.confidence + '%' : '-')) + '</dd>' +
         '<dt>VT score</dt><dd>' + (e.vt_score != null ? e.vt_score : '-') + '</dd>' +
         '<dt>AbuseIPDB</dt><dd>' + (e.abuse_score != null ? e.abuse_score : 'n/a') + '</dd>' +
         '<dt>Combined</dt><dd>' + (e.combined_score != null ? e.combined_score : '-') + '</dd>' +

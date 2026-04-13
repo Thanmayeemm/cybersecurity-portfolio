@@ -1,8 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { siteConfig } from "@/lib/site-config";
+import { sectionFadeUp } from "@/lib/motion-presets";
+
+const MotionLink = motion(Link);
 
 const features = [
   "Threat intelligence integration (VirusTotal, AbuseIPDB)",
@@ -13,30 +18,91 @@ const features = [
 
 const stack = ["Python", "Flask", "SQLite", "REST APIs", "Slack Webhooks"];
 
-export function Projects() {
+function ProjectScreenshot({
+  src,
+  alt,
+  caption,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  const reduceMotion = useReducedMotion();
+
+  const ease = [0.22, 1, 0.36, 1] as const;
+
+  if (failed) {
+    return (
+      <figure className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-dashed border-cyber-border/80 bg-cyber-bg/80">
+        <div className="relative flex aspect-[16/10] w-full shrink-0 flex-col items-center justify-center gap-2 px-6 py-10 text-center">
+          <span className="text-sm text-slate-500">Add screenshot</span>
+          <span className="break-all font-mono text-xs text-slate-600">
+            public{src}
+          </span>
+        </div>
+        <figcaption className="mt-auto border-t border-cyber-border/60 px-3 py-2.5 text-center text-xs text-slate-500">
+          {caption}
+        </figcaption>
+      </figure>
+    );
+  }
+
   return (
-    <section id="projects" className="scroll-mt-24 px-4 py-24 sm:px-6">
+    <figure className="group/shot flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-cyber-border/80 bg-black/25 shadow-xl shadow-cyan-500/10 ring-1 ring-cyan-500/15">
+      <motion.div
+        className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-black/30"
+        whileHover={reduceMotion ? undefined : { scale: 1.03 }}
+        transition={{ duration: 0.48, ease }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(min-width: 1024px) min(50vw, 36rem), 100vw"
+          className="object-cover object-top"
+          unoptimized
+          onError={() => setFailed(true)}
+        />
+      </motion.div>
+      <figcaption className="mt-auto border-t border-cyber-border/60 px-3 py-2.5 text-center text-xs leading-relaxed text-slate-500">
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+export function Projects() {
+  const reduceMotion = useReducedMotion();
+  const cardHover = reduceMotion
+    ? {}
+    : {
+        scale: 1.008,
+        boxShadow: "0 24px 48px -16px rgba(34, 211, 238, 0.12)",
+      };
+
+  return (
+    <motion.section
+      id="projects"
+      className="scroll-mt-28 px-4 py-28 sm:px-6 sm:py-32"
+      {...sectionFadeUp}
+    >
       <div className="mx-auto max-w-6xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="font-display text-3xl font-bold text-white md:text-4xl"
-        >
-          Projects
-        </motion.h2>
-        <div className="mt-3 h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
+        <div className="space-y-3">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-4xl">
+            Projects
+          </h2>
+          <div className="h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
+        </div>
 
         <motion.article
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="group mt-12 overflow-hidden rounded-2xl border border-cyber-border bg-gradient-to-br from-cyber-surface to-cyber-bg p-1 transition hover:border-cyan-500/40"
+          whileHover={cardHover}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="group mt-12 overflow-hidden rounded-2xl border border-cyber-border bg-gradient-to-br from-cyber-surface to-cyber-bg p-1 shadow-lg shadow-black/25 transition-[border-color] hover:border-cyan-500/45"
         >
           <div className="rounded-xl bg-cyber-surface/90 p-8 md:p-10">
-            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-              <div>
+            <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
+              <div className="min-w-0 flex-1">
                 <span className="inline-block rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-cyan-400">
                   Featured
                 </span>
@@ -50,28 +116,44 @@ export function Projects() {
                   playbooks—including Slack notifications and incident logging.
                 </p>
               </div>
-              <Link
-                href={siteConfig.soarProjectUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-cyan-500 px-6 py-3 text-sm font-semibold text-cyber-bg transition hover:bg-cyan-400 md:self-start"
-              >
-                View project
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row lg:items-start">
+                <MotionLink
+                  href={siteConfig.soarProjectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={reduceMotion ? {} : { scale: 1.02 }}
+                  whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 px-6 py-3 text-sm font-semibold text-cyber-bg shadow-md shadow-cyan-500/20 hover:bg-cyan-400"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  />
-                </svg>
-              </Link>
+                  SOAR source
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </MotionLink>
+                <MotionLink
+                  href={siteConfig.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={reduceMotion ? {} : { scale: 1.02 }}
+                  whileTap={reduceMotion ? {} : { scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-6 py-3 text-sm font-semibold text-slate-200 hover:border-cyan-500/50 hover:text-white"
+                >
+                  Full repo
+                </MotionLink>
+              </div>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-2">
@@ -85,22 +167,35 @@ export function Projects() {
               ))}
             </div>
 
-            <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-3">
               {features.map((f) => (
                 <li
                   key={f}
-                  className="flex items-center gap-3 text-sm text-slate-400"
+                  className="flex items-center gap-3 text-sm leading-snug text-slate-400"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-500/15 text-emerald-400">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-emerald-500/15 text-emerald-400">
                     ✓
                   </span>
                   {f}
                 </li>
               ))}
             </ul>
+
+            <div className="mt-12 grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
+              <ProjectScreenshot
+                src="/images/dashboard.png"
+                alt="SOAR engine web dashboard with indicator analysis and incident table"
+                caption="Web dashboard — enrichment, verdict, incidents"
+              />
+              <ProjectScreenshot
+                src="/images/slack-alert.png"
+                alt="Slack alert from SOAR playbook with VT and Abuse scores"
+                caption="Slack alerting — suspicious indicator notification"
+              />
+            </div>
           </div>
         </motion.article>
       </div>
-    </section>
+    </motion.section>
   );
 }

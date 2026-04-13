@@ -29,12 +29,14 @@ export function Navbar() {
           className="font-display text-lg font-semibold tracking-tight text-cyan-400 transition hover:text-cyan-300"
         >
           {siteConfig.name.split(" ")[0]}
-          <span className="text-slate-500">.sec</span>
         </Link>
         <ul className="hidden gap-8 text-sm font-medium text-slate-400 md:flex">
           {links.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className="transition hover:text-cyan-400">
+              <Link
+                href={l.href}
+                className="transition-colors duration-200 hover:text-cyan-400"
+              >
                 {l.label}
               </Link>
             </li>
@@ -68,7 +70,7 @@ export function Navbar() {
           </button>
           <Link
             href="#contact"
-            className="hidden rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-400 transition hover:border-cyan-400/60 hover:bg-cyan-500/20 sm:inline-flex"
+            className="hidden rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-400 transition-all duration-200 hover:border-cyan-400/60 hover:bg-cyan-500/20 hover:shadow-md hover:shadow-cyan-500/10 sm:inline-flex"
           >
             Get in touch
           </Link>

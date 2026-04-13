@@ -231,9 +231,16 @@ Invoke-RestMethod -Uri "http://127.0.0.1:5000/incidents" -Method Get
 
 ```json
 {
+  "success": true,
   "indicator": "8.8.8.8",
+  "indicator_type": "ipv4",
   "enrichment": {
     "indicator_type": "ipv4",
+    "vt_score": 0.0,
+    "abuse_score": 0.0,
+    "combined_score": 0.0
+  },
+  "scores": {
     "vt_score": 0.0,
     "abuse_score": 0.0,
     "combined_score": 0.0
@@ -242,6 +249,14 @@ Invoke-RestMethod -Uri "http://127.0.0.1:5000/incidents" -Method Get
     "verdict": "benign",
     "severity": "low",
     "confidence_percent": 92.5
+  },
+  "actions": {
+    "playbook": "benign",
+    "summary": "db_log",
+    "steps": [],
+    "action_list": [
+      { "action": "log_incident", "status": "stored", "incident_id": 1 }
+    ]
   },
   "action_list": [
     { "action": "log_incident", "status": "stored", "incident_id": 1 }
@@ -255,12 +270,23 @@ Invoke-RestMethod -Uri "http://127.0.0.1:5000/incidents" -Method Get
 
 ## 🖼 Screenshots
 
-Screenshots below show the dashboard and a Slack alert triggered for a suspicious indicator.
+PNG files live in **`docs/images/`** (and are copied to the Next.js portfolio via `docs/copy-screenshots.ps1`).
 
-| Placeholder | Description |
-|-------------|-------------|
-| Dashboard | ![Dashboard](docs/images/dashboard.png) |
-| Slack alert | ![Slack Alert](docs/images/slack-alert.png) |
+| Image | What it shows |
+|-------|----------------|
+| **Dashboard** | ![Dashboard](docs/images/dashboard.png) Flask UI: analyze an indicator, latest result, recent incidents (SQLite). |
+| **Slack alert** | ![Slack Alert](docs/images/slack-alert.png) Incoming Webhook message after a **suspicious** / **malicious** verdict. |
+
+**What is the “API response” image?**  
+That usually means a **screenshot of the raw JSON** returned by `POST /analyze` (terminal, Postman, or browser DevTools)—not a separate product screen. The same enrichment and decision values appear in JSON and in Slack; see **[docs/api-response-sample.json](docs/api-response-sample.json)** for a representative payload.
+
+**Copy screenshots into the repo (Windows):** from the repo root, run:
+
+```powershell
+.\soar-engine\docs\copy-screenshots.ps1
+```
+
+Or manually save **`dashboard.png`** and **`slack-alert.png`** into `soar-engine/docs/images/` (dashboard = web UI, Slack = chat alert).
 ---
 
 ## 📌 Resume & impact

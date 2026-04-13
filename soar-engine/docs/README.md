@@ -1,20 +1,16 @@
-# Documentation assets
+# SOAR engine — docs
 
-## Screenshots (`images/`)
+- **`api-response-sample.json`** — Example JSON body from `POST /analyze` (same fields drive Slack formatting).
+- **`copy-screenshots.ps1`** — Copies dashboard + Slack PNGs from the Cursor asset folder into:
+  - `soar-engine/docs/images/dashboard.png`
+  - `soar-engine/docs/images/slack-alert.png`
+  - `cyber-portfolio/public/images/dashboard.png`
+  - `cyber-portfolio/public/images/slack-alert.png`
 
-Place portfolio screenshots in **`docs/images/`** using these filenames (referenced from the root `README.md`):
+Run from the **cybersecurity-portfolio** repo root:
 
-| File | Suggested content |
-|------|-------------------|
-| `dashboard.png` | Full SOAR web UI: analyze form + verdict card + incidents table |
-| `slack-alert.png` | Slack message from a suspicious/malicious playbook run |
-| `api-response.png` | Terminal or Postman showing `POST /analyze` JSON |
+```powershell
+.\soar-engine\docs\copy-screenshots.ps1
+```
 
-**Recommended:** PNG or WebP, width ~1200–1600px for readability on GitHub.
-
-## Optional extras
-
-- `architecture.png` — Export from Mermaid or draw.io if you want a static diagram in the README
-- `demo.gif` — Short screen recording of analyze + Slack (add to README with `![Demo](docs/images/demo.gif)`)
-
-Do **not** commit `.env`, API keys, or customer data in screenshots.
+**File naming:** `151540` → dashboard (web UI), `151502` → Slack (alert message).

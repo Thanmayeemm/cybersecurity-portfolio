@@ -10,16 +10,23 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   @apply bg-cyber-bg text-slate-200 antialiased;
 }
 
-/* Subtle scanline overlay (optional cyber aesthetic) */
+/* Subtle scanline overlay — keep z-index below page content (see <main className="relative z-10">) */
 .cyber-scan::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
+  z-index: 1;
   background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -27,7 +34,6 @@ body {
     rgba(0, 0, 0, 0.03) 2px,
     rgba(0, 0, 0, 0.03) 4px
   );
-  z-index: 50;
 }
 
 @layer utilities {

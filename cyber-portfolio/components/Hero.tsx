@@ -1,75 +1,94 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 
+const MotionLink = motion(Link);
+
+const smooth = [0.22, 1, 0.36, 1] as const;
+
 export function Hero() {
+  const reduceMotion = useReducedMotion();
+  const hoverPrimary = reduceMotion
+    ? {}
+    : { scale: 1.02, boxShadow: "0 12px 40px -8px rgba(34, 211, 238, 0.25)" };
+  const hoverGhost = reduceMotion ? {} : { scale: 1.02 };
+
   return (
     <section
       id="home"
-      className="relative flex min-h-screen flex-col justify-center px-4 pt-24 pb-16 sm:px-6"
+      className="relative flex min-h-screen flex-col justify-center overflow-hidden px-4 pt-28 pb-20 sm:px-6 sm:pb-24"
     >
       <div className="pointer-events-none absolute inset-0 bg-glow" />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-1/3 h-[min(70vh,560px)] -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(52,211,153,0.07),transparent_62%)]"
+        aria-hidden
+      />
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.35] bg-[length:48px_48px] bg-grid-pattern"
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-4xl">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-4 font-mono text-sm text-cyan-500/90"
-        >
-          &gt; initializing_profile.exe
-        </motion.p>
+      <motion.div
+        initial={{ opacity: 0, y: 26 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: smooth }}
+        className="relative mx-auto w-full max-w-4xl text-center md:text-left"
+      >
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.06, duration: 0.6, ease: smooth }}
           className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
         >
           {siteConfig.name}
         </motion.h1>
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
+          transition={{ delay: 0.18, duration: 0.6, ease: smooth }}
           className="mt-4 text-xl text-cyan-400/90 sm:text-2xl"
         >
           {siteConfig.title}
         </motion.p>
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-400"
+          transition={{ delay: 0.3, duration: 0.6, ease: smooth }}
+          className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-400 md:mx-0"
         >
           {siteConfig.intro}
         </motion.p>
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65 }}
-          className="mt-10 flex flex-wrap gap-4"
+          transition={{ delay: 0.42, duration: 0.6, ease: smooth }}
+          className="mt-10 flex flex-wrap justify-center gap-4 md:justify-start"
         >
-          <Link
+          <MotionLink
             href="#projects"
-            className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 px-8 py-3.5 text-sm font-semibold text-cyber-bg shadow-lg shadow-cyan-500/20 transition hover:shadow-cyan-500/40"
+            whileHover={hoverPrimary}
+            whileTap={reduceMotion ? {} : { scale: 0.98 }}
+            transition={{ duration: 0.28, ease: smooth }}
+            className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 px-8 py-3.5 text-sm font-semibold text-cyber-bg shadow-lg shadow-cyan-500/20"
           >
             View projects
-            <span className="transition group-hover:translate-x-1">→</span>
-          </Link>
-          <Link
+            <span className="transition-transform duration-300 ease-out group-hover:translate-x-0.5">
+              →
+            </span>
+          </MotionLink>
+          <MotionLink
             href="#contact"
-            className="rounded-xl border border-slate-600 bg-cyber-surface/50 px-8 py-3.5 text-sm font-semibold text-slate-200 transition hover:border-cyan-500/50 hover:text-white"
+            whileHover={hoverGhost}
+            whileTap={reduceMotion ? {} : { scale: 0.98 }}
+            transition={{ duration: 0.28, ease: smooth }}
+            className="rounded-xl border border-slate-600/90 bg-cyber-surface/50 px-8 py-3.5 text-sm font-semibold text-slate-200 shadow-sm transition-all duration-300 ease-out hover:border-cyan-500/45 hover:bg-cyber-surface/80 hover:text-white"
           >
             Contact me
-          </Link>
+          </MotionLink>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
