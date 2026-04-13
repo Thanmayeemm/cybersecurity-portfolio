@@ -1,36 +1,67 @@
 # SOC Incident Investigation Lab
 
-This folder contains a set of **realistic, enterprise-style SOC incident investigations**. Each incident is documented the way a SOC analyst/SOC engineer would typically capture an investigation:
+This portfolio demonstrates **hands-on security operations work** using **real, publicly available attack datasets** (not self-authored fiction). Each case follows a disciplined analyst workflow: triage, log review with **Linux CLI tooling**, indicator extraction, **MITRE ATT&CK** mapping, formal reporting, and **IOC enrichment** through the repository’s **custom SOAR engine** ([`../soar-engine/`](../soar-engine/)), which integrates **VirusTotal** and **AbuseIPDB** with automated alerting and incident logging.
 
-- `incident-logs.txt`: SIEM-style multi-source log excerpts (identity, endpoint, Windows, firewall/proxy, cloud, DLP, etc.)
-- `analysis.txt`: analyst reasoning, pivots, and conclusions
-- `investigation-report.md`: incident report with timeline, root cause, containment, remediation, and MITRE ATT&CK mapping
-- `detection-rule.md`: SIEM detection example (Splunk SPL / Sigma-style logic) + tuning notes
-- `attack-diagram.md`: high-level attack flow diagram
+The lab covers **six** incident themes: **phishing**, **brute-force authentication**, **ransomware**, **data exfiltration**, **malware infection (network-focused evidence)**, and **insider threat**.
 
----
+### Scope (what this folder changes)
 
-## Incident Cases
-
-- **Incident 1 – Phishing / Credential Theft / Account Compromise**  
-  `incident-1-phishing/`
-- **Incident 2 – Brute Force Login Attack (Failures → Success)**  
-  `incident-2-bruteforce/`
-- **Incident 3 – Malware Infection (EDR + C2 Connections)**  
-  `incident-3-malware/`
-- **Incident 4 – Ransomware (Encryption + Recovery Inhibition)**  
-  `incident-4-ransomware/`
-- **Incident 5 – Data Exfiltration (Unsanctioned Cloud Storage + DLP)**  
-  `incident-5-data-exfiltration/`
-- **Incident 6 – Insider Threat (Privileged Misuse + Exfil Attempts)**  
-  `incident-6-insider-threat/`
+- **All work for this lab lives under `SOC-Incident-Investigation/`** (reports, queries, `ioc-enrichment.md`, logs notes, screenshots).
+- The **[SOAR engine](../soar-engine/)** **stays as its own project**: you **run** it from that folder (see its README) and **call into** it over HTTP (`POST /analyze`). This investigation lab does not merge with or replace that codebase.
+- This lab **does not modify** SOAR source code, config, or dependencies. Enrichment here means **calling the API** and recording or summarizing responses in each incident’s `ioc-enrichment.md`.
 
 ---
 
-## Skills Demonstrated
+## Investigation index
 
-- SOC triage and investigation workflows
-- SIEM correlation and log analysis
-- Detection engineering and alert tuning
-- Threat hunting/scoping and IOC management
-- MITRE ATT&CK mapping and incident documentation
+| # | Incident Type | Dataset Source | ATT&CK Techniques | Severity | Status |
+|---|---------------|----------------|-------------------|----------|--------|
+| 01 | Phishing | [EVTX-ATTACK-SAMPLES](https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES) | T1566.001, T1204.002, T1003.001, T1071.001 | High | Documented |
+| 02 | Brute force | [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) | T1110.001, T1078, T1021.001 | High | Documented |
+| 03 | Ransomware | [EVTX-ATTACK-SAMPLES](https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES) | T1059.001, T1486, T1490, T1070.004, T1562.001 | Critical | Documented |
+| 04 | Data exfiltration | [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) (supplementary: [Splunk BOTS v3](https://github.com/splunk/botsv3)) | T1083, T1074.001, T1048.003, T1567 | High | Documented |
+| 05 | Malware infection | [Malware Traffic Analysis](https://www.malware-traffic-analysis.net) | T1189, T1055, T1547.001, T1071.001 | High | Documented |
+| 06 | Insider threat | [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) | T1078, T1213, T1530, T1048 | High | Documented |
+
+---
+
+## Tools and methodology
+
+| Area | Approach |
+|------|------------|
+| **Log analysis** | Linux CLI: `grep`, `awk`, `sort`, `uniq`, `cut`, `jq` (where JSON is available) |
+| **IOC enrichment** | Custom SOAR Engine — [`../soar-engine/`](../soar-engine/) (VirusTotal v3 + AbuseIPDB v2, weighted combined score, verdict, Slack + SQLite actions) |
+| **Framework** | MITRE ATT&CK (enterprise) |
+| **Reporting** | Standard sections: 5W summary, timeline, IOC table, MITRE mapping, queries, SOAR enrichment summary, root cause, containment, detection opportunities, lessons learned |
+
+---
+
+## Public data sources
+
+| Source | Link |
+|--------|------|
+| EVTX-ATTACK-SAMPLES | https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES |
+| Mordor Security Datasets | https://github.com/OTRF/Security-Datasets |
+| Splunk BOTS v3 | https://github.com/splunk/botsv3 |
+| Malware Traffic Analysis | https://www.malware-traffic-analysis.net |
+
+Further notes and credits: [`datasets/README.md`](./datasets/README.md).
+
+---
+
+## SOAR integration
+
+> **Note:** Indicators of compromise from these investigations are **submitted to the existing SOAR service** in this repository (`POST /analyze` on the running app — see the SOAR project’s own README for setup). Enrichment returns normalized **VirusTotal** and **AbuseIPDB** scores, a **combined (0–100) risk score**, a **verdict** (`benign` / `suspicious` / `malicious`), **confidence**, and **response actions**. Summaries and representative API-style output for each case appear in that incident’s **`ioc-enrichment.md`**. **No changes to the SOAR codebase are required for this lab.**
+
+---
+
+## Folder guide
+
+| Path | Purpose |
+|------|---------|
+| [`investigation-template.md`](./investigation-template.md) | Blank report template for new investigations |
+| [`01-phishing/`](./01-phishing/) … [`06-insider-threat/`](./06-insider-threat/) | One folder per incident: `README.md` (full report), `queries.md`, `ioc-enrichment.md`, `logs/source.md`, `screenshots/` |
+
+---
+
+*Analyst: Thanmayee Manchikanti — SOC analyst / security automation / detection engineering portfolio work.*
