@@ -9,7 +9,6 @@
 
 **Ingest indicators → enrich with VirusTotal & AbuseIPDB → classify risk → automate response (Slack + SQLite).**
 
-*A production-style Python backend for portfolio, interviews, and demos.*
 
 [Features](#-features) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [API](#-api-reference) · [Impact](#-resume--impact)
 
