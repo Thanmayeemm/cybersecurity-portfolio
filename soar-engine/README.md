@@ -261,15 +261,9 @@ Add your own captures under **`docs/images/`** so they render on GitHub.
 |-------------|-------------|
 | Dashboard | ![Dashboard](docs/images/dashboard.png) |
 | Slack alert | ![Slack Alert](docs/images/slack-alert.png) |
-| API response | ![API Response](docs/images/api-response.png) |
-
-> **Tip:** After saving PNGs with the filenames above, the images will appear automatically in this README.
-
 ---
 
 ## 📌 Resume & impact
-
-Use bullets like these on a resume or in interviews:
 
 - Designed and implemented a **SOAR-style automation pipeline** (enrichment → decision → response) in **Python/Flask**
 - Integrated **commercial/community threat intelligence APIs** (VirusTotal, AbuseIPDB) with **retries, timeouts, and rate-limit handling**
@@ -288,19 +282,11 @@ Use bullets like these on a resume or in interviews:
 - [ ] Celery/RQ for async enrichment under load
 - [ ] Prometheus metrics + OpenTelemetry tracing
 - [ ] Docker Compose for one-command demos
-
----
-
-## 📄 License
-
-Use and adapt for **portfolio, learning, and interviews**. Add a `LICENSE` file if you open-source formally.
-
 ---
 
 ## 🙋 Author
 
-Built as a **cybersecurity portfolio** project demonstrating **backend engineering** and **security operations automation**.
-
+Cybersecurity Engineer focused on threat detection, incident response, and automation.
 ---
 
 <p align="center">
