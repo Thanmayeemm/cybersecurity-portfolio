@@ -21,6 +21,33 @@ All commands below use `"$AUTH_LOG"`.
 
 ---
 
+## WSL, BusyBox, and grep -P
+
+Some WSL images ship **BusyBox** `grep`, which **does not** support **`-P`** (Perl-style regex). You will see `grep: unrecognized option: P`.
+
+| Approach | What to do |
+|----------|------------|
+| **GNU grep** | Use **Ubuntu** on WSL (`wsl -d Ubuntu`) or install GNU grep (`apt install grep` on Debian/Ubuntu). Then the `grep -oP` commands below work as written. |
+| **Portable IP counts** | Use **awk** on standard OpenSSH lines — the source IP is **three fields before the end** (`$(NF-3)` = IP between `from` and `port`). |
+| **Prompt character** | Do not paste the shell **`$`** when copying commands; it is not part of the command. |
+
+**Portable substitute for Steps 2–3 (per-IP failure counts):**
+
+```bash
+grep "Failed password" "$AUTH_LOG" | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn
+```
+
+**Portable substitute for Step 5 (username histogram):** GNU `grep -oP` is easiest; on BusyBox, run the same queries under **GNU grep**, or use:
+
+```bash
+grep "Failed password" "$AUTH_LOG" | awk '
+  /invalid user/ { for (i = 1; i <= NF; i++) if ($i == "user") { print $(i+1); next } }
+  { for (i = 1; i <= NF; i++) if ($i == "for" && $(i+1) != "invalid") { print $(i+1); next } }
+' | sort | uniq -c | sort -rn
+```
+
+---
+
 ## Step 1 — List failed login attempts
 
 **Goal:** See raw authentication failures (noise vs pattern).
@@ -54,8 +81,16 @@ Apr 10 08:14:33 srv-sshd sshd[3853]: Failed password for root from 203.0.113.15 
 
 **Goal:** Rank external hosts by failure volume (who is the brute-force candidate).
 
+**GNU grep:**
+
 ```bash
 grep "Failed password" "$AUTH_LOG" | grep -oP 'from \K[\d.]+' | sort | uniq -c | sort -rn
+```
+
+**Portable (BusyBox / no `-P`):**
+
+```bash
+grep "Failed password" "$AUTH_LOG" | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn
 ```
 
 **Example output (lab sample):**
@@ -73,8 +108,16 @@ grep "Failed password" "$AUTH_LOG" | grep -oP 'from \K[\d.]+' | sort | uniq -c |
 
 **Goal:** Tie the loudest IP to the attack narrative (blocklist / enrichment input).
 
+**GNU grep:**
+
 ```bash
 grep "Failed password" "$AUTH_LOG" | grep -oP 'from \K[\d.]+' | sort | uniq -c | sort -rn | head -5
+```
+
+**Portable:**
+
+```bash
+grep "Failed password" "$AUTH_LOG" | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn | head -5
 ```
 
 **Example output:**
@@ -114,9 +157,13 @@ Apr 10 08:15:52 srv-sshd sshd[3901]: Accepted password for user1 from 203.0.113.
 grep "Accepted" "$AUTH_LOG" | grep "user1"
 ```
 
+**GNU grep:**
+
 ```bash
 grep "Failed password" "$AUTH_LOG" | grep -oP 'Failed password for\s+(?:invalid user\s+)?\K\S+' | sort | uniq -c | sort -rn
 ```
+
+**Portable:** use the **`awk`** username histogram in the **WSL, BusyBox, and grep -P** section above.
 
 **Example output (accepted):**
 

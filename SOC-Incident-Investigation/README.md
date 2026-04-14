@@ -66,6 +66,7 @@ Further notes and credits: [`datasets/README.md`](./datasets/README.md).
 | [`investigation-template.md`](./investigation-template.md) | Blank report template for new investigations |
 | [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) | **When and what to screenshot** for each incident (portfolio checklist) |
 | [`BEGINNER-LAB-GUIDE.md`](./BEGINNER-LAB-GUIDE.md) | **Start here** if you are new: how to simulate each incident, prerequisites, suggested order |
+| [`VALIDATION-NOTES.md`](./VALIDATION-NOTES.md) | Short **queries vs conclusions** checklist for reviewers |
 | [`01-phishing/`](./01-phishing/) … [`06-insider-threat/`](./06-insider-threat/) | Per incident: `README.md` (report), `queries.md`, `ioc-enrichment.md`, optional `logs/README.md` (data provenance), `screenshots/` (see each folder’s `README.md`) |
 
 **Evidence layout**

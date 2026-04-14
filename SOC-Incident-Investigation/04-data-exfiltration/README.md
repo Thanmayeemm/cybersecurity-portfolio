@@ -4,7 +4,8 @@
 **Date:** 2026-04-12  
 **Severity:** HIGH  
 **Status:** CLOSED  
-**Dataset:** Mordor / Security-Datasets — https://github.com/OTRF/Security-Datasets (supplementary: Splunk BOTS v3 — https://github.com/splunk/botsv3)  
+**Dataset:** [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) (supplementary: [Splunk BOTS v3](https://github.com/splunk/botsv3))  
+**Lab replay:** CLI samples under [`logs/`](./logs/)  
 
 ---
 
@@ -12,107 +13,90 @@
 
 | Field | Detail |
 |-------|--------|
-| What | Sensitive directory discovery, local staging archive, large HTTPS upload to external infrastructure. |
-| Who (actor) | Account **contractor1** on **host-42** (insider or compromised contractor). |
-| Who (target) | **D:\\finance\\customers** data. |
-| When | **2026-04-09** 16:08–16:11 UTC. |
-| Where | Internal workstation; outbound via **443** to **203[.]0[.]113[.]200**. |
-| How | Discovery → **customer_pii.zip** in **C:\\Temp\\staging** → HTTPS transfer. |
-| Impact | Potential customer PII exposure; regulatory notification assessment required. |
+| **What** | Directory **discovery**, local **staging** archive, large **HTTPS** upload to external infrastructure. |
+| **Who (actor)** | Account **contractor1** on **host-42** (insider or compromised contractor). |
+| **Who (data)** | **D:\finance\customers** (customer data). |
+| **When** | **2026-04-09** **16:08–16:11** UTC. |
+| **Where** | Internal workstation; egress **443** to **203.0.113.200**. |
+| **How** | **dir**-style discovery → **customer_pii.zip** in **C:\Temp\staging** → ~**91 MB** HTTPS upload. |
+| **Impact** | Potential **PII** exposure; regulatory notification assessment. |
 
 ---
 
 ## 2. Attack Timeline
 
-| Timestamp | Event | Log Source | ATT&CK Technique |
-|-----------|-------|------------|------------------|
-| 2026-04-09T16:08:12Z | Recursive directory listing | Process cmd | T1083 |
-| 2026-04-09T16:09:40Z | Archive created in staging path | File telemetry | T1074.001 |
-| 2026-04-09T16:11:02Z | ~91 MB HTTPS to **203[.]0[.]113[.]200** | Netflow / CSV | T1048.003 / T1567 |
+| Time (UTC) | Event | ATT&CK |
+|------------|-------|--------|
+| 2026-04-09T16:08:12Z | Recursive listing of finance path | T1083 |
+| 2026-04-09T16:09:40Z | Archive **customer_pii.zip** created in staging | T1074.001 |
+| 2026-04-09T16:11:02Z | ~**91 MB** HTTPS to **203.0.113.200** | T1048.003 / T1567 |
 
 ---
 
-## 3. Indicators of Compromise (IOCs)
+## 3. Key Findings
 
-| Type | Value | Verdict | Source |
-|------|-------|---------|--------|
-| IP | **203[.]0[.]113[.]200** | Malicious / high-risk | SOAR |
-| Domain | **cloud-upload-staging[.]net** | Suspicious | SOAR |
-| Staging path | **C:\\Temp\\staging\\customer_pii.zip** | — | File telemetry |
-| Volume | ~**91,240,000** bytes (sample) | — | network_connections.csv |
+- **network_connections.csv** analysis ranks **203.0.113.200** as top destination by bytes ([`queries.md`](./queries.md) Step 1; [`logs/README.md`](./logs/README.md)).
+- **Staging** path **C:\Temp\staging\customer_pii.zip** precedes large upload (Step 2).
+- **Session** context ties **contractor1** to activity before exfil (Step 5).
 
 ---
 
-## 4. MITRE ATT&CK Mapping
+## 4. Indicators of Compromise (IOCs)
 
-| Tactic | Technique ID | Technique Name | Evidence |
-|--------|-------------|----------------|----------|
-| Discovery | T1083 | File and Directory Discovery | **dir /s** of finance path |
-| Collection | T1074.001 | Data Staged: Local Data Staging | **customer_pii.zip** |
-| Exfiltration | T1048.003 | Exfiltration Over Unencrypted Non-C2 Protocol | Large HTTPS (unencrypted content relative to tunnel) |
-| Exfiltration | T1567 | Exfiltration Over Web Service | Upload to cloud-like host |
-
----
-
-## 5. Investigation Queries
-
-All commands and queries used during this investigation are documented in [`queries.md`](./queries.md).
-
-Key findings from queries:
-
-- **awk** on **network_connections.csv** ranked **203[.]0[.]113[.]200** as top destination by bytes.
-- Archive creation in **C:\\Temp\\staging** preceded the upload.
-- **netstat** aggregation showed repeated **443** connections to the same IP.
+| Type | Value |
+|------|--------|
+| IP | **203.0.113.200** |
+| Domain | **cloud-upload-staging.net** (per enrichment narrative) |
+| Path | **C:\Temp\staging\customer_pii.zip** |
+| Volume | ~**91,240,000** bytes (sample CSV) |
 
 ---
 
-## 6. SOAR Engine Enrichment
+## 5. MITRE ATT&CK Mapping
 
-Full enrichment output for all IOCs is in [`ioc-enrichment.md`](./ioc-enrichment.md).
-
-Summary of verdicts:
-
-- **1** IP flagged as malicious
-- **1** Domain flagged as suspicious
-- **0** File hashes (network-centric case)
+| Tactic | ID | Technique | Evidence |
+|--------|-----|-----------|----------|
+| Discovery | T1083 | File and Directory Discovery | Finance path discovery |
+| Collection | T1074.001 | Data Staged | Zip in **staging** |
+| Exfiltration | T1048.003 / T1567 | Exfiltration over web channel | Large **HTTPS** |
 
 ---
 
-## 7. Root Cause Analysis
+## 6. Root Cause Analysis
 
-Contractor account had excessive filesystem access without DLP blocking on outbound HTTPS uploads to non-approved destinations.
-
----
-
-## 8. Containment & Remediation Steps
-
-| Priority | Action | Owner | Status |
-|----------|--------|-------|--------|
-| P1 | Disable **contractor1**; block **203[.]0[.]113[.]200** | SOC | Complete |
-| P2 | DLP policy for archives and bulk upload | Security | Planned |
-| P3 | Access review for finance shares | IAM | Planned |
+**contractor1** had broad filesystem access without **DLP** blocking large **HTTPS** uploads to non-approved destinations.
 
 ---
 
-## 9. Detection Opportunities
+## 7. Containment & Remediation
 
-```bash
-awk -F',' '$9 > 50000 {print $1, $3, $5, $9}' network_connections.csv | sort -k4 -rn | head -20
-```
-
----
-
-## 10. Lessons Learned
-
-- Combine **network volume** with **file staging** detections to reduce false positives.
-- SOAR enrichment of rare upload destinations improves response speed.
+| Priority | Action |
+|----------|--------|
+| **P1** | Disable **contractor1**; block **203.0.113.200** |
+| **P2** | **DLP** for archives and bulk upload |
+| **P3** | Access review on finance shares |
 
 ---
 
-## Visual evidence (portfolio)
+## 8. Detection & Monitoring
 
-Optional screenshots (CLI exfil summary, SIEM volume, SOAR destination IOC): see [`screenshots/README.md`](./screenshots/README.md) and [`../SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md).
+Volume-based **awk** on connection exports; pair **staging** paths with **outbound** bytes ([`queries.md`](./queries.md)).
 
 ---
 
-*Investigation conducted using real public attack datasets. IOC enrichment uses the existing SOAR API only — see [`../../soar-engine/`](../../soar-engine/); this report does not change SOAR code.*
+## 9. Lessons Learned
+
+- Combine **network volume** with **file staging** to reduce false positives.
+- Enrich rare upload destinations via [`ioc-enrichment.md`](./ioc-enrichment.md).
+
+---
+
+## 10. Evidence (screenshots)
+
+Add portfolio captures per [`SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md) (incident **04**): CLI exfil summary, optional SIEM volume, SOAR destination IOC. *No PNGs are committed in this folder yet; analysis evidence is reproducible from [`logs/`](./logs/).*
+
+---
+
+**References:** [`queries.md`](./queries.md) · [`ioc-enrichment.md`](./ioc-enrichment.md)  
+
+*SOAR via [`../../soar-engine/`](../../soar-engine/).*
