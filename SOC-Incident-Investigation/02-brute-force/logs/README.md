@@ -1,7 +1,8 @@
-# Log Data Note
+## Log Data Note
 
-This folder contains a small synthetic auth sample for repeatable CLI replay; full source logs are not stored here due to size constraints.
-Primary dataset source is [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets), analyzed locally with Linux CLI workflows.
-Case context and conclusions are documented in [`../README.md`](../README.md).
-Reproducible command workflow is documented in [`../queries.md`](../queries.md).
-Evidence capture standards are documented in [`../../SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md).
+Raw source logs are not included in this repository due to size and licensing constraints. Analysis is performed locally using referenced datasets and standard tools such as CLI utilities or platform-native log viewers.
+
+For full investigation details:
+- See the incident report: `../README.md`
+- Refer to reproducible queries: `../queries.md`
+- Follow evidence capture guidance: `../../SCREENSHOTS-GUIDE.md`
