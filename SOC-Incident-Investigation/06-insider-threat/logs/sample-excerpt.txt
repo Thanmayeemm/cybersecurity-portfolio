@@ -1,0 +1,3 @@
+# access_log.txt — first field is ISO-8601 local; awk -F'T' uses T split (see queries.md)
+2026-04-07T19:42:01Z user=jsmith resource=sensitive_data/customers.csv action=READ
+2026-04-07T20:11:33Z user=jsmith resource=finance/q4.zip action=READ

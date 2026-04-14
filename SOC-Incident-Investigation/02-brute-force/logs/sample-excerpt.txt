@@ -1,0 +1,4 @@
+# Representative sshd-style auth excerpt — documentation IPs only.
+Apr 10 08:14:22 srv-sshd sshd[4102]: Failed password for invalid user admin from 203[.]0[.]113[.]15 port 44221 ssh2
+Apr 10 08:14:23 srv-sshd sshd[4102]: Failed password for invalid user admin from 203[.]0[.]113[.]15 port 44222 ssh2
+Apr 10 08:15:41 srv-sshd sshd[4120]: Accepted password for deploy from 192[.]0[.]2[.]50 port 55102 ssh2

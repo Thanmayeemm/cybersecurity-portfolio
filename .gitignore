@@ -18,6 +18,9 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Logs
+# Logs (investigation lab sample files under SOC-Incident-Investigation/**/logs/ are tracked)
 *.log
+!SOC-Incident-Investigation/**/logs/*.log
 logs/
+!SOC-Incident-Investigation/**/logs/
+!SOC-Incident-Investigation/**/logs/**

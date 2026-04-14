@@ -1,0 +1,1 @@
+2026-04-09T16:08:12Z cmd.exe /c dir /s D:\finance\customers

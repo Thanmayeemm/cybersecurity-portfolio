@@ -1,61 +1,32 @@
 # Cybersecurity Portfolio
 
-Hands-on cybersecurity projects demonstrating practical skills in **Security Operations Center (SOC) analysis, threat detection, incident response, and security monitoring**.
+**Thanmayee Manchikanti** — cybersecurity engineer focused on SOC operations, threat detection, and security automation.
 
-These projects simulate real-world security investigations and detection workflows used by SOC analysts.
-
----
-
-# Projects
-
-## SOC Incident Investigation Lab
-Simulated investigations of real-world cyber attacks including phishing, brute force attacks, malware infections, ransomware incidents, data exfiltration, and insider threats.
-
-Includes:
-- security logs
-- investigation reports
-- detection rules
-- MITRE ATT&CK mapping
-- attack timelines
-
-Project:  
-[SOC-Incident-Investigation](./SOC-Incident-Investigation)
+This repository is a single workspace for defensive security projects: incident-style investigations backed by public datasets, a SOAR-style enrichment engine, detection tooling, and dashboards.
 
 ---
 
-## SOC Threat Detection Engine
-Python-based log analysis tool that detects common security threats from authentication logs.
+## Projects
 
-Detects:
-- brute force login attempts
-- suspicious IP activity
-- malware process execution
+| Project | Description |
+|---------|-------------|
+| [**SOC Incident Investigation Lab**](SOC-Incident-Investigation/) | Six hands-on investigations (phishing through insider threat) using public datasets, CLI log analysis, MITRE ATT&CK mapping, IOC enrichment via the SOAR engine, optional **[screenshot checklist](SOC-Incident-Investigation/SCREENSHOTS-GUIDE.md)**, and a **[beginner lab guide](SOC-Incident-Investigation/BEGINNER-LAB-GUIDE.md)** (how to simulate each case). |
+| [**SOAR Engine**](soar-engine/) | Flask API: ingest IPs, domains, and hashes → VirusTotal + AbuseIPDB → risk score → verdict → Slack + SQLite. |
+| [**SOC Threat Detection Engine**](SOC-Threat-Detection-Engine/) | Python detectors for brute force, suspicious logins, and suspicious endpoint processes from auth-style logs. |
+| [**SOC Security Dashboard**](SOC-Security-Dashboard/) | Matplotlib dashboard over generated security event CSVs. |
+| [**cyber-portfolio**](cyber-portfolio/) | Next.js + Tailwind personal site (deploy separately; points at this repo for code links). |
+| [**soc-dashboard**](soc-dashboard/) | Optional full-stack dashboard experiment (Dockerized frontend/backend). |
 
-Project:  
-[SOC-Threat-Detection-Engine](./SOC-Threat-Detection-Engine)
-
----
-
-## SOC Security Dashboard
-Security analytics dashboard visualizing security events such as login failures, suspicious IP activity, malware alerts, and attack trends.
-
-Project:  
-[SOC-Security-Dashboard](./SOC-Security-Dashboard)
+**Pipeline:** Investigations in `SOC-Incident-Investigation/` are designed to feed extracted IOCs into `soar-engine` (`POST /analyze`) so enrichment and reporting stay consistent end-to-end.
 
 ---
 
-# Skills Demonstrated
+## Skills
 
-- Security Incident Response
-- SOC Investigation Workflow
-- Log Analysis
-- Threat Detection Engineering
-- Python Security Automation
-- Security Monitoring
-- MITRE ATT&CK Framework
+Security incident response · SOC workflows · Log analysis · Detection engineering · Python automation · MITRE ATT&CK · Threat intelligence enrichment
 
 ---
 
-# Technologies
+## Tech
 
-Python • Security Logs • GitHub • Incident Response • Security Monitoring
+Python · Flask · SQLite · Linux CLI · GitHub · Next.js (portfolio site)

@@ -138,4 +138,10 @@ level: high
 
 ---
 
+## Visual evidence (portfolio)
+
+Optional screenshots (Event Viewer, Sysmon/4688, SOAR JSON): see [`screenshots/README.md`](./screenshots/README.md) and the master checklist [`../SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md).
+
+---
+
 *Investigation conducted using real public attack datasets. IOC enrichment uses the existing SOAR API only — see [`../../soar-engine/`](../../soar-engine/); this report does not change SOAR code.*

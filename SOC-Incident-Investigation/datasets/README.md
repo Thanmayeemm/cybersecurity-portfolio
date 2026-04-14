@@ -1,7 +1,8 @@
 # Public Datasets Used in This Investigation Lab
 
-All investigations in this lab use real, publicly available attack datasets.
-No logs in this project were self-generated or fabricated.
+Investigations are grounded in **real, publicly available** attack datasets (below). **Exception:** [`02-brute-force/logs/sample-auth.log`](../02-brute-force/logs/sample-auth.log) is a **small, labeled synthetic** OpenSSH-style excerpt for **offline CLI practice** only; it does not replace Mordor exports for full realism.
+
+For **portfolio screenshots** of your analysis, see [`../SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md).
 
 ---
 

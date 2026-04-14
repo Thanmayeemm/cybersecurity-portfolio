@@ -22,7 +22,7 @@
 
 **`action_list`:** `slack_alert` → sent; `log_incident` → stored
 
-**Recommended action:** Block at edge firewall; add to SSH rate-limit / denylist; review **deploy** account for lateral movement.
+**Recommended action:** Block at edge firewall; add to SSH rate-limit / denylist; review **user1** (and other targeted accounts) for lateral movement.
 
 ---
 

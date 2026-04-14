@@ -1,12 +1,14 @@
 # SOC Incident Investigation Lab
 
-This portfolio demonstrates **hands-on security operations work** using **real, publicly available attack datasets** (not self-authored fiction). Each case follows a disciplined analyst workflow: triage, log review with **Linux CLI tooling**, indicator extraction, **MITRE ATT&CK** mapping, formal reporting, and **IOC enrichment** through the repository’s **custom SOAR engine** ([`../soar-engine/`](../soar-engine/)), which integrates **VirusTotal** and **AbuseIPDB** with automated alerting and incident logging.
+This portfolio demonstrates **hands-on security operations work** grounded in **public, documented attack datasets** (EVTX-ATTACK-SAMPLES, Mordor Security-Datasets, Malware Traffic Analysis, and related sources listed below). Each case follows a disciplined analyst workflow: triage, log review with **Linux CLI tooling** (and Windows tools where noted), indicator extraction, **MITRE ATT&CK** mapping, formal reporting, and **IOC enrichment** through the repository’s **custom SOAR engine** ([`../soar-engine/`](../soar-engine/)), which integrates **VirusTotal** and **AbuseIPDB** with automated alerting and incident logging.
+
+**Lab samples:** Where noted (for example **02-brute-force**), the repo includes **small synthetic log excerpts** so you can replay commands offline. Those excerpts are **OpenSSH-style** teaching files and are **labeled** in-folder; they do not replace the cited public datasets for full realism.
 
 The lab covers **six** incident themes: **phishing**, **brute-force authentication**, **ransomware**, **data exfiltration**, **malware infection (network-focused evidence)**, and **insider threat**.
 
 ### Scope (what this folder changes)
 
-- **All work for this lab lives under `SOC-Incident-Investigation/`** (reports, queries, `ioc-enrichment.md`, logs notes, screenshots).
+- **All work for this lab lives under `SOC-Incident-Investigation/`** (reports, queries, `ioc-enrichment.md`, optional `logs/`, screenshots).
 - The **[SOAR engine](../soar-engine/)** **stays as its own project**: you **run** it from that folder (see its README) and **call into** it over HTTP (`POST /analyze`). This investigation lab does not merge with or replace that codebase.
 - This lab **does not modify** SOAR source code, config, or dependencies. Enrichment here means **calling the API** and recording or summarizing responses in each incident’s `ioc-enrichment.md`.
 
@@ -29,10 +31,12 @@ The lab covers **six** incident themes: **phishing**, **brute-force authenticati
 
 | Area | Approach |
 |------|------------|
-| **Log analysis** | Linux CLI: `grep`, `awk`, `sort`, `uniq`, `cut`, `jq` (where JSON is available) |
+| **Log analysis** | Linux CLI: `grep`, `awk`, `sort`, `uniq`, `cut`, `jq` (where JSON is available); Windows Event Viewer for EVTX-backed cases |
 | **IOC enrichment** | Custom SOAR Engine — [`../soar-engine/`](../soar-engine/) (VirusTotal v3 + AbuseIPDB v2, weighted combined score, verdict, Slack + SQLite actions) |
 | **Framework** | MITRE ATT&CK (enterprise) |
 | **Reporting** | Standard sections: 5W summary, timeline, IOC table, MITRE mapping, queries, SOAR enrichment summary, root cause, containment, detection opportunities, lessons learned |
+| **Visual evidence** | Optional PNGs per incident — see [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) |
+| **New to log analysis?** | Step-by-step simulation order, prerequisites, and safety — [`BEGINNER-LAB-GUIDE.md`](./BEGINNER-LAB-GUIDE.md) |
 
 ---
 
@@ -60,6 +64,13 @@ Further notes and credits: [`datasets/README.md`](./datasets/README.md).
 | Path | Purpose |
 |------|---------|
 | [`investigation-template.md`](./investigation-template.md) | Blank report template for new investigations |
-| [`01-phishing/`](./01-phishing/) … [`06-insider-threat/`](./06-insider-threat/) | One folder per incident: `README.md` (full report), `queries.md`, `ioc-enrichment.md`, `logs/source.md`, `screenshots/` |
+| [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) | **When and what to screenshot** for each incident (portfolio checklist) |
+| [`BEGINNER-LAB-GUIDE.md`](./BEGINNER-LAB-GUIDE.md) | **Start here** if you are new: how to simulate each incident, prerequisites, suggested order |
+| [`01-phishing/`](./01-phishing/) … [`06-insider-threat/`](./06-insider-threat/) | Per incident: `README.md` (report), `queries.md`, `ioc-enrichment.md`, optional `logs/README.md` (data provenance), `screenshots/` (see each folder’s `README.md`) |
+
+**Evidence layout**
+
+- **`logs/`** — Not all incidents ship raw logs (large EVTX/PCAP stay in upstream repos). Each incident that uses external files documents provenance in **`logs/README.md`** where present. **02-brute-force** includes [`logs/sample-auth.log`](./02-brute-force/logs/sample-auth.log); **04-data-exfiltration** includes small CSV/text samples under [`04-data-exfiltration/logs/`](./04-data-exfiltration/logs/) for repeatable CLI practice.
+- **`screenshots/`** — Add your own PNGs; filenames suggested in [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md).
 
 ---

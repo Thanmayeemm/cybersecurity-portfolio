@@ -111,4 +111,10 @@ awk -F'T' '$2 < "08:00" || $2 > "18:00" {print $0}' access_log.txt | grep "sensi
 
 ---
 
+## Visual evidence (portfolio)
+
+Optional screenshots (after-hours CLI, SIEM/admin view, SOAR IOC): see [`screenshots/README.md`](./screenshots/README.md) and [`../SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md).
+
+---
+
 *Investigation conducted using real public attack datasets. IOC enrichment uses the existing SOAR API only — see [`../../soar-engine/`](../../soar-engine/); this report does not change SOAR code.*

@@ -124,4 +124,10 @@ level: high
 
 ---
 
+## Visual evidence (portfolio)
+
+Optional: add PNGs under `screenshots/` and list filenames here, or embed `![description](screenshots/01-example.png)`. See [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) for incident-style checklists.
+
+---
+
 *Investigation conducted using real public attack datasets. IOC enrichment uses the existing SOAR API only — see [`../soar-engine/`](../soar-engine/) for how to run it; this report does not change SOAR code.*

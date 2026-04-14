@@ -1,0 +1,7 @@
+# Representative excerpt — NOT a full dataset; for CLI demonstration only.
+# External addresses use RFC 5737 documentation space.
+
+2026-04-10T14:22:01Z EventID=4625 LogonType=3 User=corp\\jsmith Status=0xc000006d SourceNetworkAddress=203[.]0[.]113[.]88 Workstation=DESKTOP-ACCT-01
+2026-04-10T14:22:03Z EventID=4625 LogonType=3 User=corp\\jsmith Status=0xc000006d SourceNetworkAddress=203[.]0[.]113[.]88 Workstation=DESKTOP-ACCT-01
+2026-04-10T14:22:41Z EventID=4688 ParentCommandLine="C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE" CommandLine="\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\" /n \"C:\\Users\\jsmith\\AppData\\Local\\Temp\\Invoice_20260410.docm\""
+2026-04-10T14:23:09Z EventID=4688 ParentCommandLine=...WINWORD.EXE CommandLine="powershell.exe -NoP -enc JAB..."

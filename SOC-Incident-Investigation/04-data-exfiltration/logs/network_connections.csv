@@ -1,0 +1,3 @@
+2026-04-09T16:07:01Z,conn0,host-42,contractor1,10.0.0.1,443,tcp,out,1200
+2026-04-09T16:10:55Z,conn2,host-42,contractor1,198.51.100.77,443,tcp,out,20480000
+2026-04-09T16:11:02Z,conn1,host-42,contractor1,203.0.113.200,443,tcp,out,91240000

@@ -128,4 +128,10 @@ level: high
 
 ---
 
+## Visual evidence (portfolio)
+
+Optional screenshots (mass encryption events, recovery inhibition commands, SOAR hash/domain): see [`screenshots/README.md`](./screenshots/README.md) and [`../SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md).
+
+---
+
 *Investigation conducted using real public attack datasets. IOC enrichment uses the existing SOAR API only — see [`../../soar-engine/`](../../soar-engine/); this report does not change SOAR code.*

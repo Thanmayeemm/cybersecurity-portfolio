@@ -1,0 +1,1 @@
+# Known-good internal / CDN endpoints (one per line). Used with grep -v in triage queries.

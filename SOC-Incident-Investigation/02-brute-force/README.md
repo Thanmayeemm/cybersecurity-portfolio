@@ -4,7 +4,7 @@
 **Date:** 2026-04-12  
 **Severity:** HIGH  
 **Status:** CLOSED  
-**Dataset:** Mordor / Security-Datasets — https://github.com/OTRF/Security-Datasets  
+**Evidence:** Lab sample [`logs/sample-auth.log`](./logs/sample-auth.log) (OpenSSH-style excerpt for offline replay); methodology aligns with **Mordor / Security-Datasets** — https://github.com/OTRF/Security-Datasets  
 
 ---
 
@@ -12,124 +12,110 @@
 
 | Field | Detail |
 |-------|--------|
-| What | High-volume SSH password guessing against internet-facing service, followed by successful authentication. |
-| Who (actor) | External host **203[.]0[.]113[.]15**. |
-| Who (target) | Accounts **admin**, **deploy**, **root** on **srv-sshd**. |
-| When | **2026-04-10** 08:14–08:16 UTC (see [`queries.md`](./queries.md)). |
-| Where | Linux bastion / SSH server; internal correlation via **192[.]168[.]10[.]44** (NAT or jump host). |
-| How | Automated guessing → **Accepted password** for **deploy**. |
-| Impact | Valid account compromise; potential lateral movement via RDP or SSH tunnels. |
+| **What** | Internet-sourced **SSH password guessing** against **srv-sshd**, culminating in a **successful password authentication** to a valid local account. |
+| **Who (affected)** | Targeted accounts **admin**, **root**, and **user1** (plus invalid user probe **guest**). **user1** is **confirmed compromised** (successful authentication). **admin** and **root** were probed but did not show a successful password in the analyzed window. |
+| **When** | **2026-04-10** UTC, **08:14:03** (first failed attempt in sample) through **08:15:52** (successful login). |
+| **Where** | Linux host **srv-sshd**; evidence from **`auth.log`** (OpenSSH **sshd** entries). |
+| **How** | A single external address (**203.0.113.15**) generated a **high volume** of **Failed password** events across multiple usernames, consistent with **automated guessing**, followed by **Accepted password** for **user1** from the **same** source IP. |
+| **Impact** | **Account compromise** of **user1** with interactive SSH access; risk of **follow-on activity** (persistence, lateral movement) until credentials are rotated and the session is contained. |
 
 ---
 
 ## 2. Attack Timeline
 
-| Timestamp | Event | Log Source | ATT&CK Technique |
-|-----------|-------|------------|------------------|
-| 2026-04-10T08:14:22Z | Burst of failed passwords | `/var/log/auth.log` | T1110.001 |
-| 2026-04-10T08:15:41Z | Successful password for **deploy** | `/var/log/auth.log` | T1078 |
-| 2026-04-10T08:16:10Z | RDP session (if correlated) | Windows Security / RDP | T1021.001 |
+| Time (UTC, 2026-04-10) | Event | Notes |
+|------------------------|-------|--------|
+| **08:14:03** | First **Failed password** observed | Attack window opens; **admin** from **203.0.113.15** |
+| **08:14:03 – 08:14:57** | **Repeated failed attempts** | **20** failures from **203.0.113.15**; rapid rotation across **admin**, **root**, **user1**, and **guest** (invalid user) |
+| **08:14:58 – 08:15:00** | Additional failures from **198.51.100.3** | Lower volume (**3** failures); secondary scan or noise — correlate separately |
+| **08:15:52** | **Successful compromise** | **Accepted password** for **user1** from **203.0.113.15** (port **44140**) |
 
 ---
 
-## 3. Indicators of Compromise (IOCs)
+## 3. Key Findings
 
-| Type | Value | Verdict | Source |
-|------|-------|---------|--------|
-| IP | **203[.]0[.]113[.]15** | Malicious | SOAR Engine → VirusTotal / AbuseIPDB |
-| Username | **deploy** (successful) | Compromised | Internal logs |
-| Time window | 08:14–08:16 UTC | — | auth.log |
-| Success | **2026-04-10T08:15:41Z** | Accepted | auth.log |
+- **Concentrated source:** The majority of failed authentication attempts originated from **203.0.113.15**, indicating a single prioritized brute-force source rather than distributed noise.
+- **High frequency:** Attempts occurred **seconds apart** across rotating usernames, consistent with **automation** (T1110.001 — password guessing).
+- **Broad targeting:** Failures spanned **admin**, **root**, **user1**, and an **invalid user (guest)** probe — typical of dictionary-style guessing against common names.
+- **Confirmed compromise:** An **Accepted password** for **user1** from **203.0.113.15** after the failure burst indicates **valid credentials** were obtained for that account (T1078 — valid accounts).
 
----
-
-## 4. MITRE ATT&CK Mapping
-
-| Tactic | Technique ID | Technique Name | Evidence |
-|--------|-------------|----------------|----------|
-| Credential Access | T1110.001 | Brute Force: Password Guessing | Hundreds of **Failed password** |
-| Defense Evasion / Persistence | T1078 | Valid Accounts | Successful **deploy** login |
-| Lateral Movement | T1021.001 | Remote Services: Remote Desktop Protocol | Post-SSH RDP pivot (if observed) |
+Repeatable queries: [`queries.md`](./queries.md).
 
 ---
 
-## 5. Investigation Queries
+## 4. Indicators of Compromise (IOCs)
 
-All commands and queries used during this investigation are documented in [`queries.md`](./queries.md).
+| Type | Value |
+|------|--------|
+| **Attacker IP** | **203.0.113.15** (same IP for bulk failures and successful login) |
+| **Secondary IP** | **198.51.100.3** (failed attempts only in sample — triage before blocking) |
+| **Targeted usernames** | **admin**, **root**, **user1**; invalid probe **guest** |
+| **Compromised account** | **user1** |
+| **Time window** | **2026-04-10**, **08:14:03 – 08:15:52** UTC |
+| **Success indicator** | **Accepted password** for **user1** at **08:15:52** UTC |
 
-Key findings from queries:
-
-- **203[.]0[.]113[.]15** produced **847** failed attempts in the sample window.
-- **Accepted password** for **deploy** immediately after the failure burst.
-- **>10** failures threshold tripped for single IP.
-
----
-
-## 6. SOAR Engine Enrichment
-
-Full enrichment output for all IOCs is in [`ioc-enrichment.md`](./ioc-enrichment.md).
-
-Summary of verdicts:
-
-- **1** IP flagged as malicious (**203[.]0[.]113[.]15**)
-- **0** Domains flagged (SSH IP-only case)
-- **0** File hashes (not applicable)
+Defanged for written reports: **203[.]0[.]113[.]15**, **198[.]51[.]100[.]3**.  
+Enrichment record: [`ioc-enrichment.md`](./ioc-enrichment.md).
 
 ---
 
-## 7. Root Cause Analysis
+## 5. MITRE ATT&CK Mapping
 
-SSH exposed to the internet without strict rate limiting or key-only authentication allowed sustained password guessing until a weak or reused credential succeeded.
-
----
-
-## 8. Containment & Remediation Steps
-
-| Priority | Action | Owner | Status |
-|----------|--------|-------|--------|
-| P1 | Block **203[.]0[.]113[.]15**; force reset **deploy** | SOC Analyst | Complete |
-| P2 | Enforce key-based auth; disable password SSH | IT | Planned |
-| P3 | Enable MFA on jump hosts; review RDP exposure | Security | Planned |
+| Tactic | ID | Technique | Evidence |
+|--------|-----|-----------|----------|
+| Credential Access | T1110.001 | Brute Force: Password Guessing | Sustained **Failed password** from **203.0.113.15** |
+| Defense Evasion / Persistence | T1078 | Valid Accounts | **Accepted password** for **user1** |
 
 ---
 
-## 9. Detection Opportunities
+## 6. Root Cause Analysis
 
-What detection rule would have caught this earlier:
-
-```bash
-# Count failed logins per source IP
-grep "Failed password" /var/log/auth.log | \
-  grep -oP 'from \K[\d.]+' | sort | uniq -c | sort -rn
-```
-
-Sigma rule stub:
-
-```yaml
-title: SSH Brute Force Then Success
-status: experimental
-logsource:
-    product: linux
-    service: auth
-detection:
-    selection_fail:
-        - 'Failed password'
-    selection_ok:
-        - 'Accepted password'
-    condition: selection_fail and selection_ok
-falsepositives:
-    - Legitimate lockout recovery
-level: high
-```
+Internet-exposed **SSH** accepted **password-based** authentication without **sufficient rate limiting**, **account lockout**, or **key-only** policy enforcement. That allowed automated guessing to continue until a **weak or reused password** for **user1** succeeded.
 
 ---
 
-## 10. Lessons Learned
+## 7. Containment & Remediation
 
-- Edge rate limiting and geo blocking reduce brute-force noise.
-- SOAR enrichment of attacker IPs improves confidence for automated blocking.
-- Account **deploy** should be privileged with MFA only.
+| Priority | Action |
+|----------|--------|
+| **P1** | Block **203.0.113.15** at the perimeter; terminate active **user1** sessions; **force password reset** and review **sudo** / group membership for **user1** |
+| **P2** | Prefer **SSH public-key** authentication; disable **password** authentication where policy allows; apply **fail2ban** or equivalent **rate limiting** |
+| **P3** | **MFA** for privileged and remote-access paths; review **admin** / **root** exposure |
+| **P4** | **Monitoring and alerting:** alert on **failed SSH** thresholds per source IP and **correlate** with **Accepted password** from the same IP within a short window |
+| **P5** | **Account lockout** or progressive backoff policies aligned with organizational risk (balance lockout vs. availability) |
 
 ---
 
-*Investigation conducted using real public attack datasets. IOC enrichment uses the existing SOAR API only — see [`../../soar-engine/`](../../soar-engine/); this report does not change SOAR code.*
+## 8. Detection Opportunity
+
+Correlate **high failed-authentication volume** from a single source with **successful authentication** from that same source within minutes — suitable for SIEM rules or host-based tooling (see [`queries.md`](./queries.md) for CLI patterns).
+
+---
+
+## 9. Lessons Learned
+
+- Rank **source IPs** by failed volume before deep session review.
+- Treat **post-success** activity as **incident scope expansion** until containment is verified.
+- Enrich attacker IPs via SOAR (**[`ioc-enrichment.md`](./ioc-enrichment.md)**) to support **automated blocking** decisions.
+
+---
+
+## 10. Evidence (screenshots)
+
+The following captures support the analysis documented above (CLI triage on [`logs/sample-auth.log`](./logs/sample-auth.log)).
+
+| # | Description | File |
+|---|-------------|------|
+| 1 | Failed login activity / listing | [`failed_logins.png`](./screenshots/failed_logins.png) |
+| 2 | Attacker IP identification (per-IP failure counts) | [`attacker_ip.png`](./screenshots/attacker_ip.png) |
+| 3 | Successful login (compromise) | [`successful_login.png`](./screenshots/successful_login.png) |
+
+![Failed SSH password attempts](./screenshots/failed_logins.png)
+
+![Attacker IP ranked by failed attempts](./screenshots/attacker_ip.png)
+
+![Accepted password — successful login](./screenshots/successful_login.png)
+
+---
+
+*Investigation methodology follows public dataset practices (Mordor). The bundled log excerpt is synthetic for offline practice. SOAR enrichment uses the existing API — [`../../soar-engine/`](../../soar-engine/).*

@@ -109,4 +109,10 @@ awk -F',' '$9 > 50000 {print $1, $3, $5, $9}' network_connections.csv | sort -k4
 
 ---
 
+## Visual evidence (portfolio)
+
+Optional screenshots (CLI exfil summary, SIEM volume, SOAR destination IOC): see [`screenshots/README.md`](./screenshots/README.md) and [`../SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md).
+
+---
+
 *Investigation conducted using real public attack datasets. IOC enrichment uses the existing SOAR API only — see [`../../soar-engine/`](../../soar-engine/); this report does not change SOAR code.*

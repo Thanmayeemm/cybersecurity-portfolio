@@ -1,0 +1,4 @@
+# Representative file/process excerpt — RFC 5737 addresses in network fields only.
+2026-04-11T09:02:01Z file_events.txt: WRITE C:\\Users\\Public\\Documents\\report.docx.locked
+2026-04-11T09:02:04Z process_creation.txt: vssadmin.exe Delete Shadows /All /Quiet
+2026-04-11T09:02:10Z process_creation.txt: powershell.exe -NoP -enc SQBFAFAA...
