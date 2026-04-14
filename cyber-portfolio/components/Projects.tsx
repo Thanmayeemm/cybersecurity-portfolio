@@ -10,18 +10,18 @@ import { sectionFadeUp } from "@/lib/motion-presets";
 const MotionLink = motion(Link);
 
 const features = [
-  "Threat intelligence integration (VirusTotal, AbuseIPDB)",
-  "Configurable decision engine (verdicts, confidence)",
-  "Slack alerting for high-signal events",
-  "SOAR-style automation: enrich → decide → respond",
+  "Threat intelligence enrichment via VirusTotal and AbuseIPDB",
+  "IOC triage workflow: ingest → enrich → risk score → incident handling action",
+  "Analyst-facing alerting and playbook-style response flow",
+  "Standardized API-driven scoring logic for consistent triage decisions",
 ];
 
 const stack = ["Python", "Flask", "SQLite", "REST APIs", "Slack Webhooks"];
 
 const socHighlights = [
-  "6 completed incidents with standardized analyst reporting",
-  "Command-line workflow: triage → IOC extraction → enrichment",
-  "MITRE ATT&CK mapping with remediation recommendations",
+  "5+ completed investigations spanning 6 SOC scenarios (phishing, brute force, ransomware, data exfiltration, malware infection, insider threat)",
+  "Repeatable case workflow: triage → IOC extraction → enrichment → ATT&CK mapping → remediation",
+  "Evidence-based case documentation for consistent incident response decisions",
 ];
 
 function ProjectScreenshot({
@@ -122,10 +122,15 @@ export function Projects() {
                   Automated Threat Intelligence &amp; SOAR Engine
                 </h3>
                 <p className="mt-4 max-w-2xl leading-relaxed text-slate-400">
-                  A production-style pipeline that ingests security indicators (IPs,
-                  domains, file hashes), enriches them with external threat intel,
-                  scores risk with a weighted model, and executes response
-                  playbooks—including Slack notifications and incident logging.
+                  Security automation pipeline for Security Operations workflows:
+                  ingest IOC data (IP/domain/hash), enrich with threat intelligence,
+                  risk-score outcomes, and trigger alerting/playbook response steps
+                  for SOC analyst triage and incident handling.
+                </p>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
+                  Impact: Standardized enrichment, scoring, and alerting to
+                  reduce manual triage variance and improve analyst response
+                  consistency.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row lg:items-start">
@@ -223,10 +228,14 @@ export function Projects() {
                   SOC Incident Investigation Lab
                 </h3>
                 <p className="mt-4 max-w-2xl leading-relaxed text-slate-400">
-                  A hands-on SOC portfolio built from public datasets and
-                  reproducible CLI workflows. It demonstrates end-to-end
-                  incident handling across multiple attack types with clear
-                  evidence trails, IOC tracking, and remediation guidance.
+                  Analyst-readiness case lab demonstrating Security Operations
+                  workflows across six incident types using repeatable
+                  investigation steps and defensible evidence handling.
+                </p>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
+                  Impact: Demonstrates repeatable, evidence-based SOC case
+                  handling that supports faster and more consistent incident
+                  decisions.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row lg:items-start">
@@ -283,8 +292,9 @@ export function Projects() {
                   Snapshot
                 </h4>
                 <p className="mt-5 text-sm leading-relaxed text-slate-400">
-                  Focused evidence from the SOC workflow: one command-line IOC
-                  extraction view and one final incident summary view.
+                  Operational evidence from real case work: command-line triage
+                  output and suspicious access analysis tied to incident
+                  response decisions.
                 </p>
               </div>
             </div>
@@ -293,13 +303,13 @@ export function Projects() {
               <ProjectScreenshot
                 src="/images/attacker_ip.png"
                 alt="Terminal output showing ranked failed login attempts by attacker IP"
-                caption="Brute force triage — attacker IP identified via CLI"
+                caption="Incident triage evidence — failed login IOC pattern analysis"
                 contain
               />
               <ProjectScreenshot
                 src="/images/sensitive_access.png"
                 alt="Evidence view showing suspicious or sensitive access behavior"
-                caption="Insider threat evidence — sensitive access pattern"
+                caption="Detection evidence — suspicious access behavior for response validation"
                 contain
               />
             </div>

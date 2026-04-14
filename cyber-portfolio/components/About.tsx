@@ -5,9 +5,9 @@ import { siteConfig } from "@/lib/site-config";
 import { sectionFadeUp } from "@/lib/motion-presets";
 
 const highlights = [
-  "Threat-informed automation & API integrations",
-  "Detection engineering mindset (SIEM / EDR context)",
-  "Python backends & secure configuration practices",
+  "Incident triage and IOC analysis with evidence-first case documentation",
+  "Threat intelligence enrichment and ATT&CK-aligned detection workflow thinking",
+  "Python/Flask API implementation for security automation and response consistency",
 ];
 
 export function About() {

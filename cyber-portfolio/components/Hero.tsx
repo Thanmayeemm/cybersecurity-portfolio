@@ -42,7 +42,7 @@ export function Hero() {
           transition={{ delay: 0.06, duration: 0.6, ease: smooth }}
           className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
         >
-          {siteConfig.name}
+          {siteConfig.title}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 18 }}
@@ -50,7 +50,7 @@ export function Hero() {
           transition={{ delay: 0.18, duration: 0.6, ease: smooth }}
           className="mt-4 text-xl text-cyan-400/90 sm:text-2xl"
         >
-          {siteConfig.title}
+          {siteConfig.name}
         </motion.p>
         <motion.p
           initial={{ opacity: 0, y: 18 }}

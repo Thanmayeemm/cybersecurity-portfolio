@@ -5,24 +5,39 @@ import { sectionFadeUp } from "@/lib/motion-presets";
 
 const skillGroups = [
   {
-    title: "Security operations",
-    items: ["SIEM", "EDR", "Threat detection"],
+    title: "Security Operations",
+    items: [
+      "Incident triage",
+      "IOC analysis",
+      "Incident response workflow",
+      "Case documentation",
+    ],
     icon: "🛡️",
   },
   {
-    title: "Development",
-    items: ["Python", "Flask", "SQLite"],
+    title: "Threat Intelligence & Detection",
+    items: [
+      "Threat intel enrichment",
+      "MITRE ATT&CK mapping",
+      "Detection-oriented analysis",
+      "SIEM/EDR context",
+    ],
     icon: "⚙️",
   },
   {
-    title: "Integration & automation",
-    items: ["REST APIs", "Webhooks", "Automation"],
+    title: "Automation & SOAR",
+    items: ["Python", "Flask", "REST APIs", "Webhooks", "Security workflow automation"],
     icon: "🔗",
   },
   {
-    title: "Infrastructure",
-    items: ["Cloud basics"],
+    title: "Systems & Data",
+    items: ["Linux CLI workflows", "SQLite", "Structured evidence handling/reporting"],
     icon: "☁️",
+  },
+  {
+    title: "Networking Fundamentals",
+    items: ["TCP/IP", "DNS", "HTTP", "Suspicious connection analysis"],
+    icon: "🌐",
   },
 ];
 
@@ -43,7 +58,7 @@ export function Skills() {
           <div className="h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {skillGroups.map((group) => (
             <motion.div
               key={group.title}
