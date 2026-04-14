@@ -3,7 +3,7 @@
  */
 export const siteConfig = {
   name: "Thanmayee Manchikanti",
-  title: "Security-Focused SOC Analyst | Security Engineering Trajectory",
+  title: "Security Engineer | SOC Analyst | Threat Detection & Security Automation",
   email: "thanmayee3133@gmail.com",
   linkedIn: "https://www.linkedin.com/in/thanmayeemanchikanti",
   github: "https://github.com/Thanmayeemm/cybersecurity-portfolio",
@@ -14,6 +14,6 @@ export const siteConfig = {
   socInvestigationUrl:
     "https://github.com/Thanmayeemm/cybersecurity-portfolio/tree/main/SOC-Incident-Investigation",
   intro:
-    "Security-focused profile targeting Junior SOC Analyst roles, with hands-on project experience in incident triage, IOC analysis, threat detection, and incident response workflows. I build practical security automation using Python and Flask to enrich indicators through threat intelligence APIs and support consistent analyst decisions. My trajectory is toward Security Engineering, with a focus on API-driven defensive tooling and detection-oriented workflow design.",
+    "SOC Analyst with experience in incident triage, log analysis, and threat detection across real-world environments. I design and build security workflows and automation using APIs to improve how threats are identified, analyzed, and responded to across modern environments.\n\nMy work combines IOC analysis, threat intelligence enrichment, and MITRE ATT&CK mapping to produce evidence-based incident outcomes, along with developing Python and Flask-based tools to support consistent and scalable security operations. I am particularly interested in applying these capabilities to cloud-native and scalable security environments.",
   about: `I build and document repeatable detection and response workflows that support SOC operations from triage through remediation. My project work combines IOC analysis, threat intelligence enrichment, and MITRE ATT&CK mapping to produce evidence-based incident handling outcomes. I also implement API-driven security automation in Python and Flask to standardize enrichment, scoring, and analyst-facing response steps.`,
 };
