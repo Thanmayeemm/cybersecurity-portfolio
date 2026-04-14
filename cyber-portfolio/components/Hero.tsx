@@ -71,10 +71,13 @@ export function Hero() {
             whileHover={hoverPrimary}
             whileTap={reduceMotion ? {} : { scale: 0.98 }}
             transition={{ duration: 0.28, ease: smooth }}
-            className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 px-8 py-3.5 text-sm font-semibold text-cyber-bg shadow-lg shadow-cyan-500/20"
+            className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 ring-1 ring-white/15"
           >
-            View projects
-            <span className="transition-transform duration-300 ease-out group-hover:translate-x-0.5">
+            <span className="drop-shadow-sm">View projects</span>
+            <span
+              className="transition-transform duration-300 ease-out group-hover:translate-x-0.5"
+              aria-hidden
+            >
               →
             </span>
           </MotionLink>
