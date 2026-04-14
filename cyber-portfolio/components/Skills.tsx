@@ -8,8 +8,8 @@ const skillGroups = [
     title: "Security Operations",
     items: [
       "Incident triage",
-      "IOC analysis",
-      "Incident response workflow",
+      "IOC analysis and validation",
+      "Incident response and escalation workflow",
       "Case documentation",
     ],
     icon: "🛡️",
@@ -19,24 +19,24 @@ const skillGroups = [
     items: [
       "Threat intel enrichment",
       "MITRE ATT&CK mapping",
-      "Detection-oriented analysis",
-      "SIEM/EDR context",
+      "Detection analysis across endpoint and log evidence",
+      "SIEM/EDR alert triage context",
     ],
     icon: "⚙️",
   },
   {
     title: "Automation & SOAR",
-    items: ["Python", "Flask", "REST APIs", "Webhooks", "Security workflow automation"],
+    items: ["Python", "Flask", "REST APIs", "Webhooks", "Security workflow automation (API-driven)"],
     icon: "🔗",
   },
   {
     title: "Systems & Data",
-    items: ["Linux CLI workflows", "SQLite", "Structured evidence handling/reporting"],
+    items: ["Linux CLI workflows", "SQLite", "Structured evidence handling and incident reporting"],
     icon: "☁️",
   },
   {
     title: "Networking Fundamentals",
-    items: ["TCP/IP", "DNS", "HTTP", "Suspicious connection analysis"],
+    items: ["TCP/IP", "DNS", "HTTP", "Suspicious connection and network behavior analysis"],
     icon: "🌐",
   },
 ];
