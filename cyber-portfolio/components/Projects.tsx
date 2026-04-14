@@ -28,10 +28,12 @@ function ProjectScreenshot({
   src,
   alt,
   caption,
+  contain = false,
 }: {
   src: string;
   alt: string;
   caption: string;
+  contain?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   const reduceMotion = useReducedMotion();
@@ -66,7 +68,11 @@ function ProjectScreenshot({
           alt={alt}
           fill
           sizes="(min-width: 1024px) min(50vw, 36rem), 100vw"
-          className="object-cover object-top"
+          className={
+            contain
+              ? "object-contain bg-black/55 p-2"
+              : "object-cover object-top"
+          }
           unoptimized
           onError={() => setFailed(true)}
         />
@@ -288,11 +294,13 @@ export function Projects() {
                 src="/images/attacker_ip.png"
                 alt="Terminal output showing ranked failed login attempts by attacker IP"
                 caption="Brute force triage — attacker IP identified via CLI"
+                contain
               />
               <ProjectScreenshot
                 src="/images/sensitive_access.png"
                 alt="Evidence view showing suspicious or sensitive access behavior"
                 caption="Insider threat evidence — sensitive access pattern"
+                contain
               />
             </div>
           </div>
