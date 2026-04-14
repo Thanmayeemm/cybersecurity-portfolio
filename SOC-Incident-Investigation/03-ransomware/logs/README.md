@@ -1,5 +1,7 @@
-# Log data — Ransomware (03)
+# Log Data Note
 
-Raw **EVTX** files are **not stored in this repository**. Use **[EVTX-ATTACK-SAMPLES](https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES)** ransomware-related samples in your lab VM; align timestamps and IOCs with [`../README.md`](../README.md).
-
-See [`../queries.md`](../queries.md) for CLI patterns and [`../../SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) for screenshot checklist.
+Raw source logs are not stored in this repository due to size and source licensing constraints.
+Ransomware evidence is sourced from [EVTX-ATTACK-SAMPLES](https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES) and analyzed locally via Event Viewer and CLI parsing.
+Case context and conclusions are documented in [`../README.md`](../README.md).
+Reproducible command workflow is documented in [`../queries.md`](../queries.md).
+Evidence capture standards are documented in [`../../SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md).

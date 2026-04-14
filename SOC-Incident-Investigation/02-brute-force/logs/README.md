@@ -1,7 +1,7 @@
-# Lab sample log
+# Log Data Note
 
-`sample-auth.log` is a **synthetic** OpenSSH-style excerpt for portfolio demos. It is **not** from a live system.
-
-- On **Linux / WSL**, set `AUTH_LOG` to this file or to `/var/log/auth.log` when replaying [`../queries.md`](../queries.md).
-- For **Mordor / Security-Datasets** exports, use the same commands against your downloaded `auth.log` (counts will differ).
-- Screenshot checklist: [`../../SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) (incident **02**).
+This folder contains a small synthetic auth sample for repeatable CLI replay; full source logs are not stored here due to size constraints.
+Primary dataset source is [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets), analyzed locally with Linux CLI workflows.
+Case context and conclusions are documented in [`../README.md`](../README.md).
+Reproducible command workflow is documented in [`../queries.md`](../queries.md).
+Evidence capture standards are documented in [`../../SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md).

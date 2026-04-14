@@ -1,5 +1,7 @@
-# Log data — Phishing (01)
+# Log Data Note
 
-Raw **EVTX** files for this scenario are **not stored in this repository** (they are large). Download relevant samples from **[EVTX-ATTACK-SAMPLES](https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES)** and work locally in Event Viewer, or export filtered views for screenshots.
-
-**This investigation’s narrative** is documented in [`../README.md`](../README.md) and repeatable queries in [`../queries.md`](../queries.md). Use **Visual evidence** in the report plus [`../../SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) when capturing proof of analysis.
+Raw source logs are not stored in this repository due to size and source licensing constraints.
+Evidence is analyzed locally from the referenced dataset source using CLI tooling and platform-native views.
+Case context and conclusions are documented in [`../README.md`](../README.md).
+Reproducible command workflow is documented in [`../queries.md`](../queries.md).
+Evidence capture standards are documented in [`../../SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md).
