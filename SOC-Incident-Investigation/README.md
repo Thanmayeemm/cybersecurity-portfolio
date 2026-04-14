@@ -51,5 +51,3 @@ This lab integrates with the repository’s SOAR service at [`../soar-engine/`](
 - Screenshots are referenced per incident from `./screenshots/<file>.png`.
 
 ---
-
-*Analyst: Thanmayee Manchikanti — SOC operations, investigation, and security automation portfolio work.*
