@@ -63,5 +63,3 @@ Further notes and credits: [`datasets/README.md`](./datasets/README.md).
 | [`01-phishing/`](./01-phishing/) … [`06-insider-threat/`](./06-insider-threat/) | One folder per incident: `README.md` (full report), `queries.md`, `ioc-enrichment.md`, `logs/source.md`, `screenshots/` |
 
 ---
-
-*Analyst: Thanmayee Manchikanti — SOC analyst / security automation / detection engineering portfolio work.*
