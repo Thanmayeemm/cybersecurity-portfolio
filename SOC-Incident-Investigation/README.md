@@ -2,8 +2,7 @@
 
 ## About This Lab
 
-Built by Thanmayee Manchikanti — a cybersecurity analyst focused on
-blue-team operations. This lab documents hands-on SOC investigations
+This lab documents hands-on SOC investigations
 using public datasets, reproducible CLI workflows, and MITRE ATT&CK
 mapping. Each case simulates a real analyst workflow: triage → log
 analysis → IOC extraction → report → enrichment.
