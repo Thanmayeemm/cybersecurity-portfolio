@@ -261,6 +261,7 @@ Screenshots below show the dashboard and a Slack alert triggered for a suspiciou
 |-------------|-------------|
 | Dashboard | ![Dashboard](docs/images/dashboard.png) |
 | Slack alert | ![Slack Alert](docs/images/slack-alert.png) |
+
 ---
 
 ## 📌 Resume & impact
@@ -284,13 +285,9 @@ Screenshots below show the dashboard and a Slack alert triggered for a suspiciou
 - [ ] Docker Compose for one-command demos
 ---
 
-## 🙋 Author
+## Repository context
 
-Thanmayee,
-
-Cybersecurity Engineer focused on threat detection, incident response, and automation.
-
-If you found this useful, feel free to star the repo ⭐
+This project is part of the **[cybersecurity-portfolio](../README.md)** monorepo. Use the **root README** there for portfolio attribution and links to related work.
 
 ---
 
