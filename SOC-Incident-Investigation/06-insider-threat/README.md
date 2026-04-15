@@ -95,8 +95,6 @@ Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
 ![sens](./screenshots/sensitive_access.png)
 
-Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **06**.
-
 ---
 
 ## Lessons Learned

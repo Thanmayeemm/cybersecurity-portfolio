@@ -103,8 +103,6 @@ Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
 ![ok](./screenshots/successful_login.png)
 
-Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **02**.
-
 ---
 
 ## Lessons Learned

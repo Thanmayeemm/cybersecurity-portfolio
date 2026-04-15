@@ -91,9 +91,9 @@ export AUTH_LOG="$(pwd)/logs/sample-auth.log"
 
 Download **[Security-Datasets](https://github.com/OTRF/Security-Datasets)** and point `AUTH_LOG` at an exported `auth.log` from a brute-force scenario. Counts will be larger; the **logic is the same**.
 
-### Screenshots
+### Evidence in this repo
 
-Follow **[`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md)** → Incident **02**.
+Completed reports include PNGs under **`02-brute-force/screenshots/`** — see **[`02-brute-force/README.md`](./02-brute-force/README.md)** → **Evidence**.
 
 ---
 
@@ -161,7 +161,7 @@ Email → malicious Office doc → PowerShell → credentials / C2.
 
 1. Read [`01-phishing/README.md`](./01-phishing/README.md).
 2. Find an EVTX that matches **spearphishing / Office / PowerShell** style activity (repo has many scenarios).
-3. Export relevant events to **text** if needed, or take **screenshots** of Event Viewer filters (see [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md)).
+3. Export relevant events to **text** if needed for your notes.
 4. Align **timestamps and IOCs** with your written report, or label the report as “based on sample X.”
 
 ### Text-based practice
@@ -197,7 +197,7 @@ Traffic to C2, suspicious processes, persistence — from **PCAP** and text expo
 ### Steps
 
 1. Read [`05-malware-infection/README.md`](./05-malware-infection/README.md).
-2. Open PCAP → **Conversations** / **Follow TCP stream** → screenshot (see [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md)).
+2. Open PCAP → **Conversations** / **Follow TCP stream**; note flows that match the narrative in [`05-malware-infection/README.md`](./05-malware-infection/README.md).
 3. Run text-based queries from [`05-malware-infection/queries.md`](./05-malware-infection/queries.md) on any companion `.txt` exports you generate.
 
 ---
@@ -216,7 +216,7 @@ When you have an IP or hash from any incident:
 
 - [ ] Ran **all** commands in `queries.md` for at least **02** and **04** (repo samples).
 - [ ] Can explain **in one minute** what happened in each incident you completed.
-- [ ] Took **screenshots** per [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) (at minimum **02**).
+- [ ] Read the **Evidence** section in each completed incident **`README.md`** (reports in this repo are finished).
 - [ ] (Optional) Enriched one IOC via **SOAR**.
 
 ---
@@ -228,7 +228,7 @@ When you have an IP or hash from any incident:
 | What goes in a report? | Each incident **`README.md`**, [`investigation-template.md`](./investigation-template.md) |
 | What commands to run? | Each **`queries.md`** |
 | What data is public vs sample? | [`datasets/README.md`](./datasets/README.md), each **`logs/README.md`** |
-| What to screenshot? | [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) |
+| Where is visual evidence? | Each incident **`README.md`** → **Evidence**; see also [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) |
 
 ---
 

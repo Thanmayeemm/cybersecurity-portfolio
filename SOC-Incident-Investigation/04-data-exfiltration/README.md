@@ -103,11 +103,15 @@ Volume-based **awk** on connection exports; pair **staging** paths with **outbou
 
 ---
 
-## 10. Evidence (screenshots)
+## 10. Evidence
 
-Primary evidence for this incident is **log and CSV analysis** under [`logs/`](./logs/) (reproducible queries in [`queries.md`](./queries.md)).
+| Artifact | Role |
+|----------|------|
+| [`logs/network_connections.csv`](./logs/network_connections.csv) | Ranks outbound volume; top destination **203.0.113.200** |
+| Other files under [`logs/`](./logs/) (see [`logs/README.md`](./logs/README.md)) | Staging path, session context, supporting telemetry |
+| [`queries.md`](./queries.md) | Reproducible CLI walkthrough |
 
-There are **no PNG files** in [`./screenshots/`](./screenshots/) in this repo yet. To add portfolio images, use the filenames and steps in [`screenshots/README.md`](./screenshots/README.md) (`01-exfil-cli-summary.png`, `02-siem-outbound-volume.png`, `03-soar-exfil-ioc.png`) and the checklist in [`SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md) (incident **04**).
+This incident is documented end-to-end from **log and CSV analysis**; findings in sections **3–6** are the authoritative evidence record.
 
 ---
 

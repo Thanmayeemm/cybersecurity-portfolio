@@ -49,7 +49,7 @@ High = active exploitation risk · Medium = suspicious, unconfirmed
 |------|---------|
 | [`01-phishing/`](./01-phishing/) … [`06-insider-threat/`](./06-insider-threat/) | Per-incident reports and analysis artifacts |
 | [`BEGINNER-LAB-GUIDE.md`](./BEGINNER-LAB-GUIDE.md) | Step-by-step starter guide |
-| [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) | What to capture and when |
+| [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) | Where visual evidence lives (lab complete) |
 | [`VALIDATION-NOTES.md`](./VALIDATION-NOTES.md) | Query-to-conclusion review notes |
 | [`investigation-template.md`](./investigation-template.md) | Template for new cases |
 | [`datasets/README.md`](./datasets/README.md) | Public dataset sources and usage notes |
@@ -64,8 +64,5 @@ High = active exploitation risk · Medium = suspicious, unconfirmed
 - Large raw EVTX/PCAP artifacts are sourced from the upstream public
   datasets listed in `datasets/README.md` — download instructions
   are included there.
-- Where present, portfolio screenshots live under each incident’s
-  `./screenshots/` folder; optional additions or retakes follow
-  `SCREENSHOTS-GUIDE.md`.
 
 ---

@@ -98,8 +98,6 @@ Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
 ![vss](./screenshots/recovery_deletion.png)
 
-Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **03**.
-
 ---
 
 ## Lessons Learned

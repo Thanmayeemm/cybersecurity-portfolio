@@ -5,4 +5,4 @@ Raw source logs are not included in this repository due to size and licensing co
 For full investigation details:
 - See the incident report: `../README.md`
 - Refer to reproducible queries: `../queries.md`
-- Follow evidence capture guidance: `../../SCREENSHOTS-GUIDE.md`
+- Evidence (logs, screenshots): [`../README.md`](../README.md)

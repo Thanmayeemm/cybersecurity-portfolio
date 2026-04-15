@@ -108,8 +108,6 @@ Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
 ![ip](./screenshots/attacker_ip.png)
 
-Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **01**.
-
 ---
 
 ## Lessons Learned

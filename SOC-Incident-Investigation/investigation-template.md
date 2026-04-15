@@ -124,9 +124,9 @@ level: high
 
 ---
 
-## Visual evidence (portfolio)
+## Evidence
 
-Optional: add PNGs under `screenshots/` and list filenames here, or embed `![description](screenshots/01-example.png)`. See [`SCREENSHOTS-GUIDE.md`](./SCREENSHOTS-GUIDE.md) for incident-style checklists.
+List artifacts (logs, exports, PNGs under `screenshots/`) or embed images: `![description](screenshots/01-example.png)`. Match the style of completed incidents in this repo.
 
 ---
 
