@@ -1,6 +1,6 @@
 # Incident Report — Phishing (Spearphishing Attachment)
 
-**Analyst:** Thanmayee Manchikanti · **Date:** 2026-04-12 · **Severity:** HIGH · **Status:** CLOSED  
+**Date:** 2026-04-12 · **Severity:** HIGH · **Status:** CLOSED  
 **Source:** [EVTX-ATTACK-SAMPLES](https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES) · CLI replay: [`logs/sample-excerpt.txt`](./logs/sample-excerpt.txt)
 
 > **Dataset note:** Raw source logs are not redistributed due to
