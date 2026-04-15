@@ -3,7 +3,6 @@
 **Dataset (reference):** Mordor / Security-Datasets — https://github.com/OTRF/Security-Datasets  
 **Lab sample (repo):** [`logs/sample-auth.log`](./logs/sample-auth.log) — synthetic OpenSSH-style lines for offline practice  
 **Tools:** Linux CLI (`grep`, `awk`, `sort`, `uniq`) — use **WSL**, Git Bash, or a VM if you are on Windows  
-**Analyst:** Thanmayee Manchikanti  
 
 ---
 

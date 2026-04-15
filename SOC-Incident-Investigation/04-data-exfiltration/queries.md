@@ -2,7 +2,6 @@
 
 **Dataset:** Mordor / Security-Datasets — https://github.com/OTRF/Security-Datasets (supplementary: Splunk BOTS v3)  
 **Tools used:** Linux CLI (bash, grep, awk, sort, uniq, cut, jq)  
-**Analyst:** Thanmayee Manchikanti  
 
 **Repo lab samples:** Synthetic CSV/text files for offline practice are under [`logs/`](./logs/). Commands that use **`export L="$(pwd)/logs"`** and **`$L/filename`** are in [`logs/README.md`](./logs/README.md). The steps below assume files like `network_connections.csv` are in your **current directory** (as when working from Mordor exports).
 

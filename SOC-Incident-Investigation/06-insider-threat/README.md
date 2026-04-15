@@ -1,6 +1,6 @@
 # Incident Report — Insider Threat
 
-**Analyst:** Thanmayee Manchikanti · **Date:** 2026-04-12 · **Severity:** HIGH · **Status:** CLOSED  
+**Severity:** HIGH · **Status:** CLOSED  
 **Source:** [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) · CLI replay: [`logs/sample-excerpt.txt`](./logs/sample-excerpt.txt)
 
 > **Dataset note:** Raw source logs are not redistributed due to

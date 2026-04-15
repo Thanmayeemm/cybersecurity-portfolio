@@ -1,6 +1,6 @@
 # Incident Report — Brute Force (SSH Password Guessing)
 
-**Analyst:** Thanmayee Manchikanti · **Date:** 2026-04-12 · **Severity:** HIGH · **Status:** CLOSED  
+**Severity:** HIGH · **Status:** CLOSED  
 **Source:** [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) · **Lab log:** [`logs/sample-auth.log`](./logs/sample-auth.log) (synthetic OpenSSH-style excerpt)
 
 > **Dataset note:** Raw source logs are not redistributed due to

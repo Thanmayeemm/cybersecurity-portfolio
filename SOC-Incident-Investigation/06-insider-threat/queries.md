@@ -2,7 +2,6 @@
 
 **Dataset:** Mordor / Security-Datasets — https://github.com/OTRF/Security-Datasets  
 **Tools used:** Linux CLI (bash, grep, awk, sort, uniq, cut, jq)  
-**Analyst:** Thanmayee Manchikanti  
 
 ---
 

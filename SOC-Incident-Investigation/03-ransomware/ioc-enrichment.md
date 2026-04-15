@@ -2,7 +2,6 @@
 
 **Enrichment:** Output from the existing SOAR Engine API — [`../../soar-engine/`](../../soar-engine/) (run and configure per that project; **do not change SOAR source code** for this lab).  
 **APIs used:** VirusTotal v3, AbuseIPDB v2  
-**Date enriched:** 2026-04-12  
 
 ---
 

@@ -1,7 +1,5 @@
 # Incident Investigation Report — Data Exfiltration
 
-**Analyst:** Thanmayee Manchikanti  
-**Date:** 2026-04-12  
 **Severity:** HIGH  
 **Status:** CLOSED  
 **Dataset:** [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) (supplementary: [Splunk BOTS v3](https://github.com/splunk/botsv3))  

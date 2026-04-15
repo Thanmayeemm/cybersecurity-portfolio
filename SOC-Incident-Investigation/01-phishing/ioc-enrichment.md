@@ -2,7 +2,6 @@
 
 **Enrichment:** Output from the existing SOAR Engine API — [`../../soar-engine/`](../../soar-engine/) (run and configure per that project; **do not change SOAR source code** for this lab).  
 **APIs used:** VirusTotal v3, AbuseIPDB v2  
-**Date enriched:** 2026-04-12  
 
 **Response shape (aligned with `POST /analyze`):** `enrichment` contains `vt_score`, `abuse_score`, `combined_score` (0–100), `weights_applied`; `decision` contains `verdict`, `severity`, `confidence_percent`; `action_list` lists automated actions (for example `slack_alert`, `log_incident`).
 

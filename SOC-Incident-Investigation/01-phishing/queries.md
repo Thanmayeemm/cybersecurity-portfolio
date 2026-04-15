@@ -2,7 +2,6 @@
 
 **Dataset:** EVTX-ATTACK-SAMPLES — https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES  
 **Tools used:** Linux CLI (bash, grep, awk, sort, uniq, cut, jq)  
-**Analyst:** Thanmayee Manchikanti  
 
 ---
 

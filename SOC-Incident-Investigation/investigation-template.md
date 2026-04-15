@@ -1,7 +1,5 @@
 # Incident Investigation Report — [INCIDENT TYPE]
 
-**Analyst:** Thanmayee Manchikanti  
-**Date:** [DATE]  
 **Severity:** [CRITICAL / HIGH / MEDIUM / LOW]  
 **Status:** [CLOSED]  
 **Dataset:** [Source name + link]  
