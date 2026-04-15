@@ -7,6 +7,11 @@
 **Dataset:** [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) (supplementary: [Splunk BOTS v3](https://github.com/splunk/botsv3))  
 **Lab replay:** CLI samples under [`logs/`](./logs/)  
 
+> **Dataset note:** Raw source logs are not redistributed due to
+> size and licensing. Analysis uses files under `logs/` (included)
+> plus upstream Mordor / Security-Datasets and Splunk BOTS v3 samples.
+> All queries are reproducible via `queries.md`.
+
 ---
 
 ## 1. Incident Summary
@@ -27,8 +32,13 @@
 
 | Time (UTC) | Event | ATT&CK |
 |------------|-------|--------|
+| 2026-04-09T16:07:22Z | **contractor1** interactive logon to **host-42** | T1078 |
+| 2026-04-09T16:07:45Z | **Explorer** / shell open; **D:\** drive browsed | T1083 |
 | 2026-04-09T16:08:12Z | Recursive listing of finance path | T1083 |
+| 2026-04-09T16:08:55Z | Copy / compress activity targeting customer files under **D:\finance\customers** | T1560.001 |
 | 2026-04-09T16:09:40Z | Archive **customer_pii.zip** created in staging | T1074.001 |
+| 2026-04-09T16:10:15Z | **PowerShell** / **curl**-style invocation of upload client (process start) | T1059 |
+| 2026-04-09T16:10:48Z | TLS handshake to **203.0.113.200:443** begins | T1048.003 |
 | 2026-04-09T16:11:02Z | ~**91 MB** HTTPS to **203.0.113.200** | T1048.003 / T1567 |
 
 ---
@@ -57,8 +67,10 @@
 | Tactic | ID | Technique | Evidence |
 |--------|-----|-----------|----------|
 | Discovery | T1083 | File and Directory Discovery | Finance path discovery |
+| Collection | T1560.001 | Archive Collected Data | Archive creation before upload |
 | Collection | T1074.001 | Data Staged | Zip in **staging** |
 | Exfiltration | T1048.003 / T1567 | Exfiltration over web channel | Large **HTTPS** |
+| Initial Access | T1078 | Valid Accounts | **contractor1** session used for activity |
 
 ---
 
@@ -93,7 +105,13 @@ Volume-based **awk** on connection exports; pair **staging** paths with **outbou
 
 ## 10. Evidence (screenshots)
 
-Add portfolio captures per [`SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md) (incident **04**): CLI exfil summary, optional SIEM volume, SOAR destination IOC. *No PNGs are committed in this folder yet; analysis evidence is reproducible from [`logs/`](./logs/).*
+| File | Shows | Status |
+|---|---|---|
+| `cli_exfil_summary.png` | CLI exfil summary (per `SCREENSHOTS-GUIDE.md` incident **04**) | ⚠ Pending capture |
+| `siem_volume.png` | Optional SIEM volume view | ⚠ Pending capture |
+| `soar_destination.png` | SOAR destination IOC | ⚠ Pending capture |
+
+Add portfolio captures per [`SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md) (incident **04**). Analysis evidence is reproducible from [`logs/`](./logs/).
 
 ---
 

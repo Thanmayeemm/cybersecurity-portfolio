@@ -1,9 +1,16 @@
 # SOC Incident Investigation Lab
 
-Hands-on SOC investigation portfolio built from public datasets and reproducible CLI workflows.  
-Each case follows: **triage → log analysis → IOC extraction → report → enrichment**.
+## About This Lab
 
-This lab integrates with the repository’s SOAR service at [`../soar-engine/`](../soar-engine/) using `POST /analyze` (VirusTotal + AbuseIPDB scoring). The investigation folders do not modify SOAR source code.
+Built by Thanmayee Manchikanti — a cybersecurity analyst focused on
+blue-team operations. This lab documents hands-on SOC investigations
+using public datasets, reproducible CLI workflows, and MITRE ATT&CK
+mapping. Each case simulates a real analyst workflow: triage → log
+analysis → IOC extraction → report → enrichment.
+
+This lab is designed to integrate with a SOAR service via
+`POST /analyze` (VirusTotal + AbuseIPDB scoring) once the
+`../soar-engine/` component is complete. The investigation folders do not modify SOAR source code.
 
 ---
 
@@ -17,6 +24,12 @@ This lab integrates with the repository’s SOAR service at [`../soar-engine/`](
 | 04 | Data exfiltration | [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) (+ [Splunk BOTS v3](https://github.com/splunk/botsv3)) | High | Complete |
 | 05 | Malware infection | [Malware Traffic Analysis](https://www.malware-traffic-analysis.net) | High | Complete |
 | 06 | Insider threat | [Mordor / Security-Datasets](https://github.com/OTRF/Security-Datasets) | High | Complete |
+
+**ATT&CK coverage:** T1566 · T1059 · T1110 · T1486 · T1048 · T1078
+· T1204 — mapped per incident in each report.
+
+**Severity scale:** Critical = confirmed destructive impact ·
+High = active exploitation risk · Medium = suspicious, unconfirmed
 
 ---
 
@@ -44,10 +57,16 @@ This lab integrates with the repository’s SOAR service at [`../soar-engine/`](
 
 ---
 
-## Evidence Notes
+## Reproducibility Notes
 
-- Some incidents include small **labeled sample excerpts** for offline replay.
-- Large raw EVTX/PCAP artifacts remain in upstream public sources.
-- Screenshots are referenced per incident from `./screenshots/<file>.png`.
+- Sample log excerpts for each incident are included for offline
+  replay (`logs/sample-excerpt.txt` per incident folder; incident **02**
+  uses `logs/sample-auth.log`).
+- Large raw EVTX/PCAP artifacts are sourced from the upstream public
+  datasets listed in `datasets/README.md` — download instructions
+  are included there.
+- Screenshots are referenced per incident from
+  `./screenshots/<file>.png` and should be captured following
+  `SCREENSHOTS-GUIDE.md`.
 
 ---

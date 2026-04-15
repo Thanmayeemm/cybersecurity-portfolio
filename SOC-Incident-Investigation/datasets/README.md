@@ -1,31 +1,42 @@
-# Public Datasets Used in This Investigation Lab
+# Dataset Sources
 
-Investigations are grounded in **real, publicly available** attack datasets (below). **Exception:** [`02-brute-force/logs/sample-auth.log`](../02-brute-force/logs/sample-auth.log) is a **small, labeled synthetic** OpenSSH-style excerpt for **offline CLI practice** only; it does not replace Mordor exports for full realism.
+This folder documents the public datasets used across all six
+incidents. All datasets are freely available; no raw files are
+redistributed in this repository.
 
-For **portfolio screenshots** of your analysis, see [`../SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md).
+## Datasets Used
 
----
+| Incident | Dataset | Source | Access |
+|---|---|---|---|
+| 01 Phishing | EVTX-ATTACK-SAMPLES | github.com/sbousseaden/EVTX-ATTACK-SAMPLES | Clone repo, use Security/*.evtx |
+| 02 Brute Force | Mordor / Security-Datasets | github.com/OTRF/Security-Datasets | Download JSON/EVTX per scenario |
+| 03 Ransomware | EVTX-ATTACK-SAMPLES | github.com/sbousseaden/EVTX-ATTACK-SAMPLES | Clone repo, use Ransomware/*.evtx |
+| 04 Data Exfil | Mordor + Splunk BOTS v3 | github.com/OTRF/Security-Datasets + botsdataset.splunkresearch.com | Download per linked scenario |
+| 05 Malware | Malware Traffic Analysis | malware-traffic-analysis.net | Download PCAP + alerts per exercise |
+| 06 Insider Threat | Mordor / Security-Datasets | github.com/OTRF/Security-Datasets | Download JSON/EVTX per scenario |
 
-## EVTX-ATTACK-SAMPLES
-- **Repository:** https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES
-- **What it is:** Pre-recorded Windows Event Log (EVTX) files of real attack techniques, each mapped to MITRE ATT&CK
-- **Used in:** Incident 01 (Phishing), Incident 03 (Ransomware)
-- **Maintained by:** Samir Bousseaden (security researcher, Elastic)
+## CLI Replay
 
-## Mordor Security Datasets
-- **Repository:** https://github.com/OTRF/Security-Datasets
-- **What it is:** Pre-recorded security events from simulated adversarial techniques in controlled lab environments
-- **Used in:** Incident 02 (Brute Force), Incident 04 (Data Exfiltration), Incident 06 (Insider Threat)
-- **Maintained by:** Open Threat Research Forge
+Each incident folder includes a small labeled extract suitable for offline CLI replay without downloading
+the full dataset (`logs/sample-excerpt.txt`; incident **02** uses `logs/sample-auth.log`). Use these commands to work through the excerpts:
 
-## Splunk BOTS v3
-- **Repository:** https://github.com/splunk/botsv3
-- **What it is:** Boss of the SOC competition dataset — realistic enterprise attack scenarios
-- **Used in:** Incident 04 (Data Exfiltration) — supplementary
-- **Note:** Full dataset requires Splunk instance; sample events available on GitHub
+```bash
+# Filter by event ID
+grep "EventID=4625" logs/sample-excerpt.txt
 
-## Malware Traffic Analysis
-- **Site:** https://www.malware-traffic-analysis.net
-- **What it is:** Real PCAP captures of malware network traffic with documented IOCs
-- **Used in:** Incident 05 (Malware Infection) — network evidence
-- **Note:** All files are password-protected as a safety measure (password: infected)
+# Extract unique source IPs
+grep -oP 'SourceNetworkAddress[\s:=]+\K[\d.]+' logs/sample-excerpt.txt | sort | uniq -c | sort -rn
+
+# Extract process names
+grep -oP 'ProcessName[\s:=]+\K\S+' logs/sample-excerpt.txt | sort | uniq -c
+
+# Parse JSON logs with jq (Mordor datasets)
+cat logs/sample-excerpt.txt | jq '[.[] | {time: .EventTime, user: .SubjectUserName, event: .EventID}]'
+```
+
+## Licensing
+
+All datasets are published for research and educational use.
+Check each upstream repository for its specific license before
+redistribution. This portfolio uses only small labeled excerpts
+for reproducibility.
