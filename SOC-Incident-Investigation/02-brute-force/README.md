@@ -89,19 +89,21 @@ Defanged: **203[.]0[.]113[.]15**, **198[.]51[.]100[.]3**.
 
 ## Evidence
 
-Screenshots (`./screenshots/`):
+Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
-| File | Shows | Status |
-|---|---|---|
-| `failed_logins.png` | Failed password lines | ⚠ Pending capture |
-| `attacker_ip.png` | Per-IP failure counts | ⚠ Pending capture |
-| `successful_login.png` | **Accepted password** for **user1** | ⚠ Pending capture |
+| File | Description |
+|------|-------------|
+| [`failed_logins.png`](./screenshots/failed_logins.png) | Failed password lines |
+| [`attacker_ip.png`](./screenshots/attacker_ip.png) | Per-IP failure counts |
+| [`successful_login.png`](./screenshots/successful_login.png) | **Accepted password** for **user1** |
 
 ![failed](./screenshots/failed_logins.png)
 
 ![ip](./screenshots/attacker_ip.png)
 
 ![ok](./screenshots/successful_login.png)
+
+Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **02**.
 
 ---
 

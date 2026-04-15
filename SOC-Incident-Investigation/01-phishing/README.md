@@ -94,22 +94,21 @@ User executed a **macro-enabled** attachment; controls did not block **Office ch
 
 ## Evidence
 
-Screenshots (`./screenshots/`):
+Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
-| File | Shows | Status |
-|---|---|---|
-| `phishing_document.png` | Document / delivery context | ⚠ Pending capture |
-| `powershell_execution.png` | PowerShell execution chain | ⚠ Pending capture |
-| `attacker_ip.png` | Network / IP indicator | ⚠ Pending capture |
-
-> Capture guidance: follow `../../SCREENSHOTS-GUIDE.md`. Replace
-> ⚠ Pending with ✓ once the screenshot file exists in `./screenshots/`.
+| File | Description |
+|------|-------------|
+| [`phishing_document.png`](./screenshots/phishing_document.png) | Document / delivery context |
+| [`powershell_execution.png`](./screenshots/powershell_execution.png) | PowerShell execution chain |
+| [`attacker_ip.png`](./screenshots/attacker_ip.png) | Network / IP indicator |
 
 ![phishing](./screenshots/phishing_document.png)
 
 ![powershell](./screenshots/powershell_execution.png)
 
 ![ip](./screenshots/attacker_ip.png)
+
+Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **01**.
 
 ---
 

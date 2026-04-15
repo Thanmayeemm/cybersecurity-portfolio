@@ -84,16 +84,18 @@
 
 ## Evidence
 
-Screenshots (`./screenshots/`):
+Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
-| File | Shows | Status |
-|---|---|---|
-| `user_activity.png` | User / timeline activity | ⚠ Pending capture |
-| `sensitive_access.png` | Sensitive resource access | ⚠ Pending capture |
+| File | Description |
+|------|-------------|
+| [`user_activity.png`](./screenshots/user_activity.png) | User / timeline activity |
+| [`sensitive_access.png`](./screenshots/sensitive_access.png) | Sensitive resource access |
 
 ![user](./screenshots/user_activity.png)
 
 ![sens](./screenshots/sensitive_access.png)
+
+Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **06**.
 
 ---
 

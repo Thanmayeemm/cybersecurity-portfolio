@@ -84,19 +84,21 @@ Untrusted **PowerShell** ran with sufficient privilege; **application control** 
 
 ## Evidence
 
-Screenshots (`./screenshots/`):
+Portfolio screenshots ([`./screenshots/`](./screenshots/)):
 
-| File | Shows | Status |
-|---|---|---|
-| `powershell_attack.png` | Encoded PowerShell / staging | ⚠ Pending capture |
-| `file_encryption.png` | **.locked** / encryption-related view | ⚠ Pending capture |
-| `recovery_deletion.png` | Shadow copy / recovery inhibition | ⚠ Pending capture |
+| File | Description |
+|------|-------------|
+| [`powershell_attack.png`](./screenshots/powershell_attack.png) | Encoded PowerShell / staging |
+| [`file_encryption.png`](./screenshots/file_encryption.png) | **.locked** / encryption-related view |
+| [`recovery_deletion.png`](./screenshots/recovery_deletion.png) | Shadow copy / recovery inhibition |
 
 ![ps](./screenshots/powershell_attack.png)
 
 ![enc](./screenshots/file_encryption.png)
 
 ![vss](./screenshots/recovery_deletion.png)
+
+Optional capture checklist: [`SCREENSHOTS-GUIDE.md`](../../SCREENSHOTS-GUIDE.md) — incident **03**.
 
 ---
 

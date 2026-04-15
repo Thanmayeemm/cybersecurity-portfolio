@@ -105,13 +105,9 @@ Volume-based **awk** on connection exports; pair **staging** paths with **outbou
 
 ## 10. Evidence (screenshots)
 
-| File | Shows | Status |
-|---|---|---|
-| `cli_exfil_summary.png` | CLI exfil summary (per `SCREENSHOTS-GUIDE.md` incident **04**) | ⚠ Pending capture |
-| `siem_volume.png` | Optional SIEM volume view | ⚠ Pending capture |
-| `soar_destination.png` | SOAR destination IOC | ⚠ Pending capture |
+Primary evidence for this incident is **log and CSV analysis** under [`logs/`](./logs/) (reproducible queries in [`queries.md`](./queries.md)).
 
-Add portfolio captures per [`SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md) (incident **04**). Analysis evidence is reproducible from [`logs/`](./logs/).
+There are **no PNG files** in [`./screenshots/`](./screenshots/) in this repo yet. To add portfolio images, use the filenames and steps in [`screenshots/README.md`](./screenshots/README.md) (`01-exfil-cli-summary.png`, `02-siem-outbound-volume.png`, `03-soar-exfil-ioc.png`) and the checklist in [`SCREENSHOTS-GUIDE.md`](../SCREENSHOTS-GUIDE.md) (incident **04**).
 
 ---
 

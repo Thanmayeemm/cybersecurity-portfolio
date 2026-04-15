@@ -64,8 +64,8 @@ High = active exploitation risk · Medium = suspicious, unconfirmed
 - Large raw EVTX/PCAP artifacts are sourced from the upstream public
   datasets listed in `datasets/README.md` — download instructions
   are included there.
-- Screenshots are referenced per incident from
-  `./screenshots/<file>.png` and should be captured following
+- Where present, portfolio screenshots live under each incident’s
+  `./screenshots/` folder; optional additions or retakes follow
   `SCREENSHOTS-GUIDE.md`.
 
 ---
