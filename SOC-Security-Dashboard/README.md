@@ -6,6 +6,7 @@ It includes:
 - A **log generator** that produces realistic security events (`generate_logs.py`)
 - A **dashboard** that visualizes key metrics using matplotlib (`dashboard.py`)
 - A sample dataset (`security_logs.csv`) with **100+** log entries
+- A human-readable alert rollup (`alerts_summary.txt`)
 
 ---
 
@@ -15,6 +16,7 @@ It includes:
 - `security_logs.csv`: sample logs (timestamp, event_type, source_ip, username, status)
 - `generate_logs.py`: generates fresh sample logs automatically
 - `dashboard.py`: visualizes failed logins, suspicious IP activity, malware detections, and event frequency
+- `alerts_summary.txt`: summary of notable alerts detected from the logs
 
 ---
 
