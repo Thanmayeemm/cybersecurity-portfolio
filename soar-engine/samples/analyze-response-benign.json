@@ -1,0 +1,21 @@
+{
+  "indicator": "8.8.8.8",
+  "enrichment": {
+    "indicator_type": "ipv4",
+    "vt_score": 0.0,
+    "abuse_score": 0.0,
+    "combined_score": 0.0
+  },
+  "decision": {
+    "verdict": "benign",
+    "severity": "low",
+    "confidence_percent": 92.5
+  },
+  "action_list": [
+    {
+      "action": "log_incident",
+      "status": "stored",
+      "incident_id": 1
+    }
+  ]
+}

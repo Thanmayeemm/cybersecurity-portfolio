@@ -118,8 +118,9 @@ At a high level, the system follows a simple pipeline:
 
 ```
 soar-engine/
+├── app.py                   # Flask entrypoint (same as `python -m app.main`)
 ├── app/
-│   ├── main.py              # Flask entrypoint
+│   ├── main.py              # Flask application factory + dev server
 │   ├── config.py            # Env + thresholds
 │   ├── routes.py            # API + dashboard
 │   ├── env_bootstrap.py     # .env loading
@@ -136,6 +137,7 @@ soar-engine/
 ├── config/
 │   └── thresholds.json
 ├── data/                    # SQLite DB (gitignored)
+├── samples/                 # Example API responses + log line shape
 ├── docs/
 │   ├── README.md            # Screenshot & asset notes
 │   └── images/              # Place portfolio screenshots here
@@ -177,6 +179,8 @@ SLACK_WEBHOOK_URL=YOUR_SLACK_WEBHOOK_URL
 
 ```bash
 python -m app.main
+# or
+python app.py
 ```
 
 Open **http://127.0.0.1:5000/** for the dashboard.

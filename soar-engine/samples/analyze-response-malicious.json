@@ -1,0 +1,30 @@
+{
+  "indicator": "203.0.113.50",
+  "enrichment": {
+    "indicator_type": "ipv4",
+    "vt_score": 88.0,
+    "abuse_score": 95.0,
+    "combined_score": 90.8
+  },
+  "decision": {
+    "verdict": "malicious",
+    "severity": "high",
+    "confidence_percent": 97.0
+  },
+  "action_list": [
+    {
+      "action": "block_ip_simulation",
+      "status": "simulated",
+      "detail": "Would block at perimeter"
+    },
+    {
+      "action": "slack_notify",
+      "status": "sent"
+    },
+    {
+      "action": "log_incident",
+      "status": "stored",
+      "incident_id": 42
+    }
+  ]
+}
