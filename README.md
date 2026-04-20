@@ -1,34 +1,113 @@
-# Cybersecurity Portfolio
+# Cybersecurity Portfolio — Thanmayee Manchikanti
 
-**Thanmayee Manchikanti** — cybersecurity engineer focused on SOC operations, threat detection, and security automation.
+Security engineer focused on SOC automation, threat detection,
+incident investigation, and cloud security. This portfolio
+demonstrates end-to-end security engineering work across four
+projects, each covering a distinct skill area.
 
-This repository is a single workspace for defensive security projects: incident-style investigations backed by public datasets, a SOAR-style enrichment engine, detection tooling, and dashboards.
-
-**Primary project — [SOAR Engine](soar-engine/):** Flask threat-intel pipeline (VirusTotal, AbuseIPDB, Slack, SQLite). Start here if you want the automation code.
+**Portfolio site:** https://thanmayee-portfolio-ttbb.vercel.app/
+**LinkedIn:** https://www.linkedin.com/in/thanmayeemanchikanti
 
 ---
 
 ## Projects
 
-| Project | Description |
-|---------|-------------|
-| [**SOAR Engine**](soar-engine/) | **Featured:** Flask API — ingest IPs, domains, and hashes → VirusTotal + AbuseIPDB → risk score → verdict → Slack + SQLite. |
-| [**SOC Incident Investigation Lab**](SOC-Incident-Investigation/) | Six hands-on investigations (phishing through insider threat) using public datasets, CLI log analysis, MITRE ATT&CK mapping, IOC enrichment via the SOAR engine, optional **[screenshot checklist](SOC-Incident-Investigation/SCREENSHOTS-GUIDE.md)**, and a **[beginner lab guide](SOC-Incident-Investigation/BEGINNER-LAB-GUIDE.md)** (how to simulate each case). |
-| [**SOC Threat Detection Engine**](SOC-Threat-Detection-Engine/) | Python detectors for brute force, suspicious logins, and suspicious endpoint processes from auth-style logs. |
-| [**SOC Security Dashboard**](SOC-Security-Dashboard/) | Matplotlib dashboard over generated security event CSVs. |
-| [**cyber-portfolio**](cyber-portfolio/) | Next.js + Tailwind personal site (deploy separately; points at this repo for code links). |
-| [**soc-dashboard**](soc-dashboard/) | Optional full-stack dashboard experiment (Dockerized frontend/backend). |
+### 1. Automated Threat Intelligence & SOAR Engine
+**[→ soar-engine/](./soar-engine/)**
 
-**Pipeline:** Investigations in `SOC-Incident-Investigation/` are designed to feed extracted IOCs into `soar-engine` (`POST /analyze`) so enrichment and reporting stay consistent end-to-end.
+Production-style security automation pipeline: ingest IOC data
+(IP, domain, file hash), enrich via VirusTotal v3 and AbuseIPDB v2,
+apply a weighted risk-scoring model, and trigger automated response
+workflows — Slack alerting and SQLite incident logging.
+
+**Stack:** Python · Flask · SQLite · REST APIs · Slack Webhooks
+**Key capabilities:**
+- Configurable verdict engine: benign / suspicious / malicious
+- Combined risk score (0–100) with confidence weighting
+- Analyst-facing web dashboard and incident log
+- SOAR-style enrich → decide → respond playbook
+
+---
+
+### 2. SOC Incident Investigation Lab
+**[→ SOC-Incident-Investigation/](./SOC-Incident-Investigation/)**
+
+Hands-on incident investigation portfolio using real public attack
+datasets (EVTX-ATTACK-SAMPLES, Mordor Security Datasets, Splunk BOTS v3,
+malware-traffic-analysis.net). Covers six attack types with reproducible
+CLI workflows, IOC extraction, MITRE ATT&CK mapping, SOAR enrichment
+integration, and formal analyst-grade reporting.
+
+**Incidents covered:** Phishing · Brute force · Ransomware ·
+Data exfiltration · Malware infection · Insider threat
+
+**Tools:** Linux CLI (grep, awk, sort, uniq, jq) · MITRE ATT&CK ·
+SOAR Engine (IOC enrichment via VirusTotal + AbuseIPDB)
+
+**Each investigation includes:**
+- Evidence-based attack timeline reconstruction
+- IOC extraction and SOAR enrichment output
+- MITRE ATT&CK technique mapping with T-codes
+- Detection opportunity and Sigma rule stub
+- Root cause analysis and remediation steps
+- Analyst notes with genuine findings and lessons learned
+
+---
+
+### 3. Detection Engineering Lab *(in progress)*
+**[→ detection-engineering-lab/](./detection-engineering-lab/)**
+
+Sigma detection rules written for the six ATT&CK techniques identified
+in the SOC investigation lab above. Each rule is translated to Splunk
+SPL and validated against real EVTX-ATTACK-SAMPLES log data. Includes
+false positive analysis and tuning notes per rule.
+
+**Rules:** Brute force SSH · Ransomware VSS deletion · Phishing macro
+execution · Data staging · Malware C2 beaconing · Insider after-hours
+access
+
+**Stack:** Sigma · Splunk SPL · EVTX-ATTACK-SAMPLES · MITRE ATT&CK
+
+---
+
+### 4. AWS Cloud Security Audit *(in progress)*
+**[→ aws-security-audit/](./aws-security-audit/)**
+
+CIS AWS Foundations Benchmark assessment of a live AWS environment
+using Prowler. Identifies critical and high-severity misconfigurations
+including public S3 exposure, over-permissive IAM policies, disabled
+CloudTrail, and unrestricted security group rules. Includes formal
+findings report and post-remediation re-audit.
+
+**Stack:** AWS · Prowler · CIS Benchmark v2.0 · IAM · CloudTrail · S3
 
 ---
 
 ## Skills
 
-Security incident response · SOC workflows · Log analysis · Detection engineering · Python automation · MITRE ATT&CK · Threat intelligence enrichment
+| Area | Tools & Technologies |
+|------|---------------------|
+| Security operations | Incident triage · IOC analysis · MITRE ATT&CK · Log forensics · Detection rule writing |
+| Threat intelligence | VirusTotal · AbuseIPDB · IOC enrichment · Threat scoring |
+| SIEM & detection | Splunk SPL · Sigma rules · EVTX log analysis |
+| Automation & SOAR | Python · Flask · REST APIs · Slack Webhooks · Security workflow automation |
+| Cloud security | AWS · Prowler · CIS Benchmark · IAM hardening · CloudTrail |
+| CLI & systems | Linux CLI · grep · awk · jq · SQLite · Bash |
+| Frameworks | MITRE ATT&CK · CIS Controls · NIST CSF |
 
 ---
 
-## Tech
+## Repository structure
 
-Python · Flask · SQLite · Linux CLI · GitHub · Next.js (portfolio site)
+```
+cybersecurity-portfolio/
+├── soar-engine/                  # SOAR pipeline — featured project
+├── SOC-Incident-Investigation/   # 6-incident investigation lab
+├── detection-engineering-lab/    # Sigma rules + Splunk (in progress)
+├── aws-security-audit/           # AWS CIS audit with Prowler (in progress)
+└── archive/                      # Earlier work (SOC-Dashboard, Threat-Detection-Engine)
+```
+
+---
+
+*Open to security engineer, detection engineer, and SOC automation roles.*
