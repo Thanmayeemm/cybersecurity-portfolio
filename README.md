@@ -70,16 +70,23 @@ access
 
 ---
 
-### 4. AWS Cloud Security Audit *(in progress)*
+### 4. AWS Cloud Security Audit — CIS AWS Foundations Benchmark v2.0
 **[→ aws-security-audit/](./aws-security-audit/)**
 
-CIS AWS Foundations Benchmark assessment of a live AWS environment
-using Prowler. Identifies critical and high-severity misconfigurations
-including public S3 exposure, over-permissive IAM policies, disabled
-CloudTrail, and unrestricted security group rules. Includes formal
-findings report and post-remediation re-audit.
+End-to-end CIS AWS Foundations Benchmark v2.0.0 assessment of a live
+AWS free-tier lab account using Prowler: introduce a known-bad baseline,
+scan for FAIL results, document misconfigurations with risk ratings and
+attacker impact narratives, remediate, and verify improved posture with a
+repeat scan.
 
-**Stack:** AWS · Prowler · CIS Benchmark v2.0 · IAM · CloudTrail · S3
+**Tools:** Prowler · AWS CLI · CIS Benchmark v2.0 · IAM · S3 · CloudTrail · VPC security groups
+
+**Key outcomes:**
+- Six deliberate misconfigurations mapped to CIS controls (S3 exposure, IAM admin attachment, CloudTrail regional coverage, public SSH ingress, root MFA, password policy)
+- Risk-rated findings with CVSS-equivalent scoring rationale and MITRE ATT&CK mapping
+- Remediation executed (scripted where safe) and verified with before/after evidence placeholders
+
+Full methodology, scripts, and report: **[aws-security-audit/README.md](./aws-security-audit/README.md)**
 
 ---
 
