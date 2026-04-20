@@ -60,6 +60,22 @@ export function Hero() {
         >
           {siteConfig.intro}
         </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.38, duration: 0.6, ease: smooth }}
+          className="mx-auto mt-8 max-w-2xl text-center text-sm text-slate-500 md:mx-0 md:text-left"
+        >
+          <span className="text-slate-600">Featured on GitHub:</span>{" "}
+          <a
+            href={siteConfig.soarProjectUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-cyan-400/95 underline decoration-cyan-500/30 underline-offset-4 transition hover:text-cyan-300 hover:decoration-cyan-400/60"
+          >
+            SOAR threat-intel &amp; automation engine
+          </a>
+        </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
