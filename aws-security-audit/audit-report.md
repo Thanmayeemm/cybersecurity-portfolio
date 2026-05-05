@@ -33,12 +33,12 @@ After remediation, the environment shows measurable improvement in control outco
 
 | Metric | Before | After | Improvement |
 |--------|-------:|------:|------------:|
-| FAIL | 75 | 74 | -1 |
-| PASS | 17 | 18 | +1 |
+| FAIL | 75 | 73 | -2 |
+| PASS | 17 | 19 | +2 |
 | MANUAL | 3 | 3 | 0 |
 
-**Measured outcome:** FAIL findings decreased by **1** and PASS findings increased by **1**.  
-**Relative FAIL reduction:** \((75 - 74) / 75 = 1.33\%\).
+**Measured outcome:** FAIL findings decreased by **2** and PASS findings increased by **2**.  
+**Relative FAIL reduction:** \((75 - 73) / 75 = 2.67\%\).
 
 ## Remediation Summary
 
@@ -66,7 +66,7 @@ Remediation was attempted as part of the audit workflow but could not be complet
 
 ## Conclusion
 
-The AWS security audit demonstrates a practical before/after security validation workflow using Prowler and evidence-driven remediation. The post-remediation assessment shows a measurable reduction in risk exposure (**FAIL 75 -> 74; PASS 17 -> 18**) and improved control posture.
+The AWS security audit demonstrates a practical before/after security validation workflow using Prowler and evidence-driven remediation. The post-remediation assessment shows a measurable reduction in risk exposure (**FAIL 75 -> 73; PASS 17 -> 19**) and improved control posture.
 
 Residual high-impact findings, especially root MFA and broader logging/monitoring coverage, should be prioritized in the next hardening cycle to move from lab-grade remediation to production-grade governance.
 

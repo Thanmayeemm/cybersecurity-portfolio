@@ -1,0 +1,7 @@
+reports/
+scripts/output/
+*.json
+*.html
+*.log
+**pycache**/
+.env

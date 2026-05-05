@@ -1,129 +1,61 @@
-# AWS Security Audit — CIS AWS Foundations Benchmark v2.0
+# AWS Security Audit with Prowler
 
-**One-line summary:** A CIS AWS Foundations Benchmark v2.0.0-aligned cloud security assessment using **Prowler 4.x** against a deliberately instrumented AWS lab account, with formal reporting, remediation automation, and before/after verification evidence.
+## Overview
 
-## Why this project exists
+This project demonstrates a practical AWS security audit workflow using Prowler to identify cloud misconfigurations, apply targeted remediations, and measure security posture changes with before/after evidence.
 
-This project fills a **cloud security gap** in the broader portfolio by demonstrating practical **CIS Benchmark** literacy beyond theory: configuring a reproducible non-compliant baseline, running an open-source **CSPM** scanner, translating results into **risk-rated findings**, and closing the loop with **remediation and re-validation**. It is intentionally scoped to a **free-tier lab account** and should not be treated as production security advice without organizational context.
+The focus is to simulate realistic security issues in a controlled lab and document remediation outcomes in a professional, interview-ready format.
 
-## Tools used
+## Tools Used
 
-- **Prowler 4.x** — open-source security assessment of AWS accounts (CIS-aligned checks used for this work)
-- **AWS CLI v2** — reproducible misconfiguration introduction and remediation
-- **Python 3.x** — runtime environment commonly used to install/run Prowler in local assessment workflows
+- Prowler
+- AWS CLI
+- PowerShell scripts
 
-## Methodology overview
+## Methodology
 
-The lab begins by establishing a **known-bad baseline** aligned to six CIS controls spanning S3 public exposure, IAM attachment hygiene, CloudTrail regional coverage, overly permissive security group ingress, root MFA, and account password policy. **Prowler** is executed to collect automated evidence of FAIL conditions, and key findings are **manually validated** in the AWS Console where screenshots improve defensibility. After evidence capture, **remediation scripts** reverse the automated changes and console steps address controls that cannot be safely automated (notably **root MFA**). A second Prowler run provides a **before/after** comparison for the portfolio artifact set.
+1. Introduced deliberate cloud misconfigurations in a lab account.
+2. Ran an initial Prowler scan (before).
+3. Applied remediation scripts and configuration fixes.
+4. Ran a post-remediation Prowler scan (after).
 
-## Key findings summary
+Notes:
+- The initial scan evidence includes a broader run snapshot.
+- The post-remediation comparison in the formal report uses the CIS-aligned project metrics (`reports/before-metrics.json` vs `reports/after-metrics.json`).
 
-| ID | CIS control (v2.0.0) | Severity | Topic |
-|----|----------------------|----------|-------|
-| 1 | **2.1.1** | High | S3 Block Public Access / public bucket policy |
-| 2 | **1.16** | Critical | IAM user with direct `AdministratorAccess` |
-| 3 | **3.1** | High | CloudTrail not enabled for all regions (single-region trail) |
-| 4 | **5.2** | High | Security group SSH open to `0.0.0.0/0` |
-| 5 | **1.1** | Critical | Root MFA not enabled |
-| 6 | **1.5** | Medium | Account password policy missing / below CIS minimum |
+## Results
 
-Full narrative, attacker impact analysis, and verification placeholders are documented in **[audit-report.md](./audit-report.md)**.
+- Broader initial scan snapshot (evidence screenshot): **123 failed, 95 passed**
+- CIS-aligned comparison (from metrics JSON used in report):
+  - Before: **75 failed, 17 passed, 3 manual**
+  - After: **73 failed, 19 passed, 3 manual**
 
-## Before / after Prowler comparison (evidence placeholders)
+This shows measurable improvement in the audited control set, with reduced failed findings and increased passed findings after remediation.
 
-| Stage | Evidence artifact | Notes |
-|------|-------------------|-------|
-| Before remediation | `screenshots/prowler-findings-before.png` | Terminal or exported Prowler output after introducing misconfigurations |
-| After remediation | `screenshots/prowler-findings-after.png` | Repeat scan after fixes; expect improved PASS coverage for targeted CIS checks |
+## Key Findings
 
-Raw output placeholder (do not fabricate results):
+- IAM misconfigurations and administrative privilege exposure
+- S3 access control / public exposure risk
+- Logging and monitoring gaps (CloudTrail/CloudWatch coverage)
+- Root MFA not enabled (critical finding)
 
-```
-[PLACEHOLDER: paste actual Prowler output here]
-```
+## Limitation
 
-## How to reproduce this audit in your own AWS free-tier account
+Root MFA could not be enabled during this engagement due to account/session constraints.  
+This reflects real-world enterprise conditions where engineers often operate with scoped access and require privileged account-owner workflows for root-level controls.
 
-1. **Create a dedicated lab account or OU** (strongly recommended). Do not run misconfiguration scripts against production.
-2. **Configure AWS CLI v2** credentials for the lab account (`aws sts get-caller-identity`).
-3. **Choose** a globally unique `<YOUR_BUCKET_NAME>`, a **region** (for example `us-east-1`), and a **security group name** for the scripts.
-4. **Run** `scripts/introduce-misconfigs.sh` with environment variables set (see script header). Complete the **root MFA lab precondition** manually per `misconfigurations/setup-notes.md` if needed.
-5. **Install/run Prowler 4.x** using your preferred Python workflow and execute a CIS-oriented scan relevant to your install method.
-6. **Capture** “before” screenshots under `screenshots/` (and optional console shots under `screenshots/aws-console-evidence/`).
-7. **Run** `scripts/remediate.sh` **after** before-evidence is captured (it changes account state). Complete **root MFA enrollment** in the Console.
-8. **Re-run Prowler**, capture “after” screenshots, and update `audit-report.md` placeholders with authentic output snippets.
+## Screenshots
 
-### Windows (recommended path)
+Before scan evidence:
 
-On Windows, plain `bash` often launches **WSL**, which may be broken. Use **Git Bash** or the wrappers below.
+![Before scan](./screenshots/prowler-findings-before.png)
+![Before scan overview](./screenshots/prowler-findings-before-overview.png)
 
-**One-time:** allow local scripts (PowerShell):
+After scan evidence:
 
-```powershell
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-```
+![After scan](./screenshots/prowler-findings-after.png)
+![After scan overview](./screenshots/prowler-findings-after-overview.png)
 
-**Introduce misconfigs** (from repo root; optional env overrides):
+## Conclusion
 
-```powershell
-cd <path-to-your-git-clone>   # folder that contains aws-security-audit\
-# Optional; otherwise the script picks a random cis-lab-* bucket name:
-# $env:BUCKET_NAME = "your-globally-unique-bucket-name"
-$env:REGION = "us-east-1"
-$env:SG_NAME = "cis-lab-ssh-open"
-.\aws-security-audit\scripts\run-introduce.ps1
-```
-
-Copy the **`BUCKET_NAME`** printed in the summary (or set `$env:BUCKET_NAME` yourself before running so you remember it).
-
-**Prowler (before)** — install once with Python 3:
-
-```powershell
-python -m pip install prowler
-prowler aws
-```
-
-Save terminal output / screenshots to `screenshots/` and paste excerpts into `audit-report.md` where marked.
-
-**Remediate** (same `BUCKET_NAME`, `REGION`, `SG_NAME` as introduce):
-
-```powershell
-$env:BUCKET_NAME = "<same-as-introduce>"
-$env:REGION = "us-east-1"
-$env:SG_NAME = "cis-lab-ssh-open"
-.\aws-security-audit\scripts\run-remediate.ps1
-```
-
-Then in the **AWS Console**: enable **root MFA** (required for CIS 1.1). Re-run **Prowler** and update the “after” evidence.
-
-Supporting references:
-
-- `misconfigurations/setup-notes.md` — what was introduced and why
-- `remediation-steps.md` — junior-analyst-friendly fixes and verification guidance
-- `audit-report.md` — formal assessment narrative
-
-## Skills demonstrated
-
-- Cloud security auditing in AWS (lab-scoped)
-- CIS Benchmark compliance assessment (AWS Foundations v2.0.0 framing)
-- AWS IAM, S3, CloudTrail, and VPC security groups (practical hardening patterns)
-- Prowler (open-source CSPM) for evidence collection
-- Attacker impact analysis tied to realistic cloud threat scenarios
-- Formal security report writing with traceable evidence placeholders
-
-## Repository link
-
-This folder is part of the portfolio monorepo: **[cybersecurity-portfolio README](../README.md)**  
-Upstream GitHub repository: `https://github.com/Thanmayeemm/cybersecurity-portfolio`
-
----
-
-## What only you can finish (in your AWS account)
-
-Everything in this folder is ready to use. The items below require **your** credentials, **your** Prowler run, and **your** screenshots or pasted output (do not commit secrets).
-
-1. Confirm `aws sts get-caller-identity` works (IAM user with `AdministratorAccess` in a **lab** account is fine for this project).
-2. Run `scripts/run-introduce.ps1` (Windows) or `scripts/introduce-misconfigs.sh` (Git Bash) and **save the `BUCKET_NAME`** you used.
-3. Run Prowler, capture **before** evidence under `screenshots/`, and replace placeholders in `audit-report.md` with real output (no fabrication).
-4. Run `scripts/run-remediate.ps1` or `scripts/remediate.sh` with the **same** `BUCKET_NAME` / `REGION` / `SG_NAME`, then **enable root MFA** in the Console, re-run Prowler, and add **after** evidence.
-5. Commit only **redacted** evidence if the repo is public.
+The project demonstrates a realistic cloud security audit lifecycle: detection, remediation, and validation. Security posture improved with a measurable reduction in failed findings, while remaining high-impact gaps were clearly identified for prioritized follow-up. This is directly aligned with real-world cloud security auditing and governance workflows.
