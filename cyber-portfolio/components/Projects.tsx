@@ -115,6 +115,7 @@ export function Projects() {
       id="projects"
       className="scroll-mt-28 px-4 py-28 sm:px-6 sm:py-32"
       {...sectionFadeUp}
+      initial={false}
     >
       <div className="mx-auto max-w-6xl">
         <div className="space-y-3">
