@@ -19,16 +19,11 @@ This repository documents a **controlled CIS-aligned security assessment lab**, 
 
 **Phase 2 (remediation):** `scripts/run-remediate.ps1` / `remediate.sh` was executed with lab parameters (`BUCKET_NAME`, `REGION`, `SG_NAME`) aligned to the introduce script. Idempotent cleanup covers the lab S3 bucket, IAM user, single-region CloudTrail trail and logs bucket, world-open SSH security group (if present), and restores a **CIS-minimum account password policy**. **Root MFA cannot be automated here** and remains a **manual Console** step.
 
-**Phase 3–4 (after audit & comparison):** **Not run in this pass** — **stop after enabling root MFA**, then run:
+**Phase 3–4 (after audit & comparison — completed):** **`scripts/run-after-audit.ps1`** was executed after scripted remediation. **Without root MFA enrollment:** Prowler reported **74 FAIL**, **18 PASS**, and **3 MANUAL** across **95** OCSF rows — **1 fewer FAIL** and **1 additional PASS** versus the before capture (relative reduction in FAIL count: \((75 - 74) / 75 \approx 1.3\%\)).
 
-```powershell
-Set-Location .\aws-security-audit\scripts
-.\run-after-audit.ps1
-```
+**Root MFA:** Enrollment was **not completed** in this engagement because **root Console access / permissions** did not allow MFA setup from the operator’s context (typical when day-to-day work uses an **IAM user** such as `lab-cli-user` rather than the **root user**). CIS **1.1** therefore remains **FAIL** in the after export until the **account owner signs in as root** (or equivalent recovery path) and assigns MFA.
 
-That generates `reports/after-report.html`, `after-report.json`, and `after-metrics.json`, after which you should refresh the **After remediation** and **Before vs after** tables in this document from those files.
-
-**Primary evidence artifacts (before):** `reports/before-report.html`, `reports/before-report.json`, `reports/before-metrics.json`. **After** artifacts are produced by `run-after-audit.ps1`.
+**Primary evidence artifacts:** Before — `reports/before-report.html`, `reports/before-report.json`, `reports/before-metrics.json`. After — `reports/after-report.html`, `reports/after-report.json`, `reports/after-metrics.json`.
 
 ---
 
@@ -53,27 +48,31 @@ That generates `reports/after-report.html`, `after-report.json`, and `after-metr
 
 **Simple reading of the six lab themes:** public S3 / BPA, IAM admin attachment hygiene, CloudTrail coverage, SSH from `0.0.0.0/0`, root MFA, and account password policy — measured together with broader CIS surface (Access Analyzer, Config, CloudWatch, etc.).
 
-### After remediation (pending re-scan)
+### After remediation (post-`run-remediate.ps1` + `run-after-audit.ps1`, MFA not enrolled)
 
 | Metric | Value |
 |--------|------:|
-| Total finding rows (OCSF) | *Run `scripts/run-after-audit.ps1` after root MFA* |
-| FAIL | *TBD* |
-| PASS | *TBD* |
-| MANUAL | *TBD* |
-| MUTED | *TBD* |
+| Total finding rows (OCSF) | 95 |
+| FAIL | 74 |
+| PASS | 18 |
+| MANUAL | 3 |
+| MUTED | 0 |
 
-**Delta:** *TBD* (recalculate from `before-metrics.json` vs `after-metrics.json`).
+**Delta:** FAIL **−1**, PASS **+1**, total rows **0** (same CIS export shape).
+
+**Relative improvement (FAIL count):** \((75 − 74) / 75 \approx 1.3\%\).
+
+**Highlight (from `reports/after-metrics.json` top FAIL excerpts):** **`iam_root_hardware_mfa_enabled`** no longer surfaces in the severity-ranked top five excerpts; **`iam_root_mfa_enabled`** remains **Critical / FAIL**. **`iam_aws_attached_policy_no_administrative_privileges`** remains **FAIL** — likely **non-lab** principals still carry administrative attachments (for example the assessment IAM user or roles); triage with IAM Access Analyzer / CSPM resource detail, not only the removed lab user.
 
 ### Before vs after (high level)
 
-| Measure | Before (2026-04-22) | After (post-MFA + `run-after-audit.ps1`) | Change |
-|---------|--------------------:|-----------------------------------------:|--------|
-| FAIL | 75 | *TBD* | *TBD* |
-| PASS | 17 | *TBD* | *TBD* |
-| Total rows | 95 | *TBD* | *TBD* |
+| Measure | Before | After | Change |
+|---------|-------:|------:|-------:|
+| FAIL | 75 | 74 | −1 |
+| PASS | 17 | 18 | +1 |
+| Total rows | 95 | 95 | 0 |
 
-**Interpretation (expected):** Scripted remediation removes or reverses **lab-scoped** failures where resources still existed; **root MFA** should move to **PASS** only after Console enrollment and a fresh scan. **CloudTrail** and detective baselines (Access Analyzer, Config, alarms) commonly remain **FAIL** in a minimal lab until you deploy production-style logging and monitoring.
+**Interpretation:** Scripted remediation plus re-scan produced a **modest net improvement** on this export (one row moved **FAIL → PASS**) while **root MFA** stayed **FAIL** because MFA could not be enrolled under the operator’s available **root / permission** path. **CloudTrail**, **Access Analyzer**, **Config**, and **CloudWatch** buckets remain **FAIL** in a thin lab until logging and detective controls are stood up to production-style baselines.
 
 ---
 
@@ -85,7 +84,7 @@ That generates `reports/after-report.html`, `after-report.json`, and `after-metr
 | AWS-CIS-LAB-02 | **1.16** Policies attached only to groups/roles | Critical | AWS IAM | **`cis-lab-admin-user`** + direct `AdministratorAccess` | **Lab user removed** (policy attachment eliminated for that user) |
 | AWS-CIS-LAB-03 | **3.1** CloudTrail enabled in all regions | High | CloudTrail | Single-region trail | **Trail and logs bucket removed** (logging posture changed; **replace** with compliant multi-Region trail for PASS) |
 | AWS-CIS-LAB-04 | **5.2** No world-open admin ports | High | EC2 / VPC | SSH `0.0.0.0/0` | **Rule/SG remediated** per script |
-| AWS-CIS-LAB-05 | **1.1** Root MFA | Critical | IAM (root) | No MFA (lab / account state) | **Still FAIL** until **root MFA** enabled in Console |
+| AWS-CIS-LAB-05 | **1.1** Root MFA | Critical | IAM (root) | No MFA (lab / account state) | **Still FAIL** — root MFA **not enrolled**; enrollment **blocked** from operator context (use **root sign-in** / account owner when permitted) |
 | AWS-CIS-LAB-06 | **1.5** Password policy ≥ 14 | Medium | IAM (account) | Policy removed in lab | **Policy restored** via remediation script |
 
 ---
@@ -191,9 +190,9 @@ An attacker who discovered this could focus on **credential takeover vectors** a
 **Evidence:** Before scan exports — `reports/before-report.html`, `reports/before-report.json`; `reports/before-metrics.json`.
 
 **Remediation applied:**  
-**Outstanding at time of after-scan:** root MFA was **not yet enrolled** in the AWS Console (virtual or hardware MFA per policy). The **after** Prowler export still lists **`iam_root_mfa_enabled`** / **`iam_root_hardware_mfa_enabled`** as **FAIL** until this step is completed. See `remediation-steps.md` for Console steps.
+**Outstanding at time of after-scan:** root MFA was **not enrolled**. The operator could not complete enrollment due to **permissions / access path** (assessment performed with an **IAM user**; **root Console** enrollment is a separate, account-owner step). The **after** export still shows **`iam_root_mfa_enabled` as FAIL** at minimum; see **`reports/after-metrics.json`** for the live excerpt set. See `remediation-steps.md` for Console steps once **root access** is available.
 
-**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`. Re-run Prowler after MFA enrollment to close these checks.
+**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`. Re-run **`run-after-audit.ps1`** after root MFA is assigned to close CIS **1.1** rows.
 
 ---
 
@@ -220,7 +219,7 @@ An account password policy meeting at least the CIS minimum length requirement w
 
 ## Conclusion
 
-This engagement follows a **real audit lifecycle**: **controlled misconfigurations** (introduce), **CIS-aligned measurement** with Prowler (`cis_2.0_aws`), **automated remediation** for reversible lab resources, **manual root MFA**, then **re-measure** (`run-after-audit.ps1`). The **2026-04-22 baseline** captured **95** OCSF rows (**75 FAIL**, **17 PASS**, **3 MANUAL**) before scripted remediation runs in this session. **Final quantitative comparison** (FAIL reduction and percent improvement) is intentionally left **pending** until you enable **root MFA** and regenerate **after** exports so the report reflects the same scope without mixing stale artifacts. Qualitatively, the account remains a **lab**: expect residual FAILs for **CloudTrail**, **Access Analyzer**, **Config**, and **monitoring** until those services are enabled to production-style baselines.
+This engagement follows a **real audit lifecycle**: **controlled misconfigurations** (introduce), **CIS-aligned measurement** with Prowler (`cis_2.0_aws`), **automated remediation** for reversible lab resources, then **re-measure** (`run-after-audit.ps1`). **Before:** **95** rows, **75 FAIL**, **17 PASS**, **3 MANUAL**. **After:** **95** rows, **74 FAIL**, **18 PASS**, **3 MANUAL** — roughly **1.3%** relative reduction in FAIL count with **root MFA intentionally outstanding** due to enrollment constraints. Qualitatively, the account remains a **lab**: residual FAILs for **CloudTrail**, **Access Analyzer**, **Config**, and **monitoring** illustrate the gap between **scripted reversal** and **production-ready** CIS posture.
 
 ---
 
