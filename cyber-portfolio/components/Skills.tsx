@@ -47,7 +47,11 @@ const skillGroups = [
   },
   {
     title: "Systems & Data",
-    items: ["Linux CLI workflows", "SQLite", "Structured evidence handling and incident reporting"],
+    items: [
+      "Shell log triage (grep, awk, jq)",
+      "SQLite",
+      "Linux CLI triage, log analysis, and documented incident notes",
+    ],
     icon: "💾",
   },
   {

@@ -1,4 +1,4 @@
-/** Shared Framer Motion settings — subtle, consistent section reveals. */
+/** Shared Framer Motion settings — subtle section reveal defaults. */
 export const easeSection = [0.22, 1, 0.36, 1] as const;
 
 export const sectionViewport = { once: true, amount: 0.2 } as const;

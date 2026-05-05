@@ -5,9 +5,9 @@ import { siteConfig } from "@/lib/site-config";
 import { sectionFadeUp } from "@/lib/motion-presets";
 
 const highlights = [
-  "Incident triage and IOC analysis with evidence-first case documentation",
-  "Threat intelligence enrichment and ATT&CK-aligned detection workflow thinking",
-  "Python/Flask API implementation for security automation and response consistency",
+  "Triage and IOC analysis — notes point to the events or log lines I actually used",
+  "Threat intel enrichment plus MITRE ATT&CK mapping when it adds clarity",
+  "Python/Flask APIs so enrichment and response aren&apos;t one-off scripts every time",
 ];
 
 export function About() {

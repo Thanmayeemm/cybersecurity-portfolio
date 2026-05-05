@@ -13,7 +13,7 @@ const features = [
   "Threat intelligence enrichment via VirusTotal and AbuseIPDB",
   "IOC triage workflow: ingest → enrich → risk score → incident handling action",
   "Analyst-facing alerting and playbook-style response flow",
-  "Standardized API-driven scoring logic for consistent triage decisions",
+  "REST scoring logic so IOC verdicts don't drift between runs",
 ];
 
 const stack = ["Python", "Flask", "SQLite", "REST APIs", "Slack Webhooks"];
@@ -146,9 +146,9 @@ export function Projects() {
                   for analyst handling.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
-                  Impact: Standardized enrichment, scoring, and alerting to
-                  reduce manual triage variation and make analyst response
-                  decisions more consistent.
+                  Impact: One pipeline for enrichment and Slack alerts — less
+                  back-and-forth when an IOC lands and everyone&apos;s guessing
+                  severity from scratch.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row lg:items-start">
@@ -235,14 +235,12 @@ export function Projects() {
                   SOC Incident Investigation Lab
                 </h3>
                 <p className="mt-4 max-w-2xl leading-relaxed text-slate-400">
-                  SOC-focused case lab built around six incident types, using
-                  repeatable investigation steps and defensible evidence
-                  handling throughout the workflow.
+                  SOC-focused case lab built around six incident types — same
+                  triage sequence each time, with evidence documented per step so
+                  findings can be traced back.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
-                  Impact: Demonstrates repeatable, evidence-based SOC case
-                  handling that supports faster and more consistent incident
-                  decisions.
+                  Impact: I run the same triage steps across every case — decisions backed by log evidence and documented findings.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row lg:items-start">
@@ -299,9 +297,9 @@ export function Projects() {
                   Snapshot
                 </h4>
                 <p className="mt-5 text-sm leading-relaxed text-slate-400">
-                  Operational evidence from real case work: command-line triage
-                  output and suspicious access analysis tied to incident
-                  response decisions.
+                  Screenshots are straight from CLI triage — failed-login patterns
+                  and access checks I leaned on when I decided what to escalate or
+                  close.
                 </p>
               </div>
             </div>
@@ -344,9 +342,9 @@ export function Projects() {
                   context, remediate, and re-scan for verification evidence.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
-                  Impact: Demonstrates end-to-end cloud security auditing literacy —
-                  from CSPM evidence collection through analyst-grade reporting and
-                  controlled remediation.
+                  Impact: Shows the full audit loop — scan with Prowler, document
+                  findings with severity and attacker context, remediate,
+                  re-scan to verify.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row lg:items-start">
