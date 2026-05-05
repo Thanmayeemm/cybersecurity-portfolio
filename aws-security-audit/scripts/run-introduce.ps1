@@ -18,10 +18,11 @@ function Find-GitBash {
     if ($env:GIT_BASH -and (Test-Path -LiteralPath $env:GIT_BASH)) {
         return $env:GIT_BASH
     }
+    $pf86 = [Environment]::GetFolderPath("ProgramFilesX86")
     $candidates = @(
-        "${env:ProgramFiles}\Git\bin\bash.exe",
-        "${env:ProgramFiles(x86)}\Git\bin\bash.exe",
-        "${env:LocalAppData}\Programs\Git\bin\bash.exe"
+        (Join-Path $env:ProgramFiles "Git\bin\bash.exe"),
+        $(if ($pf86) { Join-Path $pf86 "Git\bin\bash.exe" } else { $null }),
+        (Join-Path $env:LocalAppData "Programs\Git\bin\bash.exe")
     )
     foreach ($p in $candidates) {
         if ($p -and (Test-Path -LiteralPath $p)) { return $p }

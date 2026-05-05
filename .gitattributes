@@ -1,0 +1,2 @@
+# Bash lab scripts: keep LF for shellcheck and Git Bash on Windows
+*.sh text eol=lf

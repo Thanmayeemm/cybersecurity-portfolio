@@ -115,3 +115,15 @@ Supporting references:
 
 This folder is part of the portfolio monorepo: **[cybersecurity-portfolio README](../README.md)**  
 Upstream GitHub repository: `https://github.com/Thanmayeemm/cybersecurity-portfolio`
+
+---
+
+## What only you can finish (in your AWS account)
+
+Everything in this folder is ready to use. The items below require **your** credentials, **your** Prowler run, and **your** screenshots or pasted output (do not commit secrets).
+
+1. Confirm `aws sts get-caller-identity` works (IAM user with `AdministratorAccess` in a **lab** account is fine for this project).
+2. Run `scripts/run-introduce.ps1` (Windows) or `scripts/introduce-misconfigs.sh` (Git Bash) and **save the `BUCKET_NAME`** you used.
+3. Run Prowler, capture **before** evidence under `screenshots/`, and replace placeholders in `audit-report.md` with real output (no fabrication).
+4. Run `scripts/run-remediate.ps1` or `scripts/remediate.sh` with the **same** `BUCKET_NAME` / `REGION` / `SG_NAME`, then **enable root MFA** in the Console, re-run Prowler, and add **after** evidence.
+5. Commit only **redacted** evidence if the repo is public.
