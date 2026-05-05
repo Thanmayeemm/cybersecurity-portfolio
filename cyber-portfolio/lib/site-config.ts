@@ -3,7 +3,7 @@
  */
 export const siteConfig = {
   name: "Thanmayee Manchikanti",
-  title: "Security Engineer | SOC Analyst | Threat Detection & Security Automation",
+  title: "Security Professional | SOC Analyst | Threat Detection & Security Automation",
   email: "thanmayee3133@gmail.com",
   linkedIn: "https://www.linkedin.com/in/thanmayeemanchikanti",
   github: "https://github.com/Thanmayeemm/cybersecurity-portfolio",
@@ -17,6 +17,6 @@ export const siteConfig = {
   awsSecurityAuditUrl:
     "https://github.com/Thanmayeemm/cybersecurity-portfolio/tree/main/aws-security-audit",
   intro:
-    "SOC Analyst with experience in incident triage, log analysis, and threat detection across real-world environments. I design and build security workflows and automation using APIs to improve how threats are identified, analyzed, and responded to across modern environments.\n\nMy work combines IOC analysis, threat intelligence enrichment, and MITRE ATT&CK mapping to produce evidence-based incident outcomes, along with developing Python and Flask-based tools to support consistent and scalable security operations. I am particularly interested in applying these capabilities to cloud-native and scalable security environments.",
-  about: `I build and document repeatable detection and response workflows that support SOC operations from triage through remediation. My project work combines IOC analysis, threat intelligence enrichment, and MITRE ATT&CK mapping to produce evidence-based incident handling outcomes. I also implement API-driven security automation in Python and Flask to standardize enrichment, scoring, and analyst-facing response steps.`,
+    "Security professional with hands-on experience in SOC triage, threat detection, and cloud security assessments. I build practical workflows that help teams identify, analyze, and respond to security events with consistent, evidence-based decision making.\n\nMy portfolio includes SOC investigation labs, a Python/Flask SOAR automation project, and an AWS CIS-aligned cloud security audit using Prowler. Together, these projects reflect how I combine detection logic, threat intelligence, and remediation-focused execution across modern environments.",
+  about: `I design and document repeatable security workflows across SOC operations, automation, and cloud posture assessment. My work combines IOC analysis, threat intelligence enrichment, and MITRE ATT&CK mapping with practical implementation in Python/Flask and AWS security tooling to support consistent incident handling and measurable risk reduction.`,
 };

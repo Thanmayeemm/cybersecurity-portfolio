@@ -140,15 +140,15 @@ export function Projects() {
                   Automated Threat Intelligence &amp; SOAR Engine
                 </h3>
                 <p className="mt-4 max-w-2xl leading-relaxed text-slate-400">
-                  Security automation pipeline for Security Operations workflows:
+                  Built this security automation workflow to support SOC triage:
                   ingest IOC data (IP/domain/hash), enrich with threat intelligence,
-                  risk-score outcomes, and trigger alerting/playbook response steps
-                  for SOC analyst triage and incident handling.
+                  apply risk scoring, and trigger alerting/playbook response steps
+                  for analyst handling.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
                   Impact: Standardized enrichment, scoring, and alerting to
-                  reduce manual triage variance and improve analyst response
-                  consistency.
+                  reduce manual triage variation and make analyst response
+                  decisions more consistent.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row lg:items-start">
@@ -246,9 +246,9 @@ export function Projects() {
                   SOC Incident Investigation Lab
                 </h3>
                 <p className="mt-4 max-w-2xl leading-relaxed text-slate-400">
-                  Analyst-readiness case lab demonstrating Security Operations
-                  workflows across six incident types using repeatable
-                  investigation steps and defensible evidence handling.
+                  SOC-focused case lab built around six incident types, using
+                  repeatable investigation steps and defensible evidence
+                  handling throughout the workflow.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
                   Impact: Demonstrates repeatable, evidence-based SOC case
@@ -349,11 +349,10 @@ export function Projects() {
                   AWS Cloud Security Audit — CIS Foundations Benchmark v2.0
                 </h3>
                 <p className="mt-4 max-w-2xl leading-relaxed text-slate-400">
-                  Cloud posture assessment of an AWS lab account using Prowler
-                  against CIS AWS Foundations expectations: introduce controlled
-                  misconfigurations, capture failing checks, document findings with
-                  severity and attacker impact narratives, remediate, and re-scan for
-                  verification evidence.
+                  AWS cloud posture assessment using Prowler against CIS AWS
+                  Foundations expectations: introduce controlled misconfigurations,
+                  capture failing checks, document severity and attacker-impact
+                  context, remediate, and re-scan for verification evidence.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
                   Impact: Demonstrates end-to-end cloud security auditing literacy —
