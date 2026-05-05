@@ -430,13 +430,13 @@ export function Projects() {
               <ProjectScreenshot
                 src="/images/prowler-before.png"
                 alt="Prowler terminal output before remediation (CIS findings)"
-                caption="Prowler — representative failing checks before remediation (add image)"
+                caption="Prowler — representative failing checks before remediation"
                 contain
               />
               <ProjectScreenshot
                 src="/images/prowler-after.png"
                 alt="Prowler terminal output after remediation (improved posture)"
-                caption="Prowler — representative results after remediation (add image)"
+                caption="Prowler — representative results after remediation"
                 contain
               />
             </div>
