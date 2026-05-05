@@ -63,12 +63,12 @@ In other words, the technical fix is straightforward, but ownership and access b
 
 ## Screenshots
 
-Before scan evidence:
+Before-scan evidence:
 
 ![Before scan](./screenshots/prowler-findings-before.png)
 ![Before scan overview](./screenshots/prowler-findings-before-overview.png)
 
-After scan evidence:
+After-scan evidence:
 
 ![After scan](./screenshots/prowler-findings-after.png)
 ![After scan overview](./screenshots/prowler-findings-after-overview.png)
