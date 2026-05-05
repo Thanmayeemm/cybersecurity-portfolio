@@ -32,7 +32,10 @@ $redactor = Join-Path $Scripts "redact_aws_identifiers.py"
     Set-Content -Encoding utf8 (Join-Path $Reports "after-metrics.json")
 
 if (-not $SkipRedaction -and (Test-Path -LiteralPath $redactor)) {
-    foreach ($f in @("after-report.json", "after-metrics.json", "after-report.ocsf.json", "after-report.html")) {
+    foreach ($f in @(
+            "after-report.json", "after-metrics.json", "after-report.ocsf.json", "after-report.html",
+            "compliance\after-report_cis_2.0_aws.csv"
+        )) {
         $full = Join-Path $Reports $f
         if (Test-Path -LiteralPath $full) { & py -3.11 $redactor $full }
     }
