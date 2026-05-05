@@ -1,4 +1,4 @@
-# Cybersecurity Portfolio — Thanmayee Manchikanti
+# Thanmayee Manchikanti
 
 Security engineer focused on SOC automation, threat detection,
 incident investigation, and cloud security. This portfolio
