@@ -177,17 +177,6 @@ export function Projects() {
                     />
                   </svg>
                 </MotionLink>
-                <MotionLink
-                  href={siteConfig.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={reduceMotion ? {} : { scale: 1.02 }}
-                  whileTap={reduceMotion ? {} : { scale: 0.98 }}
-                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-6 py-3 text-sm font-semibold text-slate-200 hover:border-cyan-500/50 hover:text-white"
-                >
-                  Full repo
-                </MotionLink>
               </div>
             </div>
 
@@ -385,17 +374,6 @@ export function Projects() {
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                     />
                   </svg>
-                </MotionLink>
-                <MotionLink
-                  href={siteConfig.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={reduceMotion ? {} : { scale: 1.02 }}
-                  whileTap={reduceMotion ? {} : { scale: 0.98 }}
-                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-6 py-3 text-sm font-semibold text-slate-200 hover:border-violet-500/50 hover:text-white"
-                >
-                  Full repo
                 </MotionLink>
               </div>
             </div>
