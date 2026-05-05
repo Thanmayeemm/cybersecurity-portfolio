@@ -40,6 +40,8 @@ After remediation, the environment shows measurable improvement in control outco
 **Measured outcome:** FAIL findings decreased by **2** and PASS findings increased by **2**.  
 **Relative FAIL reduction:** \((75 - 73) / 75 = 2.67\%\).
 
+The FAIL count did not decrease dramatically because remediation in this engagement was intentionally scoped to high-impact CIS controls rather than full-account hardening. Corrective actions prioritized critical areas such as **IAM privilege exposure**, **root MFA**, **S3 exposure**, and **network access risk**. Remaining FAIL findings are valid security gaps, but they largely map to additional controls outside the defined remediation scope for this lab.
+
 ## Remediation Summary
 
 The remediation phase focused on reversing deliberate high-risk lab misconfigurations and restoring CIS-aligned baseline controls:
