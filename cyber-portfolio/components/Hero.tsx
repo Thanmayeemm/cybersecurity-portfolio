@@ -75,6 +75,24 @@ export function Hero() {
           >
             SOAR threat-intel &amp; automation engine
           </a>
+          <span className="text-slate-600"> · </span>
+          <a
+            href={siteConfig.socInvestigationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-emerald-400/95 underline decoration-emerald-500/30 underline-offset-4 transition hover:text-emerald-300 hover:decoration-emerald-400/60"
+          >
+            SOC incident investigation lab
+          </a>
+          <span className="text-slate-600"> · </span>
+          <a
+            href={siteConfig.awsSecurityAuditUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-violet-400/95 underline decoration-violet-500/30 underline-offset-4 transition hover:text-violet-300 hover:decoration-violet-400/60"
+          >
+            AWS CIS audit (Prowler)
+          </a>
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 18 }}

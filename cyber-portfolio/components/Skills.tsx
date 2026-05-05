@@ -5,6 +5,16 @@ import { sectionFadeUp } from "@/lib/motion-presets";
 
 const skillGroups = [
   {
+    title: "Cloud Security",
+    items: [
+      "AWS IAM, S3, CloudTrail, VPC security groups",
+      "CIS AWS Foundations-oriented assessments",
+      "Prowler (open-source CSPM) for evidence collection",
+      "Risk-rated findings and remediation documentation",
+    ],
+    icon: "☁️",
+  },
+  {
     title: "Security Operations",
     items: [
       "Incident triage",
@@ -32,7 +42,7 @@ const skillGroups = [
   {
     title: "Systems & Data",
     items: ["Linux CLI workflows", "SQLite", "Structured evidence handling and incident reporting"],
-    icon: "☁️",
+    icon: "💾",
   },
   {
     title: "Networking Fundamentals",
@@ -58,7 +68,7 @@ export function Skills() {
           <div className="h-1 w-20 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500" />
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {skillGroups.map((group) => (
             <motion.div
               key={group.title}
