@@ -1,9 +1,6 @@
 # Resume-ready bullets — AWS CIS assessment lab (Prowler)
 
-Use verbatim or tailor for job descriptions. Metrics reflect **`cis_2.0_aws`** scoped scans (73 checks); totals include findings beyond the six scripted lab misconfigurations.
+Use verbatim or tailor for job descriptions. Metrics below reflect the **2026-04-22** `cis_2.0_aws` **before-remediation** export (`reports/before-metrics.json`); run `scripts/run-after-audit.ps1` after root MFA to refresh post-remediation numbers.
 
-- Ran **Prowler 5.24.2** against a personal AWS lab account using **`cis_2.0_aws`**, exporting **HTML + JSON-OCSF** evidence and CIS compliance CSVs for auditable before/after comparison.
-- Delivered **~9.6% relative reduction in FAIL findings** on the selected scope (**83 → 75** FAIL rows; **15 → 17** PASS) after scripted remediation and validation passes (`introduce-misconfigs` / `remediate`).
-- Designed **six CIS-aligned deliberate misconfigurations** (S3 exposure, IAM policy attachment, CloudTrail coverage, SSH ingress, password policy, root MFA posture) with **idempotent AWS CLI** bash automation and **PowerShell runners** for Windows/Git Bash parity.
-- Authored an **analyst-grade assessment report** mapping findings to **severity**, **attacker impact narratives**, and **MITRE ATT&CK**, plus standalone **remediation runbooks** aligned to CIS AWS Foundations expectations.
-- Distinguished **controlled lab findings** from **residual account baseline gaps** (e.g., Access Analyzer, Config, monitoring) to mirror real CSPM triage and prioritization.
+- Ran **Prowler 5.24.2** (`cis_2.0_aws`, 73 checks) across **all commercial regions**, exporting **HTML + JSON-OCSF**, normalizing machine output for parsing, and summarizing **95** assessment rows (**75 FAIL**, **17 PASS**, **3 MANUAL**) with severity-ranked **top failed controls** for triage.
+- Built **idempotent AWS CLI** introduce/remediate automation (PowerShell + bash) for a **six-control CIS lab** (S3 exposure, IAM admin attachment, CloudTrail scope, SSH ingress, password policy, root MFA verification path) and documented a **full before/after evidence trail** under `reports/` for audit-style review.

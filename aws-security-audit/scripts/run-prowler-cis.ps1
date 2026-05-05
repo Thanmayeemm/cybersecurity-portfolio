@@ -42,6 +42,16 @@ if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
 Write-Host "Output directory: $OutputDirectory" -ForegroundColor Cyan
 Write-Host "Report prefix:    $ReportLabel" -ForegroundColor Cyan
 
+# Avoid appending to an existing export (can produce invalid multi-payload files on some hosts).
+$patterns = @(
+    (Join-Path $OutputDirectory "$ReportLabel.html"),
+    (Join-Path $OutputDirectory "$ReportLabel.ocsf.json"),
+    (Join-Path $OutputDirectory "compliance\${ReportLabel}_cis_2.0_aws.csv")
+)
+foreach ($p in $patterns) {
+    if (Test-Path -LiteralPath $p) { Remove-Item -LiteralPath $p -Force }
+}
+
 & py -3.11 -m prowler aws `
     --compliance cis_2.0_aws `
     --output-formats html json-ocsf `

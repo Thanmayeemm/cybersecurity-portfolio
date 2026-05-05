@@ -1,7 +1,7 @@
 ﻿{
-  "total_findings": 101,
-  "pass": 15,
-  "fail": 83,
+  "total_findings": 95,
+  "pass": 17,
+  "fail": 75,
   "manual": 3,
   "muted": 0,
   "warn_note": "Prowler OCSF uses PASS/FAIL/MANUAL/MUTED; no separate WARN count.",
@@ -26,15 +26,15 @@
     },
     {
       "severity": "High",
-      "service": "s3",
-      "check_code": "s3_bucket_level_public_access_block",
-      "description": "Block Public Access is not configured for the S3 Bucket cis-lab-1485803085."
+      "service": "cloudtrail",
+      "check_code": "cloudtrail_multi_region_enabled",
+      "description": "No CloudTrail trails enabled with logging were found."
     },
     {
       "severity": "High",
-      "service": "s3",
-      "check_code": "s3_account_level_public_access_blocks",
-      "description": "Block Public Access is not configured for the account 285034436483."
+      "service": "cloudtrail",
+      "check_code": "cloudtrail_multi_region_enabled",
+      "description": "No CloudTrail trails enabled with logging were found."
     }
   ]
 }

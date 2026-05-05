@@ -9,6 +9,40 @@ from collections import Counter
 SEVERITY_RANK = {"critical": 0, "high": 1, "medium": 2, "low": 3, "informational": 4}
 
 
+def load_ocsf_findings(path: str) -> list:
+    """Load Prowler JSON-OCSF export (array of findings).
+
+    Some Windows runs append a second JSON payload to the same file; use only
+    the first complete top-level array if so.
+    """
+    with open(path, encoding="utf-8") as f:
+        raw = f.read().strip()
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        if not raw.startswith("["):
+            raise
+        depth = 0
+        end = None
+        for i, ch in enumerate(raw):
+            if ch == "[":
+                depth += 1
+            elif ch == "]":
+                depth -= 1
+                if depth == 0:
+                    end = i + 1
+                    break
+        if end is None:
+            raise
+        data = json.loads(raw[:end])
+    else:
+        pass
+    if not isinstance(data, list):
+        print("Expected JSON array of findings", file=sys.stderr)
+        sys.exit(1)
+    return data
+
+
 def service_name(item: dict) -> str:
     res = item.get("resources") or []
     if res and isinstance(res[0], dict):
@@ -26,11 +60,7 @@ def main() -> None:
         print("Usage: parse_prowler_ocsf.py <report.ocsf.json>", file=sys.stderr)
         sys.exit(2)
     path = sys.argv[1]
-    with open(path, encoding="utf-8") as f:
-        data = json.load(f)
-    if not isinstance(data, list):
-        print("Expected JSON array of findings", file=sys.stderr)
-        sys.exit(1)
+    data = load_ocsf_findings(path)
 
     status_counts: Counter[str] = Counter()
     for item in data:
