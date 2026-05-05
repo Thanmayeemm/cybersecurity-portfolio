@@ -53,6 +53,49 @@ Raw output placeholder (do not fabricate results):
 7. **Run** `scripts/remediate.sh` **after** before-evidence is captured (it changes account state). Complete **root MFA enrollment** in the Console.
 8. **Re-run Prowler**, capture “after” screenshots, and update `audit-report.md` placeholders with authentic output snippets.
 
+### Windows (recommended path)
+
+On Windows, plain `bash` often launches **WSL**, which may be broken. Use **Git Bash** or the wrappers below.
+
+**One-time:** allow local scripts (PowerShell):
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+**Introduce misconfigs** (from repo root; optional env overrides):
+
+```powershell
+cd <path-to-your-git-clone>   # folder that contains aws-security-audit\
+# Optional; otherwise the script picks a random cis-lab-* bucket name:
+# $env:BUCKET_NAME = "your-globally-unique-bucket-name"
+$env:REGION = "us-east-1"
+$env:SG_NAME = "cis-lab-ssh-open"
+.\aws-security-audit\scripts\run-introduce.ps1
+```
+
+Copy the **`BUCKET_NAME`** printed in the summary (or set `$env:BUCKET_NAME` yourself before running so you remember it).
+
+**Prowler (before)** — install once with Python 3:
+
+```powershell
+python -m pip install prowler
+prowler aws
+```
+
+Save terminal output / screenshots to `screenshots/` and paste excerpts into `audit-report.md` where marked.
+
+**Remediate** (same `BUCKET_NAME`, `REGION`, `SG_NAME` as introduce):
+
+```powershell
+$env:BUCKET_NAME = "<same-as-introduce>"
+$env:REGION = "us-east-1"
+$env:SG_NAME = "cis-lab-ssh-open"
+.\aws-security-audit\scripts\run-remediate.ps1
+```
+
+Then in the **AWS Console**: enable **root MFA** (required for CIS 1.1). Re-run **Prowler** and update the “after” evidence.
+
 Supporting references:
 
 - `misconfigurations/setup-notes.md` — what was introduced and why
