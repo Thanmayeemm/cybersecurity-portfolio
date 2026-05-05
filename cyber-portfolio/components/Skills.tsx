@@ -10,7 +10,7 @@ const skillGroups = [
       "AWS IAM, S3, CloudTrail, VPC security groups",
       "CIS AWS Foundations-oriented assessments",
       "Prowler (open-source CSPM) for evidence collection",
-      "Risk-rated findings and remediation documentation",
+      "Before/after remediation validation and security reporting",
     ],
     icon: "☁️",
   },
@@ -36,7 +36,13 @@ const skillGroups = [
   },
   {
     title: "Automation & SOAR",
-    items: ["Python", "Flask", "REST APIs", "Webhooks", "Security workflow automation (API-driven)"],
+    items: [
+      "Python",
+      "Flask",
+      "REST APIs",
+      "Webhooks",
+      "PowerShell and AWS CLI remediation scripting",
+    ],
     icon: "🔗",
   },
   {
