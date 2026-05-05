@@ -1,26 +1,79 @@
 # AWS Cloud Security Assessment — CIS Foundations Benchmark v2.0
 
 **Prepared by:** Thanmayee Manchikanti  
-**Assessment date:** `[ASSESSMENT_DATE]`  
-**Scope:** AWS free-tier lab account, single primary region (see methodology for regional caveats)  
-**Methodology:** Automated assessment with **Prowler 4.x** (CIS AWS Foundations Benchmark v2.0.0-aligned checks) supplemented by **manual validation** in the AWS Console for high-impact findings (S3 public access configuration, IAM policy attachment scope, CloudTrail trail scope, security group ingress, account password policy, root MFA enrollment).
+**Assessment date:** 2026-05-05  
+**Scope:** Personal AWS lab account (`<AWS_ACCOUNT_ID>`); automated scan across **all commercial regions** for Prowler-selected checks (see caveats below).
+
+## Purpose and scope (unchanged intent)
+
+This repository documents a **controlled CIS-aligned security assessment lab**, not a generic “full cloud audit” product. **Six deliberate misconfigurations** were introduced via `scripts/introduce-misconfigs.sh` to simulate common CIS failures (S3 exposure, IAM attachment hygiene, CloudTrail coverage, SSH ingress, root MFA, password policy). **Prowler** then measures **many additional** CIS-related checks in the same account. Therefore:
+
+- **Lab findings** = the six scripted scenarios and their remediation story.  
+- **Prowler findings** = broader compliance signal (e.g., Access Analyzer, AWS Config, CloudWatch) that may remain **FAIL** independent of the lab narrative until the account is hardened to production standards.
+
+**Methodology:** **Prowler 5.24.2** (`py -3.11 -m prowler`) with compliance framework **`cis_2.0_aws`** (**73 checks** in this run). Outputs are JSON-OCSF (machine-readable) + HTML (human-readable). Windows hosts should set UTF-8 (`PYTHONUTF8=1`) to avoid console encoding errors during the scan.
 
 ## Executive summary
 
-This assessment evaluates a deliberately instrumented **AWS Organizations-free lab account** against the **CIS AWS Foundations Benchmark v2.0.0** using Prowler and targeted console verification, and it identified **six material misconfigurations** spanning object storage exposure, IAM hygiene, audit logging coverage, network exposure, and account-level authentication policy. Taken together, these findings represent a **high overall risk** for real-world workloads because they increase anonymous data access, credential abuse potential, and blind spots in cross-region visibility. The account was brought to a **remediated baseline** by reversing lab automation where applicable and completing **manual root MFA enrollment**, with post-remediation validation captured as **before/after** evidence placeholders under `screenshots/`.
+Prowler **before remediation** reported **83 FAIL**, **15 PASS**, and **3 MANUAL** findings across **101** total rows in the OCSF export (CIS 2.0 AWS pack). **After scripted remediation** (`scripts/remediate.sh` / `run-remediate.ps1`) and **without** enabling **root MFA** in the Console yet, the **after** scan reported **75 FAIL**, **17 PASS**, and **3 MANUAL** across **95** rows. That is **8 fewer FAIL** findings (**~9.6%** relative reduction in FAIL count) and **2 additional PASS** findings for this compliance scope.
+
+The **six lab misconfigurations** drove measurable movement in related areas (for example, **S3 Block Public Access** and the dedicated **lab IAM user** no longer appeared among the highest-severity failures after remediation). **Root MFA** and **residual account-wide gaps** (for example, IAM Access Analyzer, Config, monitoring) remain visible in Prowler until addressed separately. **CloudTrail** posture changed from “misconfigured trail present” to **no trails** after lab cleanup—so CIS logging checks may still **FAIL** until a **production-appropriate multi-Region trail** is built.
+
+**Primary evidence artifacts:** `reports/before-report.html`, `reports/before-report.json` (JSON-OCSF copy of `before-report.ocsf.json`), `reports/after-report.html`, `reports/after-report.json`, plus summarized metrics in `reports/before-metrics.json` and `reports/after-metrics.json`.
 
 ---
 
-## Findings summary
+## Prowler measurement summary
 
-| Finding ID | CIS Control | Severity | Service | Status (Before) | Status (After) |
-|------------|-------------|----------|---------|-----------------|----------------|
-| AWS-CIS-LAB-01 | **2.1.1** Ensure all S3 buckets have block public access enabled | High | Amazon S3 | Fail | Pass (expected) |
-| AWS-CIS-LAB-02 | **1.16** Ensure IAM policies are attached only to groups or roles | Critical | AWS IAM | Fail | Pass (expected) |
-| AWS-CIS-LAB-03 | **3.1** Ensure CloudTrail is enabled in all regions | High | AWS CloudTrail | Fail | Pass (expected; verify multi-region trail posture) |
-| AWS-CIS-LAB-04 | **5.2** Ensure no security groups allow ingress from `0.0.0.0/0` to remote server administration ports | High | Amazon EC2 (VPC) | Fail | Pass (expected) |
-| AWS-CIS-LAB-05 | **1.1** Ensure MFA is enabled for the root user | Critical | AWS IAM (root) | Fail | Pass (expected; manual MFA enrollment) |
-| AWS-CIS-LAB-06 | **1.5** Ensure IAM password policy requires minimum length of 14 or greater | Medium | AWS IAM (account password policy) | Fail | Pass (expected) |
+### Before remediation (baseline with lab misconfigurations)
+
+| Metric | Value |
+|--------|------:|
+| Total finding rows (OCSF) | 101 |
+| FAIL | 83 |
+| PASS | 15 |
+| MANUAL | 3 |
+| MUTED | 0 |
+| WARN | *Not reported separately* (see `warn_note` in metrics JSON) |
+
+**Top failing themes (from `reports/before-metrics.json`):** IAM (**AdministratorAccess** / administrative policies), **root MFA**, **S3 Block Public Access** (lab bucket and account), consistent with the introduced lab state plus baseline account gaps.
+
+### After remediation (scripted lab reversal; root MFA not yet enabled)
+
+| Metric | Value |
+|--------|------:|
+| Total finding rows (OCSF) | 95 |
+| FAIL | 75 |
+| PASS | 17 |
+| MANUAL | 3 |
+| MUTED | 0 |
+
+**Delta:** FAIL **−8**, PASS **+2**, total rows **−6**.
+
+**Relative improvement (FAIL count):** \((83 − 75) / 83 \approx 9.6\%\).
+
+### Before vs after (high level)
+
+| Measure | Before | After | Change |
+|---------|-------:|------:|--------|
+| FAIL | 83 | 75 | −8 |
+| PASS | 15 | 17 | +2 |
+| Total rows | 101 | 95 | −6 |
+
+**Interpretation:** Scripted remediation removed the **lab S3 bucket**, **lab IAM user with direct AdministratorAccess**, **single-region CloudTrail trail** (and logs bucket), **world-open SSH security group**, and restored a **CIS-minimum password policy**. The **after** scan still flags **root MFA** (expected until Console enrollment) and may flag **CloudTrail multi-region** because **no trail** exists post-cleanup. Separately, checks such as **IAM Access Analyzer**, **AWS Config**, and **CloudWatch** alarms remain outside the six-lab scope but still influence FAIL counts.
+
+---
+
+## Findings summary (six lab scenarios — CIS mapping)
+
+| Finding ID | CIS Control | Severity | Service | Lab intent — Before | After scripted remediation |
+|------------|-------------|----------|---------|----------------------|----------------------------|
+| AWS-CIS-LAB-01 | **2.1.1** Block public access (S3) | High | Amazon S3 | Introduced public-read posture | **Lab bucket removed**; BPA-related failures cleared for that bucket |
+| AWS-CIS-LAB-02 | **1.16** Policies attached only to groups/roles | Critical | AWS IAM | **`cis-lab-admin-user`** + direct `AdministratorAccess` | **Lab user removed** (policy attachment eliminated for that user) |
+| AWS-CIS-LAB-03 | **3.1** CloudTrail enabled in all regions | High | CloudTrail | Single-region trail | **Trail and logs bucket removed** (logging posture changed; **replace** with compliant multi-Region trail for PASS) |
+| AWS-CIS-LAB-04 | **5.2** No world-open admin ports | High | EC2 / VPC | SSH `0.0.0.0/0` | **Rule/SG remediated** per script |
+| AWS-CIS-LAB-05 | **1.1** Root MFA | Critical | IAM (root) | No MFA (lab / account state) | **Still FAIL** until **root MFA** enabled in Console |
+| AWS-CIS-LAB-06 | **1.5** Password policy ≥ 14 | Medium | IAM (account) | Policy removed in lab | **Policy restored** via remediation script |
 
 ---
 
@@ -38,17 +91,12 @@ An S3 bucket in account `<YOUR_ACCOUNT_ID>` was configured with **bucket-level B
 **Attacker impact narrative:**  
 An attacker who discovered this misconfiguration could **enumerate and download bucket objects** directly over HTTPS using unauthenticated requests, without needing stolen AWS keys. If the bucket contained backups, exports, or operational artifacts, this becomes a **direct data disclosure** path. The blast radius is bounded by what objects exist in the bucket, but the exposure is **internet-scoped** and easy to automate (continuous crawling and object name guessing).
 
-**Evidence:** Screenshot reference — `screenshots/prowler-findings-before.png` (and optional console evidence under `screenshots/aws-console-evidence/`).
+**Evidence:** Primary exports — `reports/before-report.html`, `reports/before-report.json`; summarized counts — `reports/before-metrics.json`. Optional screenshots — `screenshots/` and `screenshots/aws-console-evidence/`.
 
 **Remediation applied:**  
 Block Public Access was re-enabled at the bucket (and account level as applicable), the **public bucket policy was removed**, and the lab bucket was deleted after object cleanup. Equivalent CLI patterns are documented in `scripts/remediate.sh` and `remediation-steps.md`.
 
-**Verification:** Screenshot reference — `screenshots/prowler-findings-after.png`  
-Prowler output placeholder:
-
-```
-[PLACEHOLDER: paste actual Prowler output here]
-```
+**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`.
 
 ---
 
@@ -64,17 +112,12 @@ An IAM user named `<YOUR_IAM_USER_NAME>` had the AWS managed policy **`Administr
 **Attacker impact narrative:**  
 An attacker who discovered this could prioritize **credential theft** (access keys in developer workstations, CI secrets, or accidental code commits) because the stolen material grants **full administrative control** over the account’s resources and IAM configuration. From that position, the attacker could **create persistence** (additional users, roles, policies), **disable detective controls** where permitted, and **exfiltrate data** across services. The blast radius is effectively **account-wide**.
 
-**Evidence:** Screenshot reference — `screenshots/prowler-findings-before.png`
+**Evidence:** Before scan exports — `reports/before-report.html`, `reports/before-report.json`; `reports/before-metrics.json`.
 
 **Remediation applied:**  
 The managed policy was detached, remaining user credentials were removed where present, and the lab IAM user was deleted as part of cleanup automation (`scripts/remediate.sh`).
 
-**Verification:** Screenshot reference — `screenshots/prowler-findings-after.png`  
-Prowler output placeholder:
-
-```
-[PLACEHOLDER: paste actual Prowler output here]
-```
+**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`.
 
 ---
 
@@ -90,17 +133,12 @@ A CloudTrail trail named `<YOUR_TRAIL_NAME>` was configured as a **single-region
 **Attacker impact narrative:**  
 An attacker who discovered this could intentionally operate in **regions with weaker centralized visibility** for the assessor’s workflow, making it easier to hide enumeration and lateral movement that would otherwise appear in a consistent multi-Region trail. While other controls may still generate signals, the misconfiguration **shrinks the authoritative API audit record** for governance and incident response across the account.
 
-**Evidence:** Screenshot reference — `screenshots/prowler-findings-before.png`
+**Evidence:** Before scan exports — `reports/before-report.html`, `reports/before-report.json`; `reports/before-metrics.json`.
 
 **Remediation applied:**  
 The lab trail was stopped and deleted and the dedicated logs bucket was removed after emptying objects, as documented in `scripts/remediate.sh`. A production-grade fix typically replaces this with a **multi-Region trail** and explicit event selector configuration; follow `remediation-steps.md` for the intended PASS posture.
 
-**Verification:** Screenshot reference — `screenshots/prowler-findings-after.png`  
-Prowler output placeholder:
-
-```
-[PLACEHOLDER: paste actual Prowler output here]
-```
+**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`.
 
 ---
 
@@ -116,17 +154,12 @@ A VPC security group named `<YOUR_SECURITY_GROUP_NAME>` included an inbound rule
 **Attacker impact narrative:**  
 An attacker who discovered this could perform **internet-scale brute force and exploit attempts** against SSH without needing prior VPC access. Successful authentication or instance compromise then enables **host-level pivoting** into the VPC, lateral movement toward other subnets, and misuse of instance roles depending on what is attached. Blast radius depends on instance role permissions and network routing, but the entry condition is **publicly triggerable**.
 
-**Evidence:** Screenshot reference — `screenshots/prowler-findings-before.png`
+**Evidence:** Before scan exports — `reports/before-report.html`, `reports/before-report.json`; `reports/before-metrics.json`.
 
 **Remediation applied:**  
 The world-open ingress rule was revoked and the lab security group was deleted if not in use (`scripts/remediate.sh`).
 
-**Verification:** Screenshot reference — `screenshots/prowler-findings-after.png`  
-Prowler output placeholder:
-
-```
-[PLACEHOLDER: paste actual Prowler output here]
-```
+**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`.
 
 ---
 
@@ -142,17 +175,12 @@ The AWS account **root user** did not have **multi-factor authentication** enrol
 **Attacker impact narrative:**  
 An attacker who discovered this could focus on **credential takeover vectors** against the root password (phishing, password reuse, support-channel social engineering where applicable). With root access, the attacker can alter **account-level recovery and security settings**, create powerful backdoors, and cause **widespread destructive impact**. This is a classic **high-blast-radius** identity failure mode for AWS accounts.
 
-**Evidence:** Screenshot reference — `screenshots/prowler-findings-before.png`
+**Evidence:** Before scan exports — `reports/before-report.html`, `reports/before-report.json`; `reports/before-metrics.json`.
 
 **Remediation applied:**  
-MFA was enabled for the root user through the **AWS Console** (virtual MFA hardware-backed options per organizational policy). This step is intentionally manual in most lab setups; see `remediation-steps.md`.
+**Outstanding at time of after-scan:** root MFA was **not yet enrolled** in the AWS Console (virtual or hardware MFA per policy). The **after** Prowler export still lists **`iam_root_mfa_enabled`** / **`iam_root_hardware_mfa_enabled`** as **FAIL** until this step is completed. See `remediation-steps.md` for Console steps.
 
-**Verification:** Screenshot reference — `screenshots/prowler-findings-after.png`  
-Prowler output placeholder:
-
-```
-[PLACEHOLDER: paste actual Prowler output here]
-```
+**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`. Re-run Prowler after MFA enrollment to close these checks.
 
 ---
 
@@ -168,17 +196,18 @@ The account had **no effective IAM password policy** enforcing CIS’s minimum *
 **Attacker impact narrative:**  
 An attacker who discovered this could exploit **weak user-chosen passwords** for IAM users that authenticate via console, especially when MFA is not enforced elsewhere. This is often chained with **password spraying** and **credential stuffing** rather than a single-step cloud exploit, but it increases the odds of **interactive console compromise** for privileged users.
 
-**Evidence:** Screenshot reference — `screenshots/prowler-findings-before.png`
+**Evidence:** Before scan exports — `reports/before-report.html`, `reports/before-report.json`; `reports/before-metrics.json`.
 
 **Remediation applied:**  
 An account password policy meeting at least the CIS minimum length requirement was applied using the CLI pattern in `scripts/remediate.sh` (minimum length 14 with additional complexity settings).
 
-**Verification:** Screenshot reference — `screenshots/prowler-findings-after.png`  
-Prowler output placeholder:
+**Verification:** After scan exports — `reports/after-report.html`, `reports/after-report.json`; summarized counts — `reports/after-metrics.json`.
 
-```
-[PLACEHOLDER: paste actual Prowler output here]
-```
+---
+
+## Conclusion
+
+This engagement demonstrates a **full audit lifecycle** on a personal lab account: **instrument misconfiguration**, **measure with Prowler** (`cis_2.0_aws`), **remediate with automation**, **re-measure**, and **document** evidence under `reports/`. Quantitatively, FAIL findings dropped **8** on this scope (**~9.6%** relative improvement), with clear removal of the **S3** and **lab IAM user** failure modes reflected in the **before-metrics** vs **after-metrics** summaries. Qualitatively, the account remains a **lab**: residual FAILs (for example **root MFA**, **CloudTrail** reinstatement, **Access Analyzer**, **Config**, **monitoring**) illustrate the gap between **demo fixes** and **production-ready** CIS posture.
 
 ---
 

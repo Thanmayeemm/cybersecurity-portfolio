@@ -1,0 +1,40 @@
+﻿{
+  "total_findings": 101,
+  "pass": 15,
+  "fail": 83,
+  "manual": 3,
+  "muted": 0,
+  "warn_note": "Prowler OCSF uses PASS/FAIL/MANUAL/MUTED; no separate WARN count.",
+  "top_5_failed": [
+    {
+      "severity": "Critical",
+      "service": "iam",
+      "check_code": "iam_aws_attached_policy_no_administrative_privileges",
+      "description": "AWS policy AdministratorAccess is attached and allows '*:*' administrative privileges."
+    },
+    {
+      "severity": "Critical",
+      "service": "iam",
+      "check_code": "iam_root_hardware_mfa_enabled",
+      "description": "MFA is not enabled for root account."
+    },
+    {
+      "severity": "Critical",
+      "service": "iam",
+      "check_code": "iam_root_mfa_enabled",
+      "description": "MFA is not enabled for root account."
+    },
+    {
+      "severity": "High",
+      "service": "s3",
+      "check_code": "s3_bucket_level_public_access_block",
+      "description": "Block Public Access is not configured for the S3 Bucket cis-lab-1485803085."
+    },
+    {
+      "severity": "High",
+      "service": "s3",
+      "check_code": "s3_account_level_public_access_blocks",
+      "description": "Block Public Access is not configured for the account 285034436483."
+    }
+  ]
+}
