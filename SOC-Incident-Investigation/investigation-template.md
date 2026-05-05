@@ -49,7 +49,7 @@
 
 ## 5. Investigation Queries
 
-All commands and queries used during this investigation are documented in [`queries.md`](./queries.md).
+All commands and queries used during this investigation should be documented in the incident-specific `queries.md` file.
 
 Key findings from queries:
 - 
@@ -60,7 +60,7 @@ Key findings from queries:
 
 ## 6. SOAR Engine Enrichment
 
-Full enrichment output for all IOCs is in [`ioc-enrichment.md`](./ioc-enrichment.md).
+Full enrichment output for all IOCs should be captured in the incident-specific `ioc-enrichment.md` file.
 
 Summary of verdicts:
 - [X] IPs flagged as malicious
@@ -124,7 +124,7 @@ level: high
 
 ## Evidence
 
-List artifacts (logs, exports, PNGs under `screenshots/`) or embed images: `![description](screenshots/01-example.png)`. Match the style of completed incidents in this repo.
+List artifacts (logs, exports, PNGs under `screenshots/`) and embed evidence images as needed. Match the style of completed incidents in this repo.
 
 ---
 

@@ -15,6 +15,6 @@ Place portfolio screenshots in **`docs/images/`** using these filenames (referen
 ## Optional extras
 
 - `architecture.png` — Export from Mermaid or draw.io if you want a static diagram in the README
-- `demo.gif` — Short screen recording of analyze + Slack (add to README with `![Demo](docs/images/demo.gif)`)
+- `demo.gif` — Short screen recording of analyze + Slack (optional asset; reference it from the README only after adding the file)
 
 Do **not** commit `.env`, API keys, or customer data in screenshots.
