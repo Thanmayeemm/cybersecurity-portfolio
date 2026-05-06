@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project captures a hands-on AWS security assessment using Prowler to identify misconfigurations, apply targeted remediation, and validate posture changes with before/after evidence.
+This project captures a hands-on AWS security assessment using Prowler to identify misconfigurations, apply targeted remediation, and validate the delta with before/after scan exports.
 
 The scope is intentionally lab-based but follows the same flow used in real audits: define controls, collect evidence, remediate prioritized risk, and clearly document residual gaps.
 
@@ -22,7 +22,7 @@ The scope is intentionally lab-based but follows the same flow used in real audi
 Notes:
 - The initial scan evidence includes a broader run snapshot.
 - The post-remediation comparison in the formal report uses the CIS-aligned project metrics (`reports/before-metrics.json` vs `reports/after-metrics.json`).
-- One practical challenge during execution was environment setup and rerun consistency (especially around scan outputs), which is why the workflow emphasizes repeatable scripts and evidence capture.
+- On Windows, Prowler’s UTF-8 progress output could throw encoding errors until the shell code page was set to UTF-8, and some runs appended a second JSON blob into the same `*.ocsf.json` file — which broke parsers until I cleared prior outputs each run and ran the sanitizer script so every export stayed a single valid array.
 
 ## Remediation Scope (Important Context)
 
@@ -32,12 +32,12 @@ Remediation in this project was intentionally scoped to demonstrate targeted ris
 
 ## Results
 
-- Broader initial scan snapshot (evidence screenshot): **123 failed, 95 passed**
+- Broader initial scan snapshot (evidence screenshot): **123 failed, 95 passed** — *This covers all Prowler checks across the account; the CIS-scoped comparison uses only the 73 cis_2.0_aws checks tracked in the metrics files.*
 - CIS-aligned comparison (from metrics JSON used in report):
   - Before: **75 failed, 17 passed, 3 manual**
   - After: **73 failed, 19 passed, 3 manual**
 
-These numbers reflect what was observed in this scoped audit run, with measurable improvement in the prioritized controls after remediation.
+These numbers reflect what was observed in this scoped audit run, with a reduction in failing checks after remediation on the CIS extract.
 
 Remaining FAIL findings in the after scan are expected for this lab scope and primarily represent controls not included in the remediation subset.
 
@@ -57,7 +57,7 @@ In other words, the technical fix is straightforward, but ownership and access b
 ## What I Would Do in a Production Environment
 
 - Enable continuous monitoring with AWS Security Hub and GuardDuty.
-- Implement automated remediation workflows using AWS Lambda and AWS Config Rules for repeatable control enforcement.
+- Implement automated remediation workflows using AWS Lambda and AWS Config Rules so the same fixes fire again when drift shows up.
 - Integrate cloud security findings into a SIEM pipeline for centralized alerting, triage, and incident response.
 - Apply organization-wide preventive guardrails with AWS Organizations and Service Control Policies (SCPs).
 
@@ -75,4 +75,4 @@ After-scan evidence:
 
 ## Conclusion
 
-This project shows a practical assess-remediate-verify cycle with real constraints and measurable movement in scoped controls. It also leaves a clear record of what remains open, which is often the most important part of communicating security work in operational teams.
+This project walks through assess → remediate → re-scan with real constraints (including controls I could not close from my IAM session). The repo keeps an honest list of what stayed FAIL after the second run so nobody has to guess what is still open.

@@ -21,9 +21,9 @@ Reverts misconfigurations and applies security best practices:
 ## Purpose
 
 These scripts are designed to:
-- Create a reproducible security testing environment
+- Recreate the same insecure baseline in the lab when I need to re-run the exercise
 - Support before/after validation using Prowler
-- Demonstrate real-world cloud security audit workflows
+- Mirror the introduce → scan → remediate → scan loop documented in the audit report
 
 ## Note
 

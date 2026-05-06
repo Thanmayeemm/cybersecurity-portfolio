@@ -1,6 +1,6 @@
 # SOC Threat Detection Engine (Beginner-Friendly SOC Automation)
 
-This project is a small **SOC detection automation** lab that demonstrates how a cybersecurity engineer/SOC analyst can:
+This project is a small **SOC detection automation** lab that walks through how a cybersecurity engineer/SOC analyst can:
 - Parse authentication logs
 - Detect brute force attacks
 - Flag suspicious logins from unusual IP ranges

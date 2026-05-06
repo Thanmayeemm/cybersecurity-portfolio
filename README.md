@@ -1,9 +1,10 @@
 # Thanmayee Manchikanti
 
 Security engineer focused on SOC automation, threat detection,
-incident investigation, and cloud security. This portfolio
-demonstrates end-to-end security engineering work across four
-projects, each covering a distinct skill area.
+incident investigation, and cloud security. This portfolio is
+hands-on work across four projects: SOC automation,
+incident investigation, detection engineering,
+and cloud security.
 
 **Portfolio site:** https://thanmayee-portfolio-ttbb.vercel.app/
 **LinkedIn:** https://www.linkedin.com/in/thanmayeemanchikanti
@@ -36,7 +37,7 @@ Hands-on incident investigation portfolio using real public attack
 datasets (EVTX-ATTACK-SAMPLES, Mordor Security Datasets, Splunk BOTS v3,
 malware-traffic-analysis.net). Covers six attack types with reproducible
 CLI workflows, IOC extraction, MITRE ATT&CK mapping, SOAR enrichment
-integration, and formal analyst-grade reporting.
+integration, and structured case reports.
 
 **Incidents covered:** Phishing · Brute force · Ransomware ·
 Data exfiltration · Malware infection · Insider threat
@@ -76,15 +77,14 @@ access
 End-to-end CIS AWS Foundations Benchmark v2.0.0 assessment of a live
 AWS free-tier lab account using Prowler: introduce a known-bad baseline,
 scan for FAIL results, document misconfigurations with risk ratings and
-attacker impact narratives, remediate, and verify improved posture with a
-repeat scan.
+attacker impact narratives, remediate, and verify with a second Prowler run.
 
 **Tools:** Prowler · AWS CLI · CIS Benchmark v2.0 · IAM · S3 · CloudTrail · VPC security groups
 
 **Key outcomes:**
 - Six deliberate misconfigurations mapped to CIS controls (S3 exposure, IAM admin attachment, CloudTrail regional coverage, public SSH ingress, root MFA, password policy)
 - Risk-rated findings with CVSS-equivalent scoring rationale and MITRE ATT&CK mapping
-- Remediation executed (scripted where safe) and verified with before/after evidence placeholders
+- Remediation executed (scripted where safe) and verified with re-scan verification — see before/after evidence in screenshots/
 
 Full methodology, scripts, and report: **[aws-security-audit/README.md](./aws-security-audit/README.md)**
 

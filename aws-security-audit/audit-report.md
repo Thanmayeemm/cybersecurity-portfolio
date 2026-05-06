@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-This assessment evaluates the AWS lab environment after controlled misconfiguration testing and remediation. Prowler was used as the primary cloud security posture assessment tool to measure baseline and post-remediation control status.
+This assessment covers the AWS lab after controlled misconfiguration testing and remediation. Prowler is the main tool I used to compare baseline vs post-remediation check results.
 
 The key risk themes identified were:
 - **IAM privilege hygiene** (administrative policy exposure),
@@ -14,7 +14,7 @@ The key risk themes identified were:
 - **CloudTrail/logging coverage** across regions,
 - **Root identity protection (MFA)**.
 
-After remediation, the environment shows measurable improvement in control outcomes, with a reduction in failed findings and an increase in passed findings. Root MFA remains an open critical issue due to account/session restrictions, and is documented as a realistic operational constraint.
+After remediation, there is a reduction in failing checks on the CIS extract (FAIL 75→73, PASS 17→19; MANUAL stays at 3). Root MFA remains an open critical issue due to account/session restrictions, and is documented as a realistic operational constraint.
 
 ## Tools and Method
 
@@ -64,13 +64,13 @@ Remediation was attempted as part of the audit workflow but could not be complet
 ### Recommendation
 
 - Enable root MFA through an approved privileged access path with account-owner/root authentication.
-- Enforce MFA requirements consistently for all privileged identities (root, admin roles, and high-impact IAM users).
+- Enforce MFA for root, admin roles, and other high-impact IAM users.
 
 ## Conclusion
 
-The AWS security audit demonstrates a practical before/after security validation workflow using Prowler and evidence-driven remediation. The post-remediation assessment shows a measurable reduction in risk exposure (**FAIL 75 -> 73; PASS 17 -> 19**) and improved control posture.
+The AWS security audit runs a before/after CIS assessment using Prowler. I used before/after scan output as evidence when remediating; the metrics extract shows **FAIL 75 → 73** and **PASS 17 → 19** — fewer failing checks on the CIS pack with re-scan proof.
 
-Residual high-impact findings, especially root MFA and broader logging/monitoring coverage, should be prioritized in the next hardening cycle to move from lab-grade remediation to production-grade governance.
+Residual high-impact findings, especially root MFA and broader logging/monitoring coverage, should be next on the list if this account were headed toward production — the lab work closed the misconfigs I introduced, not every gap Prowler still flags.
 
 ## Evidence Note
 

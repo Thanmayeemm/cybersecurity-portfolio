@@ -1,6 +1,6 @@
 # SOC Security Dashboard (Python Visualization Project)
 
-This project simulates how SOC teams use dashboards to quickly understand security posture and active threats.
+This project simulates how SOC teams use dashboards to see alert volume and open issues at a glance.
 
 It includes:
 - A **log generator** that produces realistic security events (`generate_logs.py`)

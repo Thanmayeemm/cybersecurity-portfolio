@@ -3,8 +3,8 @@
 ## About This Lab
 
 This lab documents hands-on SOC investigations
-using public datasets, reproducible CLI workflows, and MITRE ATT&CK
-mapping. Each case simulates a real analyst workflow: triage → log
+using public datasets, CLI steps I can replay on the same samples, and MITRE ATT&CK
+mapping. Each case follows a straight sequence: triage → log
 analysis → IOC extraction → report → enrichment.
 
 This lab is designed to integrate with a SOAR service via

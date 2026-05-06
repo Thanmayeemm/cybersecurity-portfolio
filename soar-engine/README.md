@@ -273,7 +273,7 @@ Screenshots below show the dashboard and a Slack alert triggered for a suspiciou
 - Integrated **commercial/community threat intelligence APIs** (VirusTotal, AbuseIPDB) with **retries, timeouts, and rate-limit handling**
 - Built a **rule-based decision engine** with **configurable thresholds** and **confidence scoring**
 - Delivered **real-time alerting** via **Slack webhooks** and **audit-ready incident storage** in **SQLite**
-- Produced **structured JSON logging** and a **demo dashboard** for stakeholder presentations
+- Produced **JSON logs with predictable fields** and a **small dashboard** for demos and screenshots
 - Applied **security hygiene**: secrets via environment variables, input validation, no hardcoded keys
 
 ---
